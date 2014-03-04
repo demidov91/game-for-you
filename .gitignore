@@ -1,0 +1,12 @@
+*.pyc
+bin/*
+bin
+eggs
+eggs/*
+develop-eggs
+develop-eggs/*
+*~
+.installed.cfg
+*/__pycache__
+game_for_everyone/game_for_everyone.egg-info
+game_for_everyone/core/local_settings.py
