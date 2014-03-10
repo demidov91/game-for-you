@@ -33,6 +33,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'relations',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -46,7 +47,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'core.urls'
 
-WSGI_APPLICATION = 'core.wsgi.application'
+#WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database
@@ -79,7 +80,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 try:    
-    from local_settings import *
+    from core.local_settings import *
 except ImportError:
     pass
  

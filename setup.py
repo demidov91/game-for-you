@@ -24,11 +24,11 @@ install_requires = [
 
 
 #Execute function to handle setuptools functionality
-setup(name="game-for-everyone",
+setup(name="our_game",
       version="0.0.1",
       description="Web-tool for command games organization.",
       author="Demidov D. A.",
-      packages=find_packages('game_for_everyone'),
-      package_dir={'': 'game_for_everyone'},
+      packages=find_packages('src'),
+      package_dir={'': 'src'},
       install_requires=install_requires,
       )

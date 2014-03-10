@@ -8,5 +8,8 @@ develop-eggs/*
 *~
 .installed.cfg
 */__pycache__
-game_for_everyone/game_for_everyone.egg-info
-game_for_everyone/core/local_settings.py
+src/our_game.egg-info
+src/core/local_settings.py
+*/.idea
+.idea/
+*.sqlite3
