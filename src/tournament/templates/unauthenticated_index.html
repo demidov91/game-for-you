@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block left_side %}
+<div id="all-auth-links">
+    <div><img src="{{ STATIC_URL}}img/email_144.png" alt="auth_with_email" /></div>
+    <div><img src="{{ STATIC_URL}}img/facebook_144.png" alt="auth_with_fb" /></div>
+    <div><img src="{{ STATIC_URL}}img/gmail_144.jpg" alt="auth_with_gmail" /></div>
+    <div><img src="{{ STATIC_URL}}img/twitter_144.png" alt="auth_with_twitter" /></div>
+    <div><img src="{{ STATIC_URL}}img/vk_144.jpg" alt="auth_with_vk" /></div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<script type="text/javascript">
+    getEventsUrl = '{% url 'get_calendar_events' %}';
+</script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/lib/fullcalendar.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/index.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="calendars">
+    <div class='calendar-before'></div>
+    <div class='calendar-current'></div>
+    <div class='calendar-after'></div>
+    <div class="clear"></div>
+</div>
+{% endblock %}
+
+{% block right_side_content %}
+<div id="calendar-tags-caption">{% trans 'Tags to display:' %}</div>
+<div id="calendar-tags">
+    {% for tag in tags %}
+    <div class="tag">{{ tag.name }}</div>
+    {% endfor %}
+</div>
+{% endblock %}
+

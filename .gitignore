@@ -13,3 +13,6 @@ src/core/local_settings.py
 */.idea
 .idea/
 *.sqlite3
+src/app_static
+src/app_static/*
+src/core/media/admin

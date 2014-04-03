@@ -1,0 +1,31 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-type">
+    <title>{% block title %}{% trans "What? Where? When? organizer" %}{% endblock %}</title>
+    {% block style %}
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" >
+    <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/style.less" >
+    {% endblock %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/lib/less-1.7.0.min.js"></script>
+</head>
+<body>
+    <div class="toLeft" id="left-side">{% block left_side %}{% endblock %}</div>
+    <div class="toLeft" id="content">{% block content %}{% endblock %}</div>
+    <div class="toLeft" id="right-side">
+        {% block right_side %}
+        <div id="right-side-content">{% block right_side_content %}{% endblock %}</div>
+        <div id="right-side-settings">
+            {% block right_side_settings %}
+            <div id="select-language">select-language-block</div>
+            {% endblock %}
+        </div>
+        {% endblock %}
+    </div>
+    <div class="clear"></div>
+{% block script %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery-2.0.2.min.js"></script>
+{% endblock %}
+</body>
+</html>

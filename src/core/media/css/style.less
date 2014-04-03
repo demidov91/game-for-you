@@ -1,0 +1,45 @@
+@page_width: 1200px;
+@content_width: 900px;
+
+/**
+---------------------basic-------------
+**/
+
+.toLeft{
+    float: left;
+}
+
+.clear{
+    clear: both;
+}
+
+
+@auth_side: 72px;
+#all-auth-links{
+    img{
+        margin: @auth_side/3 @auth_side/3;
+        width: @auth_side;
+    }
+}
+
+#content{
+    width: @content_width;
+}
+
+#left-side, #right-side{
+    width: (@page_width - @content_width) / 2;
+}
+
+/**
+------------------------index-------------------
+**/
+#calendars{
+    
+    &>div {
+        float: left;
+        width: 30%;
+    }
+    .fc-header-right{display: none;}
+}
+
+
