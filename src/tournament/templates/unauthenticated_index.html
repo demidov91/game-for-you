@@ -4,21 +4,31 @@
 
 {% block left_side %}
 <div id="all-auth-links">
-    <div><img src="{{ STATIC_URL}}img/email_144.png" alt="auth_with_email" /></div>
+    <div><img src="{{ STATIC_URL}}img/email_144.png" alt="auth_with_email" data-toggle="modal" data-target="#email-authentication" /></div>
     <div><img src="{{ STATIC_URL}}img/facebook_144.png" alt="auth_with_fb" /></div>
     <div><img src="{{ STATIC_URL}}img/gmail_144.jpg" alt="auth_with_gmail" /></div>
-    <div><img src="{{ STATIC_URL}}img/twitter_144.png" alt="auth_with_twitter" /></div>
     <div><img src="{{ STATIC_URL}}img/vk_144.jpg" alt="auth_with_vk" /></div>
+    <div><img src="{{ STATIC_URL}}img/twitter_144.png" alt="auth_with_twitter" /></div>
 </div>
 {% endblock %}
 
 {% block script %}
-{{ block.super }}
-<script type="text/javascript">
-    getEventsUrl = '{% url 'get_calendar_events' %}';
-</script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/lib/fullcalendar.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/index.js"></script>
+    {{ block.super }}
+    <script type="text/javascript">
+    {% include 'parts/configure_calendar.html' %}
+    </script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/lib/fullcalendar.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery.form.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/index.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/unauthenticated_index.js"></script>
+
+    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+{% endblock %}
+
+{% block style %}
+    {{ block.super }}
+    <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/fullcalendar.css" >
+    <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/fullcalendar.print.css" media='print' >
 {% endblock %}
 
 {% block content %}
@@ -28,10 +38,36 @@
     <div class='calendar-after'></div>
     <div class="clear"></div>
 </div>
+
+<div class="modal" id="email-authentication">
+    <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">{% trans 'Log in or register.' %}</h4>
+      </div>
+      <div class="modal-body">
+        <div id="login-placeholder" data-url="{% url 'account_login' %}" class="toLeft"></div>
+        <div id="register-placeholder" data-url="{% url 'account_signup' %}" class="toLeft"></div>
+        <div class="clear"></div>
+      </div>
+      <div class="modal-footer">
+          <div id="login-submit-wrapper" class="toLeft"><input type="submit" class="btn btn-primary" value="{% trans 'Sign In' %}" form="login-form" /></div>
+          <div id="register-submit-wrapper" class="toLeft"><input type="submit" class="btn btn-success" value="{% trans 'Sign Up' %}" form="registration-form" /></div>
+          <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+</div>
 {% endblock %}
 
 {% block right_side_content %}
-<div id="calendar-tags-caption">{% trans 'Tags to display:' %}</div>
+<h3 id="calendar-tags-caption">{% trans 'Tags to display:' %}</h3>
 <div id="calendar-tags">
     {% for tag in tags %}
     <div class="tag">{{ tag.name }}</div>

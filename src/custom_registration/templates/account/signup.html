@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<h1>{% trans "Sign Up" %}</h1>
+
+<form class="signup" id="registration-form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+   <table>
+  {{ form }}
+   </table>
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+</form>

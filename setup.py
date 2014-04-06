@@ -20,6 +20,7 @@ def read(fname):
 install_requires = [
 	'pillow',
     'psycopg2',
+    'django-allauth',
 ]
 
 
