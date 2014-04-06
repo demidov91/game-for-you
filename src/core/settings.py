@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.vk',
+    'allauth.socialaccount.providers.facebook',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -123,6 +124,8 @@ STATIC_URL = '/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'app_static')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+LOGIN_REDIRECT_URL = 'all_events_calendar_page'
+LOGOUT_ON_GET = False
 
 try:    
     from core.local_settings import *

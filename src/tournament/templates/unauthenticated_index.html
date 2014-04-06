@@ -14,15 +14,11 @@
 
 {% block script %}
     {{ block.super }}
-    <script type="text/javascript">
-    {% include 'parts/configure_calendar.html' %}
-    </script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/fullcalendar.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery.form.min.js"></script>
+    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/index.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/unauthenticated_index.js"></script>
-
-    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
 {% endblock %}
 
 {% block style %}
@@ -32,12 +28,7 @@
 {% endblock %}
 
 {% block content %}
-<div id="calendars">
-    <div class='calendar-before'></div>
-    <div class='calendar-current'></div>
-    <div class='calendar-after'></div>
-    <div class="clear"></div>
-</div>
+{% include 'parts/calendar.html' %}
 
 <div class="modal" id="email-authentication">
     <div class="modal-dialog">

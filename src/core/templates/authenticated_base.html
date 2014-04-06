@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+
+{% block right_side_settings %}
+    {{ block.super}}
+    <form action="{% url 'protected_logout' %}" method="post" id="logout-wrapper">{% csrf_token%}
+        <input type="submit" value="{% trans 'Log out' %}" class="btn btn-info" />
+        <input type="hidden" value="{% url 'all_events_calendar_page' %}" name="next" />
+    </form>
+{% endblock %}

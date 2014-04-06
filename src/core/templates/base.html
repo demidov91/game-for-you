@@ -12,6 +12,7 @@
 </head>
 <body>
     <div id="all-wrapper">
+    <div id="commercial-placeholder"></div>
     <div class="toLeft" id="left-side">{% block left_side %}{% endblock %}</div>
     <div class="toLeft" id="content">{% block content %}{% endblock %}</div>
     <div class="toLeft" id="right-side">
@@ -22,7 +23,7 @@
             <div id="select-language">
                 <form action="{% url 'set_language' %}" method="POST">
                 {%csrf_token%}
-                    <table>
+                    <table id="locales-switcher">
                         {% for LANGUAGE_AVAILABLE in OTHER_LANGUAGES %}
                         <tr>
                             <td class="available-lang">

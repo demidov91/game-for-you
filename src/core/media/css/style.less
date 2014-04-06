@@ -1,6 +1,3 @@
-@page_width: 1200px;
-@content_width: 900px;
-
 /**
 ---------------------basic-------------
 **/
@@ -17,42 +14,34 @@ body{
     clear: both;
 }
 
+#commercial-placeholder{width: 100%;height: 60px;}
 
 @auth_side: 66px;
 #all-auth-links{
     img{
-        margin: @auth_side/3 @auth_side/3;
-        width: @auth_side;
+        margin: 15%;
+        width: 44%;
         cursor: pointer;
     }
 }
 
 #content{
-    width: @content_width;
+    width: 75%;
 }
 
 #left-side, #right-side{
-    width: (@page_width - @content_width) / 2;
+    width: 12.5%;
 }
 
 #all-wrapper{
     margin: 0 auto;
-    width: @page_width;
+    width: 100%;
+    min-width: 1200px;
+    padding: 0 2%;
 }
 
-.available-lang{
-    width: 40%;
-}
-.active-lang{
-    width: 60%;
-    font-size: 2em;     
-}
-.available-lang, .active-lang{
-    &>*{display: inline;}
-    img {
-        width :1em;
-    }
-}
+
+
 
 #right-side{
     #right-side-settings{
@@ -63,6 +52,24 @@ body{
 .pointer{
     cursor: pointer;
 }
+
+/**
+---------------------------------base---------------------------
+**/
+#locales-switcher{width:9em;margin: 0 auto;}
+.available-lang, .active-lang{
+    &>*{display: inline;}
+    img {
+        width :1em;
+    }
+}
+.available-lang{ width: 40%;}
+.active-lang{ width: 60%; font-size: 2em; }
+
+/**
+---------------------------------authenticated_base--------------
+**/
+#logout-wrapper{text-align:center; margin-top:1em;}
 
 
 /**
@@ -92,10 +99,11 @@ body{
 #calendar-tags .tag{width: 100%; font-size: 1.8em; background-color: #5CB85C; border-radius: 0.1em; padding-left: 0.6em; font-family: Georgia, Times, "Times New Roman", serif;}
 #login-placeholder, #register-placeholder {width: 45%;}
 #login-placeholder {margin-left: 2%; margin-right: 8%;}
-#email-authentication>.modal-dialog{width: @content_width * 0.9;}
+#email-authentication>.modal-dialog{width: 55em;}
 #login-submit-wrapper{text-align: center; width: 50%;}
 #register-submit-wrapper{text-align: center; width: 50%;}
 #email-authentication tr{margin: 0.5em auto;}
+
 
 
 

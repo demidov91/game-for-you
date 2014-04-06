@@ -12,8 +12,7 @@ def _unauthenticated_view(request):
     return render(request, 'unauthenticated_index.html', {'tags': tags})
 
 def _authenticated_index(request):
-    tags = request.user.tags()
-    return render(request, 'index.html', {'tags': tags})
+    return render(request, 'index.html', {'tags': request.user.subscribed_to})
 
 
 def index(request):
