@@ -1,0 +1,7 @@
+{% load i18n %}
+
+{% if user.teams|length == 1 %}
+<a href="#">{{ user.teams.0.name }}</a><a href="#" class="glyphicon glyphicon-plus"></a>
+{% else %}
+<a href="{% url 'add_team' %}">{% trans 'Add team' %}</a>
+{% endif %}

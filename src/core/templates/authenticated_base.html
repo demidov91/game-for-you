@@ -1,12 +1,24 @@
 {% extends 'base.html' %}
 
-{% load i18n %}
+{% load i18n relations %}
+
+
+
+{% block left_side %}
+<ul class="nav nav-pills nav-stacked">
+  <li class="{% block nav_calendar_active %}{% endblock %}"><a href="{% url 'index' %}">{% trans 'Calendar' %}</a></li>
+  <li class="{% block nav_team_active %}{% endblock %}">{% include 'parts/team_link.html' %}</li>
+  <li class="{% block nav_contacts_active %}{% endblock %}"><a href="{% url 'view_contacts' %}">{% trans 'People' %}</a></li>
+  <li class="{% block nav_settings_active %}{% endblock %}"><a href="#">{% trans 'Settings' %}</a></li>
+</ul>
+{% endblock %}
+
 
 
 {% block right_side_settings %}
     {{ block.super}}
     <form action="{% url 'protected_logout' %}" method="post" id="logout-wrapper">{% csrf_token%}
         <input type="submit" value="{% trans 'Log out' %}" class="btn btn-info" />
-        <input type="hidden" value="{% url 'all_events_calendar_page' %}" name="next" />
+        <input type="hidden" value="{% url 'index' %}" name="next" />
     </form>
 {% endblock %}

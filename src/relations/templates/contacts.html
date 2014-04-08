@@ -1,0 +1,10 @@
+{% extends 'authenticated_base.html' %}
+
+{% block nav_contacts_active %}active{% endblock %}
+
+{% block content %}
+    {% for contact in contacts %}
+    <div class="toLeft">{{ contact.about }}</div>
+    {% endfor %}
+    <div class="clear"></div>
+{% endblock %}

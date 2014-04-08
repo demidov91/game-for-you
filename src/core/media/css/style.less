@@ -1,9 +1,12 @@
+
 /**
 ---------------------basic-------------
 **/
 
 body{
     font-family: verdana,tahoma,arial;
+    font-size: 24px;   
+/**    background-color: #E6F0F6; **/
 }
 
 .toLeft{
@@ -25,9 +28,7 @@ body{
     }
 }
 
-#content{
-    width: 75%;
-}
+#content{width: 74%;padding: 1em 0.5%; margin: 0 0.5%;background-color: white; border-radius: 0.2em;}
 
 #left-side, #right-side{
     width: 12.5%;
@@ -56,7 +57,7 @@ body{
 /**
 ---------------------------------base---------------------------
 **/
-#locales-switcher{width:9em;margin: 0 auto;}
+#locales-switcher{width:9em;margin: 0 auto;font-size:0.5em;}
 .available-lang, .active-lang{
     &>*{display: inline;}
     img {
@@ -76,15 +77,16 @@ body{
 ------------------------index-------------------
 **/
 #calendars{
-    padding-left: 1%;
+    padding:0 1%;
     &>div.fc {
         float: left;
-        width: 30%;
+        width: 32%;
         margin-right: 2%;
+        &.calendar-after{ margin-right: 0;}
         
     }
     .fc-header-title{text-align: center;}
-    
+    .fc table{font-size: 0.6em;}
     
     .calendar-after .fc-header-right, .calendar-before .fc-header-left{
         vertical-align: center;
@@ -92,14 +94,13 @@ body{
         font-size: 92px;
         line-height: 25%;
     }
-    
 }
 
 #calendar-tags-caption{text-align: center;}
 #calendar-tags .tag{width: 100%; font-size: 1.8em; background-color: #5CB85C; border-radius: 0.1em; padding-left: 0.6em; font-family: Georgia, Times, "Times New Roman", serif;}
 #login-placeholder, #register-placeholder {width: 45%;}
 #login-placeholder {margin-left: 2%; margin-right: 8%;}
-#email-authentication>.modal-dialog{width: 55em;}
+#email-authentication>.modal-dialog{font-size: 0.6em;width: 55em;}
 #login-submit-wrapper{text-align: center; width: 50%;}
 #register-submit-wrapper{text-align: center; width: 50%;}
 #email-authentication tr{margin: 0.5em auto;}

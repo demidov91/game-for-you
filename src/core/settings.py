@@ -124,7 +124,7 @@ STATIC_URL = '/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'app_static')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-LOGIN_REDIRECT_URL = 'all_events_calendar_page'
+LOGIN_REDIRECT_URL = 'index'
 LOGOUT_ON_GET = False
 
 try:    

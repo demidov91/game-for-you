@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
-
 from django.db import models
+
+from core.models import ShareTree
 
 
 class UserProfile(models.Model):
@@ -11,6 +12,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(get_user_model(), null=True)
     #Some greeting text to be displayed next to profile.
     status = models.TextField()
+    #Team to display on authenticated_index page.
+    primary_team = models.ForeignKey('relations.Team', null=True, blank=True)
 
 
 class UserProfileRecordType(models.Model):
@@ -35,10 +38,11 @@ class UserProfileRecord(models.Model):
     order = models.IntegerField()
 
 
-
 class Team(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, default=_('Enter team name'))
     members = models.ManyToManyField(UserProfile)
+    owner = models.ForeignKey(ShareTree)
+    is_draft = models.BooleanField(default=True)
 
 
 class Contact(models.Model):
@@ -52,7 +56,7 @@ class UserContact(Contact):
     """
     Contact between 2 users.
     """
-    owner = models.ForeignKey(get_user_model())
+    owner = models.ForeignKey(get_user_model(), related_name='known_people')
 
 
 class TeamContact(Contact):
@@ -83,5 +87,5 @@ class OwnRecord(UserProfileRecord):
         (IS_PRIVATE, _('Is private record')),
     )
 
-    owner = models.ForeignKey(get_user_model(), null=True)
+    owner = models.ForeignKey(get_user_model(), related_name='own_records', null=True)
     shared_between = models.PositiveSmallIntegerField(choices=SHARED_BETWEEN_CHOICES)
