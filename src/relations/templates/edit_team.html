@@ -1,3 +1,36 @@
 {% extends 'authenticated_base.html' %}
 
-{{ team_form }}
+{% load i18n %}
+
+{% block nav_team_active %}active{% endblock %}
+
+{% block content %}
+    {% if team_form.errors %}
+        <div class="alert alert-danger">{{ team_form.errors }}</div>
+    {% endif%}
+
+    <form action="" method="post" id="team-edit-form">{% csrf_token %}
+        <div id="team-caption"><h1>{{ team_form.name }}</h1></div>
+        <div id="team-members">
+        {% for member in team_form.fields.members.queryset %}
+            <div class="toLeft">
+                <div>{{ member.get_full_name }}</div>
+                <div><span class="glyphicon glyphicon-remove-sign"></span></div>
+                <input type="hidden" value="{{ member.id }}" name="{{ team_form.members.html_name }}" />
+            </div>
+        {% endfor %}
+        <div class="clear"></div>
+        </div>
+
+        <input type="hidden" value="False" name="is_draft" />
+        <input type="submit" class="btn btn-success"
+               value="{% if team_form.is_draft.value %}{% trans 'Create' %}{% else %}{% trans 'Save' %}{% endif%}" />
+    </form>
+{% endblock %}
+
+{% block riht_side %}
+    {% for contact in contacts %}
+        <div class="toLeft"><span class="glyphicon glyphicon-arrow-left"></span><span>{{ contact.about }}</span></div>
+    {% endfor %}
+    <div class="clear"></div>
+{% endblock %}

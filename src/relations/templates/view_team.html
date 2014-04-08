@@ -1,0 +1,31 @@
+{% extends 'authenticated_base.html' %}
+
+{% load i18n %}
+
+{% block nav_team_active %}active{% endblock %}
+
+{% block content %}
+    <div id="team-caption"><h1>{{ team.name }}</h1></div>
+    {% include 'parts/calendar.html' %}
+{% endblock %}
+
+{% block right_side_content %}
+    <div id="team-members">
+    {% for member in team.members.all %}
+    <div class="member">{{ member.get_short_name }}</div>
+    {% endfor %}
+    </div>
+    <div id="team-settings-link"><a href="{% url 'edit_team' team_id=team.id %}" class="btn btn-default">{% trans 'Edit' %}</a></div>
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/fullcalendar.js"></script>
+     <script src="{{ STATIC_URL }}js/view_group.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block style %}
+    {{ block.super }}
+    <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/fullcalendar.css" >
+    <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/fullcalendar.print.css" media='print' >
+{% endblock %}

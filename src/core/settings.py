@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -126,6 +126,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'app_static')
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_ON_GET = False
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION=True
 
 try:    
     from core.local_settings import *

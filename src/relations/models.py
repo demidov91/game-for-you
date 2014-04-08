@@ -1,6 +1,9 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.conf import settings
 
 from core.models import ShareTree
 
@@ -9,11 +12,30 @@ class UserProfile(models.Model):
     """
     Contacts describe only this instance, so you can create contacts which describe unregistered users.
     """
-    user = models.OneToOneField(get_user_model(), null=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True)
     #Some greeting text to be displayed next to profile.
     status = models.TextField()
     #Team to display on authenticated_index page.
     primary_team = models.ForeignKey('relations.Team', null=True, blank=True)
+
+    def get_full_name(self):
+        """
+        Actually, this is not 'full' name. This is only combination of Last name and First Name.
+        """
+        if self.user:
+            return self.user.get_full_name()
+        return 'No user.'
+
+    def get_short_name(self):
+        if self.user:
+            return self.user.get_short_name()
+        return 'No user. (Short name)'
+
+
+@receiver(post_save, sender=User)
+def _create_userprofile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
 
 
 class UserProfileRecordType(models.Model):
@@ -39,7 +61,7 @@ class UserProfileRecord(models.Model):
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=255, default=_('Enter team name'))
+    name = models.CharField(max_length=255)
     members = models.ManyToManyField(UserProfile)
     owner = models.ForeignKey(ShareTree)
     is_draft = models.BooleanField(default=True)
@@ -56,7 +78,7 @@ class UserContact(Contact):
     """
     Contact between 2 users.
     """
-    owner = models.ForeignKey(get_user_model(), related_name='known_people')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='known_people')
 
 
 class TeamContact(Contact):
@@ -67,7 +89,7 @@ class TeamContact(Contact):
 
 
 class KnownTeam(models.Model):
-    owner = models.ForeignKey(get_user_model())
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
     about = models.ForeignKey(Team)
 
 
@@ -87,5 +109,5 @@ class OwnRecord(UserProfileRecord):
         (IS_PRIVATE, _('Is private record')),
     )
 
-    owner = models.ForeignKey(get_user_model(), related_name='own_records', null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='own_records', null=True)
     shared_between = models.PositiveSmallIntegerField(choices=SHARED_BETWEEN_CHOICES)

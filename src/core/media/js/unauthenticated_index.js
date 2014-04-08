@@ -1,3 +1,12 @@
+function load_html_content(jObject){
+    $.ajax({
+        url: jObject.data('url'),
+        success: function(data){
+            jObject.html(data);
+        }
+    });
+}
+
 $(function(){
     $('#email-authentication').on('submit', 'form', function(event){
         event.preventDefault();
@@ -16,10 +25,9 @@ $(function(){
                 jThis.parent('div.toLeft').html(data.responseJSON.html);
             }
         });
-        
+        return false;
     });
-    
-    return false;
-
+    load_html_content($('#login-placeholder'));
+    load_html_content($('#register-placeholder'));
     
 });
