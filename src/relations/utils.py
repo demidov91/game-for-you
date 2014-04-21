@@ -15,3 +15,16 @@ def create_team(owner):
         owner.userprofile.primary_team = new_team
         owner.userprofile.save()
     return new_team
+
+
+def can_delete_team(user, group):
+    """
+    if *user* is the last *group* owner.
+    user: **auth.User**
+    group: Team or Tag. It should have *owner* field of **ShareTree** type.
+    returns: True/False.
+    """
+    if group.owner.shared_to == user:
+        return True
+    return False
+

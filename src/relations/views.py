@@ -3,11 +3,12 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_POST
 
 from relations.models import Team
 from relations.forms import TeamForm
 from relations.decorators import team_owner_only
-from relations.utils import create_team
+from relations.utils import create_team, can_delete_team
 
 
 @login_required
@@ -28,7 +29,7 @@ class EditTeamView(View):
     template_name = 'edit_team.html'
 
     def get(self, request, team):
-        return render(request, self.template_name, {'team_form':  TeamForm(instance=team)})
+        return render(request, self.template_name, {'team_form':  TeamForm(instance=team), 'team_id': team.id})
 
     def post(self, request, team):
         form = self.form_class(request.POST, instance=team)
@@ -46,6 +47,13 @@ def view_team(request, team_id):
     team = get_object_or_404(Team.objects, id=team_id)
     return render(request, 'view_team.html', {'team': team})
 
+
+@team_owner_only(set_key='team')
+@require_POST
+def delete_team(request, team):
+    if can_delete_team(request.user, team):
+        team.delete()
+    return redirect('index')
 
 
 def view_contacts(request):

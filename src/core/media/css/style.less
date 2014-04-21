@@ -66,6 +66,15 @@ body{
 }
 .available-lang{ width: 40%;}
 .active-lang{ width: 60%; font-size: 2em; }
+.errorlist{
+    border-radius: 4px;
+    padding: 15px;
+    background-color: #F2DEDE;
+    border-color: #EBCCD1;
+    color: #A94442;
+    border: 1px solid;
+    &>li{list-style: none;}
+}
 
 /**
 ---------------------------------authenticated_base--------------
@@ -104,6 +113,20 @@ body{
 #login-submit-wrapper{text-align: center; width: 50%;}
 #register-submit-wrapper{text-align: center; width: 50%;}
 #email-authentication tr{margin: 0.5em auto;}
+li.team-nav.dropdown{
+    &>div:first-child{width: 80%;}
+    .caret{
+        border-left: 8px solid rgba(0, 0, 0, 0);
+        border-right: 8px solid rgba(0, 0, 0, 0);
+        border-top: 8px solid;
+    }
+}
+.nav-pills > li.team-nav{
+    &.active > div:first-child > a{
+        &, &:hover, &:focus{background-color: #428BCA;color: #FFFFFF;}
+    }
+    &>div:first-child>a{display: block; padding: 10px 15px; position: relative;border-radius: 4px;text-decoration:none;}
+}
 
 /*
 ----------------------------------------team views-------------------------------
@@ -113,6 +136,7 @@ body{
 #team-edit-form #team-caption input[type='text'] {width: 30em; margin: 0 auto;}
 #team-settings-link{text-align: center;}
 #right-side-content #team-members{ margin-bottom: 1em;}
+#delete-team-button-wrapper{text-align :center; margin-bottom: 1em;}
 
 
 

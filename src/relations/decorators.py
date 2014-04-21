@@ -18,7 +18,6 @@ class team_owner_only():
         @login_required
         @wraps(view_func)
         def wrapper(request, *args, **kwargs):
-            print("I'm here, I'm here, I'm really here!")
             team_id = kwargs.get('team_id')
             team = get_object_or_404(Team.objects, id=team_id)
             if (not team.owner.shared_to == request.user) or (team.owner.shared_to == None and not team.owner.parent_set.filter(shared_to=request.user).exists()):

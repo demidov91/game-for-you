@@ -31,6 +31,15 @@ class UserProfile(models.Model):
             return self.user.get_short_name()
         return 'No user. (Short name)'
 
+    def __unicode__(self):
+        return self.get_full_name()
+
+    def get_active_teams(self):
+        """
+        returns: Collection of *Team* objects.
+        """
+        return self.teams.filter(is_draft=False)
+
 
 @receiver(post_save, sender=User)
 def _create_userprofile(sender, instance, created, **kwargs):
@@ -62,7 +71,7 @@ class UserProfileRecord(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=255)
-    members = models.ManyToManyField(UserProfile)
+    members = models.ManyToManyField(UserProfile, related_name='teams')
     owner = models.ForeignKey(ShareTree)
     is_draft = models.BooleanField(default=True)
 

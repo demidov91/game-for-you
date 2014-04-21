@@ -1,7 +1,24 @@
 {% load i18n %}
 
-{% if user.teams|length == 1 %}
-<a href="#">{{ user.teams.0.name }}</a><a href="#" class="glyphicon glyphicon-plus"></a>
-{% else %}
+{% if user.userprofile.get_active_teams.count == 1 %}
+<div class="toLeft"><a href="{% url 'view_team' team_id=user.userprofile.get_active_teams.0.id  %}">{{ user.userprofile.get_active_teams.0.name }}</a></div>
+<div class="toLeft"><a href="{% url 'add_team' %}" class="glyphicon glyphicon-plus"></a></div>
+<div class="clear"></div>
+{% elif user.userprofile.get_active_teams.count == 0 %}
 <a href="{% url 'add_team' %}">{% trans 'Add team' %}</a>
+{% else %}
+<div class="toLeft"><a href="{% url 'view_team' team_id=user.userprofile.primary_team.id %}">{{ user.userprofile.primary_team.name }}</a></div>
+<div class="toLeft">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <span class="caret"></span>
+    <ul class="dropdown-menu" role="menu">
+    {% for team in user.userprofile.get_active_teams %}
+        <li><a href="{% url 'view_team' team_id=team.id %}">
+            {% if team.name %}{{ team.name }}{% else %}{% trans 'NoName (c)' %}{% endif %}
+        </a></li>
+    {% endfor %}
+    </ul>
+</a></div>
+<div class="clear"></div>
+
 {% endif %}

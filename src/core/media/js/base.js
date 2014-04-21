@@ -34,3 +34,12 @@ function initialize_default_calendar(){
         });
 }
 
+
+function load_html_content(jObject){
+    $.ajax({
+        url: jObject.data('url'),
+        success: function(data){
+            jObject.html(data);
+        }
+    });
+}
