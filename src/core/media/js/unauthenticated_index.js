@@ -1,4 +1,5 @@
 $(function(){
+    initialize_default_calendar();
     $('#email-authentication').on('submit', 'form', function(event){
         event.preventDefault();
         var jThis = $(this);

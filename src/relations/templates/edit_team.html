@@ -5,10 +5,6 @@
 {% block nav_team_active %}active{% endblock %}
 
 {% block content %}
-    {% if team_form.errors %}
-        <div class="alert alert-danger">{{ team_form.errors }}</div>
-    {% endif%}
-
     <form action="" method="post" id="team-edit-form">{% csrf_token %}
         <div id="team-caption">{{ team_form.name.errors }}{{ team_form.name }}</div>
         <div id="team-members">
@@ -28,17 +24,15 @@
                value="{% if team_form.is_draft.value %}{% trans 'Create' %}{% else %}{% trans 'Save' %}{% endif%}" />
     </form>
 
-     <div class="modal" id="delete-team-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+     <div class="modal" id="delete-team-modal" role="dialog"  aria-hidden="true">
          <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">{% trans 'Are you sure you want to remove a team.' %}</h4>
+
               </div>
               <div class="modal-body">
-                <div id="login-placeholder" data-url="{% url 'account_login' %}" class="toLeft"></div>
-                <div id="register-placeholder" data-url="{% url 'account_signup' %}" class="toLeft"></div>
-                <div class="clear"></div>
+                <h4>{% trans 'Are you sure you want to remove a team?' %}</h4>
               </div>
               <div class="modal-footer">
                   <form action="{% url 'delete_team' team_id=team_id %}" method="post">{% csrf_token %}

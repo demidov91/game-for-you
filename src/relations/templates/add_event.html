@@ -1,0 +1,13 @@
+{% extends 'authenticated_base.html' %}
+
+{% block nav_calendar_active %}active{% endblock %}
+
+{% block content %}
+<form id="add-competition-form" action="{% url 'add_competition' %}">{% csrf_token %}
+    {{ competition_form }}
+</form>
+<form id="add-tournament-form" action="{% url 'add_tournament' %}">{% csrf_token %}
+    {{ tournament_form }}
+</form>
+
+{% endblock %}

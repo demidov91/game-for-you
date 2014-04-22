@@ -1,11 +1,22 @@
 {% extends 'authenticated_base.html' %}
 
+{% load i18n %}
+
 {% block content %}
     {% include 'parts/calendar.html' %}
+    <div class="one-day-view">
+        <div class="top"><button class="close">x</button></div>
+        <div class="day-events"></div>
+        <div id="add-event-wrapper"><a href="{% url 'add_event' %}" class="btn btn-success">{% trans 'Add event' %}</a></div>
+        <div id="craete-event-placeholder"></div>
+    </div>
 {% endblock %}
 
 {% block script %}
     {{ block.super }}
+    <script>
+        eventsForDay = "{% url 'get_calendar_events_for_day' %}?";
+    </script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/fullcalendar.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/index.js"></script>
 {% endblock %}

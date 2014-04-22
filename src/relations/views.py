@@ -34,7 +34,7 @@ class EditTeamView(View):
     def post(self, request, team):
         form = self.form_class(request.POST, instance=team)
         if not form.is_valid():
-            return render(request, self.template_name, {'team_form': form })
+            return render(request, self.template_name, {'team_form': form, 'team_id': team.id})
         form.save()
         return redirect('view_team', team.id)
 

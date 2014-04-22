@@ -5,10 +5,27 @@ from django.db import models
 
 from relations.models import Team, Contact
 
+
+class Tag(models.Model):
+    """
+    Event topic.
+    """
+    #Owner has as much rights as sharer, can add and remove sharers, remove owners from 'his' ownership tree.
+    # Last owner can delete a tag.
+    first_owners = models.ManyToManyField(get_user_model(), related_name='tags_owned')
+    #Sharer can add sharers and remove sharers from 'his' sharing tree. Public their and proposed events with this tag.
+    first_sharers = models.ManyToManyField(get_user_model(), related_name='tags_to_publish')
+    #People who are viewing events
+    subscribers = models.ManyToManyField(get_user_model(), related_name='subscribed_to', null=True, blank=True)
+    #Displayed name.
+    name = models.CharField(max_length=100)
+
+
 class Tournament(models.Model):
     name = models.CharField(max_length=100)
     first_datetime = models.DateTimeField()
     last_datetime = models.DateTimeField()
+    tags = models.ManyToManyField(Tag, related_name='tournaments')
 
 
 class PlayField(models.Model):
@@ -38,6 +55,7 @@ class Competition(models.Model):
     duration = models.IntegerField(null=True)
     team_limit = models.IntegerField(null=True)
     team_accept_strategy = models.PositiveSmallIntegerField(choices=STRATEGY_CHOICES)
+    tags = models.ManyToManyField(Tag, related_name='competitions')
 
 
 class Participation(models.Model):
@@ -73,18 +91,5 @@ class PlayerParticipation(Contact):
     participation = models.ForeignKey(Participation)
 
 
-class Tag(models.Model):
-    """
-    Event topic.
-    """
-    #Owner has as much rights as sharer, can add and remove sharers, remove owners from 'his' ownership tree.
-    # Last owner can delete a tag.
-    first_owners = models.ManyToManyField(get_user_model(), related_name='tags_owned')
-    #Sharer can add sharers and remove sharers from 'his' sharing tree. Public their and proposed events with this tag.
-    first_sharers = models.ManyToManyField(get_user_model(), related_name='tags_to_publish')
-    #People who are viewing events
-    subscribers = models.ManyToManyField(get_user_model(), related_name='subscribed_to', null=True, blank=True)
-    #Displayed name.
-    name = models.CharField(max_length=100)
 
 

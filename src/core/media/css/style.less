@@ -106,27 +106,37 @@ body{
 }
 
 #calendar-tags-caption{text-align: center;}
-#calendar-tags .tag{width: 100%; font-size: 1.8em; background-color: #5CB85C; border-radius: 0.1em; padding-left: 0.6em; font-family: Georgia, Times, "Times New Roman", serif;}
+#calendar-tags .tag{width: 100%; background-color: #5CB85C; border-radius: 0.1em; padding-left: 0.6em; font-family: Georgia, Times, "Times New Roman", serif;}
 #login-placeholder, #register-placeholder {width: 45%;}
 #login-placeholder {margin-left: 2%; margin-right: 8%;}
 #email-authentication>.modal-dialog{font-size: 0.6em;width: 55em;}
 #login-submit-wrapper{text-align: center; width: 50%;}
 #register-submit-wrapper{text-align: center; width: 50%;}
 #email-authentication tr{margin: 0.5em auto;}
-li.team-nav.dropdown{
-    &>div:first-child{width: 80%;}
+li.team-nav.with-button{
+    &>div:first-child{
+        width: 80%;
+        a{z-index: 1;position: relative;}
+    }
     .caret{
         border-left: 8px solid rgba(0, 0, 0, 0);
         border-right: 8px solid rgba(0, 0, 0, 0);
         border-top: 8px solid;
     }
+    a.dropdown-toggle{z-index: 2; position: relative;}
 }
 .nav-pills > li.team-nav{
     &.active > div:first-child > a{
         &, &:hover, &:focus{background-color: #428BCA;color: #FFFFFF;}
     }
-    &>div:first-child>a{display: block; padding: 10px 15px; position: relative;border-radius: 4px;text-decoration:none;}
+    &>div:first-child>a{
+        display: block; padding: 10px 15px; position: relative;border-radius: 4px;text-decoration:none;
+        &:hover, &:focus { background-color: #EEEEEE}
+    }
 }
+.one-day-view{padding: 1em 1%; display: none;}
+#craete-event-placeholder{display: none;}
+#add-event-wrapper{text-align: center;}
 
 /*
 ----------------------------------------team views-------------------------------

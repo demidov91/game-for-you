@@ -16,7 +16,7 @@ class UserProfile(models.Model):
     #Some greeting text to be displayed next to profile.
     status = models.TextField()
     #Team to display on authenticated_index page.
-    primary_team = models.ForeignKey('relations.Team', null=True, blank=True)
+    primary_team = models.ForeignKey('relations.Team', null=True, blank=True, on_delete=models.SET_NULL)
 
     def get_full_name(self):
         """
