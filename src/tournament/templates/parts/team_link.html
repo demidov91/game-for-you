@@ -13,9 +13,7 @@
     <span class="caret"></span>
     <ul class="dropdown-menu" role="menu">
     {% for team in user.userprofile.get_active_teams %}
-        <li><a href="{% url 'view_team' team_id=team.id %}">
-            {% if team.name %}{{ team.name }}{% else %}{% trans 'NoName (c)' %}{% endif %}
-        </a></li>
+        <li><a href="{% url 'view_team' team_id=team.id %}">{{ team.get_name_or_default }}</a></li>
     {% endfor %}
     </ul>
 </a></div>

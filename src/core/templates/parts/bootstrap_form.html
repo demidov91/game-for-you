@@ -1,0 +1,29 @@
+{{ form.non_field_errors }}
+
+{% for field in form %}
+    <div class="form-group">
+        <label id="{{ field.id_for_label }}" class="control-label col-sm-{{ label_size|default:4 }}">
+            {{ field.label }}
+            {% if field.field.required %}<span>*</span>{% endif %}
+        </label>
+        <div class="col-sm-{{ inputs_size|default:8 }}">
+        {% if field.html_name in form.checkbox_fields %}<div class="checkbox">{% endif %}
+            {% if field.errors %}
+            <ul class="errorlist">
+                {% for error in field.errors %}
+                <div class="alert alert-error">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {{ field }}
+        {% if field.html_name in form.checkbox_fields %}</div>{% endif %}
+        </div>
+    </div>
+{% endfor %}
+<div class="form-group">
+    <div class="col-sm-offset-{{ label_size|default:4 }} col-sm-{{ inputs_size|default:8 }}">
+      <button type="submit" class="btn btn-success">{{ submit_text }}</button>
+    </div>
+  </div>

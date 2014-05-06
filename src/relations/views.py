@@ -58,3 +58,4 @@ def delete_team(request, team):
 
 def view_contacts(request):
     return render(request, 'contacts.html', {'contacts': request.user.known_people.all()})
+

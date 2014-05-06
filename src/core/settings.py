@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import logging
 from django.utils.translation import ugettext_lazy as _
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -104,9 +105,11 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
-USE_TZ = True
+USE_TZ = False
+
+DATETIME_FORMAT = 'j F o H:i'
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
@@ -116,6 +119,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 SITE_ID = 1
+LOGIN_URL = '/?force-login'
 
 
 
@@ -129,6 +133,39 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_ON_GET = False
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION=True
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'common_debug': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': 'logs/debug.log',
+            'when': 'W0',
+        },
+        'common_warning': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': 'logs/warn.log',
+            'when': 'W0',
+        },
+        'common_info': {
+            'level': 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': 'logs/info.log',
+            'when': 'W0',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['common_debug', 'common_info', 'common_warning'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
+
+
 
 try:    
     from core.local_settings import *

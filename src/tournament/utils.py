@@ -1,6 +1,9 @@
-from django.db.models import Q
+from datetime import timedelta
 
-from tournament.models import Tag, Tournament, Competition
+from django.db.models import Q
+from django.core.urlresolvers import reverse
+
+from tournament.models import Tag, Tournament, Competition, Participation
 
 
 def get_default_tag_ids(request):
@@ -20,7 +23,7 @@ def _get_tags_for_none_authenticated(request):
     returns: collection of *Tag*
     """
     tags = request.session.get('tags')
-    if not tags:
+    if tags is None:
         tags = get_default_tag_ids(request)
         request.session['tags'] = tags
     return Tag.objects.filter(id__in=tags)
@@ -45,21 +48,42 @@ def get_calendar_events_by_tags(tags, start, end):
 
 
 def get_events_by_tags_and_day(tags, day):
+    next_day = day + timedelta(days=1)
     return {
-        'tournaments': Tournament.objects.filter(Q(tags=tags) & Q(first_datetime__lte=day) | Q(last_datetime__gte=day)),
-        'competitions':  Competition.objects.filter(tags=tags, start_datetime=day),
+        'tournaments': Tournament.objects.filter(Q(tags=tags) &
+                                                 Q(first_datetime__lte=day) | Q(last_datetime__gte=next_day)),
+        'competitions':  Competition.objects.filter(tags=tags,
+                                                    start_datetime__gte=day,
+                                                    start_datetime__lt=next_day),
     }
 
 def tournaments_to_calendar_events(tournaments):
     return tuple({
         'title': t.name,
-        'start': t.first_datetime,
-        'end': t.last_datetime,
+        'start': t.first_datetime.timestamp(),
+        'end': t.last_datetime.timestamp(),
     } for t in tournaments)
 
 def competitions_to_calendar_events(competitions):
     return tuple({
-        'title': c.name,
-        'start': c.start_datetime,
+        'title': c.get_name(),
+        'start': c.start_datetime.timestamp(),
+        'url': reverse('view_competition', kwargs={'competition_id': c.id}),
     } for c in competitions)
+
+
+def get_default_participation_state(competition):
+    """
+    Returns value for *Team.state* by *Competition.team_accept_strategy*.
+    **competition**: *Competition* instance.
+    """
+    if competition.team_accept_strategy == Competition.OPEN_STRATEGY:
+        return Participation.APPROVED
+    if competition.team_accept_strategy == Competition.PRIVATE_STRATEGY:
+        return Participation.CLAIM
+    return Participation.CLAIM
+
+
+
+
 

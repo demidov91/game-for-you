@@ -37,7 +37,7 @@
               <div class="modal-footer">
                   <form action="{% url 'delete_team' team_id=team_id %}" method="post">{% csrf_token %}
                       <button class="btn btn-default">{% trans 'Cancel' %}</button>
-                      <input type="submit" class="btn btn-danger" value="{% trans 'Delete Team' %}"/>
+                      <input type="submit" class="btn btn-danger" value="{% trans 'Delete team' %}"/>
                   </form>
               </div>
             </div>

@@ -1,0 +1,8 @@
+{% load i18n %}
+
+<h3 id="calendar-tags-caption">{% trans 'Tags to display:' %}</h3>
+<div id="calendar-tags">
+    {% for tag in tags %}
+    <div class="tag">{{ tag.name }}</div>
+    {% endfor %}
+</div>

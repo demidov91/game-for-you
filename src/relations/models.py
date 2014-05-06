@@ -70,10 +70,15 @@ class UserProfileRecord(models.Model):
 
 
 class Team(models.Model):
+    DEFAULT_NAME = _('NoName (c)')
+
     name = models.CharField(max_length=255)
     members = models.ManyToManyField(UserProfile, related_name='teams')
     owner = models.ForeignKey(ShareTree)
     is_draft = models.BooleanField(default=True)
+
+    def get_name_or_default(self):
+        return self.name or Team.DEFAULT_NAME
 
 
 class Contact(models.Model):

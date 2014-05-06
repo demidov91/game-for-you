@@ -3,10 +3,23 @@
 ---------------------basic-------------
 **/
 
+html{height: 100%;}
+
+
 body{
     font-family: verdana,tahoma,arial;
-    font-size: 24px;   
-/**    background-color: #E6F0F6; **/
+    font-size: 22px;   
+    background: url("/img/body_bg.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    min-height: 98%;
+}
+
+html{
+    h1 {font-size: 1.8em;}
+    h2 {font-size: 1.5em;}
+    h3 {font-size: 1.2em;}
+    h4 {font-size: 0.9em;}
+    h5 {font-size: 0.7em;}
+    h6 {font-size: 0.6em;}
 }
 
 .toLeft{
@@ -17,7 +30,7 @@ body{
     clear: both;
 }
 
-#commercial-placeholder{width: 100%;height: 60px;}
+#commercial-placeholder, #footer{width: 100%;height: 60px;}
 
 @auth_side: 66px;
 #all-auth-links{
@@ -28,17 +41,24 @@ body{
     }
 }
 
-#content{width: 74%;padding: 1em 0.5%; margin: 0 0.5%;background-color: white; border-radius: 0.2em;}
+#content{width: 72.5%;padding: 1em 0.5%; margin: 0 0.5%; border-radius: 0.2em;}
 
-#left-side, #right-side{
-    width: 12.5%;
-}
+#left-side{width: 14%;}
+
+#right-side{width: 12.5%;}
 
 #all-wrapper{
-    margin: 0 auto;
+    margin: 0.5% auto;
     width: 100%;
-    min-width: 1200px;
+    min-width: 1100px;
+    max-width: 1600px;
     padding: 0 2%;
+    border-color: #D5D6D8;
+    border-width: 1px 1px;
+    background-color: white;
+    border-style: solid;    
+    height: 100%; 
+    border-radius: 0.25em;
 }
 
 
@@ -89,20 +109,22 @@ body{
     padding:0 1%;
     &>div.fc {
         float: left;
-        width: 32%;
+        width: 49%;
         margin-right: 2%;
         &.calendar-after{ margin-right: 0;}
         
     }
     .fc-header-title{text-align: center;}
-    .fc table{font-size: 0.6em;}
+    .fc table{font-size: 0.8em;}
     
-    .calendar-after .fc-header-right, .calendar-before .fc-header-left{
+    .calendar-after .fc-header-right, .calendar-current .fc-header-left{
         vertical-align: center;
         text-align: center;
         font-size: 92px;
         line-height: 25%;
     }
+    .observing-date {background-color: grey;}
+    .fc-event:hover {color: white;}
 }
 
 #calendar-tags-caption{text-align: center;}
@@ -147,6 +169,38 @@ li.team-nav.with-button{
 #team-settings-link{text-align: center;}
 #right-side-content #team-members{ margin-bottom: 1em;}
 #delete-team-button-wrapper{text-align :center; margin-bottom: 1em;}
+.one-day-view h3{text-align: center;}
+/**
+---------------------------------------event view-------------------------------
+*/
+#add-event-wrapper{
+    .change-view{ width: 20%;}
+    .view-name{width: 80%;}
+    .header-wrapper h4{ font-size: 1.5em; margin-bottom: 1em;}
+    form{font-size: 0.8em;}
+}
+#add-tournament-wrapper{display: none;}
+.checkbox li{list-style: none;}
+/**
+-------------------------------------competition-------------------------------
+*/
+#competition-info{
+    width: 100%;
+    margin-bottom: 2em;
+    tr td h2 {text-align: center;}
+    td {
+        width: 50%;
+        padding: 0.1em 1%; 
+        &:first-child {text-align: right; }
+        &:last-child {text-align: left;}
+    }
+}
+#competition-participants {
+    .approved-participants, #claimants-and-declined{
+         width: 50%;
+         .team>form {display: inline;}
+    }
+}
 
 
 

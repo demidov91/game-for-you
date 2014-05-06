@@ -1,0 +1,12 @@
+{% extends 'authenticated_base.html' %}
+
+{% block nav_calendar_active %}active{% endblock %}
+
+{% block content %}
+    {% include 'parts/competition_content.html' %}
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}js/competition.js" type="text/javascript"></script>
+{% endblock %}

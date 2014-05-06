@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-03 21:48+0000\n"
+"POT-Creation-Date: 2014-04-26 08:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,50 +19,196 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
+#: core/settings.py:139
+msgid "Russian"
+msgstr "Русский"
+
+#: core/settings.py:140
+msgid "Belarussian"
+msgstr "Беларуская"
+
+#: core/templates/authenticated_base.html:9
+msgid "Calendar"
+msgstr "Календарь"
+
+#: core/templates/authenticated_base.html:16
+msgid "People"
+msgstr "Люди"
+
+#: core/templates/authenticated_base.html:17
+msgid "Settings"
+msgstr "Настройки"
+
+#: core/templates/authenticated_base.html:26
+msgid "Log out"
+msgstr "Выйти"
+
 #: core/templates/base.html:6
 msgid "What? Where? When? organizer"
-msgstr ""
+msgstr "Календарь Что? Где? Когда?"
 
-#: relations/models.py:81
+#: custom_registration/templates/account/login.html:3
+#: tournament/templates/unauthenticated_index.html:45
+msgid "Sign In"
+msgstr "Войти"
+
+#: custom_registration/templates/account/login.html:13
+msgid "Forgot Password?"
+msgstr "Забыли пароль?"
+
+#: custom_registration/templates/account/signup.html:3
+#: tournament/templates/unauthenticated_index.html:46
+msgid "Sign Up"
+msgstr "Регестрация"
+
+#: relations/forms.py:12
+msgid "Enter team name"
+msgstr "Введите название команды"
+
+#: relations/models.py:116
 msgid "Is public record"
-msgstr ""
+msgstr "Открытая запись"
 
-#: relations/models.py:82
+#: relations/models.py:117
 msgid "Record for team"
-msgstr ""
+msgstr "Запись для команды"
 
-#: relations/models.py:83
+#: relations/models.py:118
 msgid "Is private record"
-msgstr ""
+msgstr "Закрытая запись"
 
-#: tournament/models.py:30
+#: relations/templates/edit_team.html:24
+msgid "Create"
+msgstr "Создать"
+
+#: relations/templates/edit_team.html:24
+msgid "Save"
+msgstr "Сохранить"
+
+#: relations/templates/edit_team.html:35
+msgid "Are you sure you want to remove a team?"
+msgstr "Вы уверены, что хотите удалить запись о команде?"
+
+#: relations/templates/edit_team.html:39
+msgid "Cancel"
+msgstr "Отменить"
+
+#: relations/templates/edit_team.html:40 relations/templates/edit_team.html:61
+msgid "Delete team"
+msgstr "Удалить команду"
+
+#: relations/templates/view_team.html:18
+msgid "Edit"
+msgstr "Править"
+
+#: tournament/models.py:50
 msgid "open"
-msgstr ""
+msgstr "открытый"
 
-#: tournament/models.py:31
+#: tournament/models.py:51
 msgid "private"
-msgstr ""
+msgstr "закрытый"
 
 #: tournament/models.py:54
-msgid "invitation"
-msgstr ""
+msgid "tournament"
+msgstr "турнир"
 
 #: tournament/models.py:55
+msgid "place to play"
+msgstr "место игры"
+
+#: tournament/models.py:56
+msgid "start date"
+msgstr "начало"
+
+#: tournament/models.py:58
+msgid "competition duration (in minutes)"
+msgstr "продолжительность соревнования (минуты)"
+
+#: tournament/models.py:59
+msgid "max team count"
+msgstr "максимальное количесвто команд"
+
+#: tournament/models.py:60
+msgid "team accept strategy"
+msgstr "Приём заявок"
+
+#: tournament/models.py:75
+msgid "invitation"
+msgstr "приглашение"
+
+#: tournament/models.py:76
 msgid "claim"
 msgstr ""
 
-#: tournament/models.py:56
+#: tournament/models.py:77
 msgid "approved"
 msgstr ""
 
-#: tournament/models.py:57
+#: tournament/models.py:78
 msgid "declined"
 msgstr ""
 
-#: tournament/models.py:58
+#: tournament/models.py:79
 msgid "registered"
-msgstr ""
+msgstr "зарегистрирована"
 
-#: tournament/templates/unauthenticated_index.html:34
+#: tournament/templates/add_event.html:11
+msgid "Add competition"
+msgstr "Добавить игру"
+
+#: tournament/templates/add_event.html:12
+msgid "add tournament"
+msgstr "Добавить турнир"
+
+#: tournament/templates/add_event.html:20
+msgid "add competition"
+msgstr "добавить игру"
+
+#: tournament/templates/add_event.html:20
+msgid "Add tournament"
+msgstr "Добавить турнир"
+
+#: tournament/templates/index.html:10
+msgid "Add event"
+msgstr "Добавить событие"
+
+#: tournament/templates/unauthenticated_index.html:37
+msgid "Log in or register."
+msgstr "Войдите или зарегистрируйтесь"
+
+#: tournament/templates/unauthenticated_index.html:56
 msgid "Tags to display:"
 msgstr "Активные теги:"
+
+#: tournament/templates/parts/events_for_day.html:5
+msgid "Competitions:"
+msgstr "Игры"
+
+#: tournament/templates/parts/events_for_day.html:8
+msgid "start at"
+msgstr "начало в"
+
+#: tournament/templates/parts/events_for_day.html:16
+msgid "Tournaments:"
+msgstr "Турниры:"
+
+#: tournament/templates/parts/events_for_day.html:21
+msgid "First day to play"
+msgstr "Разрешено играть с"
+
+#: tournament/templates/parts/events_for_day.html:24
+msgid "Last day to play"
+msgstr "Разрешено играть по"
+
+#: tournament/templates/parts/events_for_day.html:33
+msgid "No events for this day."
+msgstr "Нет событий на сегодня."
+
+#: tournament/templates/parts/team_link.html:8
+msgid "Add team"
+msgstr "Добавить команду"
+
+#: tournament/templates/parts/team_link.html:17
+msgid "NoName (c)"
+msgstr "Безымянные (с)"

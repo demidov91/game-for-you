@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "unauthenticated_base.html" %}
 
 {% load i18n %}
 
@@ -15,8 +15,6 @@
 {% block script %}
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/fullcalendar.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery.form.min.js"></script>
-    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/unauthenticated_index.js"></script>
 {% endblock %}
 
@@ -27,41 +25,9 @@
 {% endblock %}
 
 {% block content %}
-{% include 'parts/calendar.html' %}
-
-<div class="modal" id="email-authentication">
-    <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">{% trans 'Log in or register.' %}</h4>
-      </div>
-      <div class="modal-body">
-        <div id="login-placeholder" data-url="{% url 'account_login' %}" class="toLeft"></div>
-        <div id="register-placeholder" data-url="{% url 'account_signup' %}" class="toLeft"></div>
-        <div class="clear"></div>
-      </div>
-      <div class="modal-footer">
-          <div id="login-submit-wrapper" class="toLeft"><input type="submit" class="btn btn-primary" value="{% trans 'Sign In' %}" form="login-form" /></div>
-          <div id="register-submit-wrapper" class="toLeft"><input type="submit" class="btn btn-success" value="{% trans 'Sign Up' %}" form="registration-form" /></div>
-          <div class="clear"></div>
-      </div>
-    </div>
-  </div>
-
-
-
-</div>
-
-</div>
+    {{ block.super }}
+    {% include 'parts/calendar.html' %}
 {% endblock %}
 
-{% block right_side_content %}
-<h3 id="calendar-tags-caption">{% trans 'Tags to display:' %}</h3>
-<div id="calendar-tags">
-    {% for tag in tags %}
-    <div class="tag">{{ tag.name }}</div>
-    {% endfor %}
-</div>
-{% endblock %}
+{% block right_side_content %}{% include 'parts/tags_to_display.html' %}{% endblock %}
 

@@ -1,11 +1,11 @@
 {% load i18n %}
 
-{% if competiotions %}
+{% if competitions %}
 <div>
     <h3>{% trans 'Competitions:' %}</h3>
     {% for competition in competitions %}
     <div>
-        <h6>{{ competition.name }}</h6> {% trans 'start at' %} <span>{{ competition.start_datetime }}</span>
+        <h4>{{ competition.name }}</h4> {% trans 'Start' %}: <span>{{ competition.start_datetime }}</span>
     </div>
     {% endfor%}
 </div>

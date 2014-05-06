@@ -1,18 +1,27 @@
 import json
 from datetime import datetime
 
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.utils.translation import ugettext as _
+from django.http import HttpResponse, HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 
-from tournament.utils import get_tags, get_calendar_events_by_tags, get_events_by_tags_and_day
-from tournament.forms import TournamentForm, CompetitionForm
+from tournament.utils import get_tags, get_calendar_events_by_tags, get_events_by_tags_and_day, get_default_participation_state
+from tournament.forms import TournamentForm, AddCompetitionForm
+from tournament.models import Competition, Participation
+from relations.models import Team
+from core.utils import is_in_share_tree
 
 
 def _unauthenticated_view(request):
     tags = get_tags(request)
-    return render(request, 'unauthenticated_index.html', {'tags': tags})
+    return render(request, 'unauthenticated_index.html', {
+        'tags': tags,
+        'show_login': 'force-login' in request.GET,
+        'redirect_after_login': request.GET.get('next'),
+        })
 
 def _authenticated_index(request):
     return render(request, 'index.html', {'tags': request.user.subscribed_to.all()})
@@ -45,8 +54,8 @@ def calendar_events_for_day_ajax(request):
 @login_required
 def add_event(request):
     return render(request, 'add_event.html', {
-        'tournament_form': TournamentForm(),
-        'competition_form': CompetitionForm(),
+        'tournament_form': TournamentForm(request.GET),
+        'competition_form': AddCompetitionForm(request.GET),
         })
 
 
@@ -57,20 +66,93 @@ def add_tournament(request):
     if form.is_valid():
         form.save()
         return redirect('index')
-    return render(request, 'add_event',  {
+    return render(request, 'add_event.html',  {
         'tournament_form': form,
-        'competition_form': CompetitionForm(),
+        'competition_form': AddCompetitionForm(),
         })
 
 
 @require_POST
 @login_required
 def add_competition(request):
-    form = CompetitionForm(request.POST)
+    form = AddCompetitionForm(request.POST, owner=request.user)
     if form.is_valid():
         form.save()
         return redirect('index')
-    return render(request, 'add_event',  {
+    return render(request, 'add_event.html',  {
         'tournament_form': TournamentForm(),
         'competition_form': form,
         })
+
+
+def view_competition(request, competition_id):
+    competition = get_object_or_404(Competition.objects, id=competition_id)
+    approved_participants = Participation.objects.filter(
+        competition=competition,
+        state=Participation.APPROVED)
+    if request.user.is_authenticated():
+        teams_to_add = request.user.userprofile.teams.filter(is_draft=False).exclude(id__in=Participation.objects.filter(
+            competition=competition_id).values_list('id', flat=True))
+        is_competition_owner = is_in_share_tree(request.user, competition.owners)
+    else:
+        teams_to_add = None
+        is_competition_owner = False
+    template_name = 'competition.html' if request.user.is_authenticated() else 'unauthenticated_competition.html'
+    context = {
+        'competition': competition,
+        'approved_participants': approved_participants,
+        'is_competition_owner': is_competition_owner,
+        'claimants': Team.objects.filter(id__in=Participation.objects.filter(
+            competition=competition,
+            state=Participation.CLAIM).values_list('id', flat=True)),
+        'teams_to_add': teams_to_add,
+    }
+    if request.user.is_authenticated():
+       if is_competition_owner:
+           context.update({
+               'declined_claimants': Participation.objects.filter(competition=competition, state=Participation.DECLINED),
+            })
+    else:
+        context.update({
+            'redirect_after_login': reverse('view_competition', kwargs={'competition_id': competition_id}),
+        })
+    return render(request, template_name, context)
+
+
+@require_POST
+@login_required
+def add_participation_request(request, competition_id):
+    """
+    AJAX view. Returns 403 or json with key state set to *Participation.state* value.
+    """
+    try:
+        team = request.user.userprofile.teams.get(id=request.POST.get('team_id'))
+        competition = Competition.objects.get(id=competition_id)
+    except (Team.DoesNotExist, Competition.DoesNotExist):
+        return HttpResponseForbidden(_('Wrong request data.'))
+    participation = Participation.objects.create(
+        team=team,
+        competition=competition,
+        creator=request.user,
+        state=get_default_participation_state(competition))
+    return HttpResponse(json.dumps({'state': participation.state }), content_type='application/json')
+
+@require_POST
+@login_required
+def undo_participation_request(request, participation_id):
+    participation = get_object_or_404(Participation.objects, id=participation_id)
+    if not request.user.userprofile.teams.filter(id=participation.team.id):
+        return HttpResponseForbidden()
+    participation.state = Participation.DECLINED
+    participation.save()
+    return HttpResponse()
+
+@require_POST
+@login_required
+def accept_participation_request(request, participation_id):
+    participation = get_object_or_404(Participation.objects, id=participation_id)
+    if not is_in_share_tree(request.user, participation.competition.owners):
+        return HttpResponseForbidden()
+    participation.state = Participation.APPROVED
+    participation.save()
+    return HttpResponse()

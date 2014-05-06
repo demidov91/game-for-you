@@ -3,15 +3,25 @@ function initialize_default_calendar(extraOptions){
             events: getEventsUrl,            
             monthNames: monthNames,
             firstDay: 1,            
-            dayNamesShort: dayNamesShort                      
+            dayNamesShort: dayNamesShort,
+            dayClick: function(date){
+                var day = date.getDate();
+                var month = parseInt(date.getMonth()) + 1;
+                var year = parseInt(date.getYear()) + 1900;
+                $('.one-day-view').show();
+                $('.observing-date').removeClass('observing-date');
+                $(this).addClass('observing-date');
+                $('#timestamp-to-create-event').val(date.getTime() / 1000 - 60 * date.getTimezoneOffset());
+                $.ajax({
+                    url: eventsForDay + 'day='+ day + '&month=' + month + '&year=' + year,
+                    success: function(data){
+                        $('.day-events').html(data);
+                    }
+                });
+            }                 
         }
         $.extend(calendarOptions, extraOptions);
         
-        var beforeOptions = $.extend({}, calendarOptions);
-        $.extend(beforeOptions, {
-            titleFormat: 'MMMM',
-            header: {left: '', center: '', right: 'title'}
-        });
         var currentOptions = $.extend({}, calendarOptions);
         $.extend(currentOptions, {
             titleFormat: 'MMMM yyyy',
@@ -19,21 +29,22 @@ function initialize_default_calendar(extraOptions){
         });
         var afterOptions = $.extend({}, calendarOptions);
         $.extend(afterOptions, {
-            titleFormat: 'MMMM',
-            header: {left: 'title', center: '', right: ''}
-        });
-
-        $('.calendar-before').fullCalendar(beforeOptions);
-        $('.calendar-before').fullCalendar('prev');
-        $('.calendar-before .fc-header-left').text('‹').addClass('pointer').click(function(){
-            $('#calendars>.fc').fullCalendar('prev');
+            titleFormat: 'MMMM yyyy',
+            header: {left: '', center: 'title', right: ''}
         });
 
         $('.calendar-current').fullCalendar(currentOptions);
+        $('.calendar-current .fc-header-left').text('‹').addClass('pointer').click(function(){
+            $('#calendars>.fc').fullCalendar('prev');
+        });
         $('.calendar-after').fullCalendar(afterOptions);
         $('.calendar-after').fullCalendar('next');
         $('.calendar-after .fc-header-right').text('›').addClass('pointer').click(function(){
             $('#calendars>.fc').fullCalendar('next');
+        });
+        $('.one-day-view .close').click(function(){
+            $('.one-day-view').hide();
+            $('.observing-date').removeClass('observing-date');
         });
 }
 
