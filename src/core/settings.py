@@ -158,7 +158,7 @@ LOGGING = {
     },
     'loggers': {
         '': {
-            'handlers': ['common_debug', 'common_info', 'common_warning'],
+            'handlers': ['common_warning', 'common_info', 'common_debug'],
             'level': 'DEBUG',
             'propagate': False,
         },

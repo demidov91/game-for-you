@@ -2,6 +2,8 @@ from django.utils.translation import ugettext as _
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from relations.models import Team, Contact
 from core.models import ShareTree
@@ -23,6 +25,11 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+@receiver(post_save, sender=get_user_model())
+def add_default_tag(sender, instance, created, **kwargs):
+    if created:
+        instance.subscribed_to.add(Tag.objects.get(id=1))
 
 
 class Tournament(models.Model):
