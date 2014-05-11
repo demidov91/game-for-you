@@ -20,7 +20,7 @@
         {% for participant in approved_participants %}
             <div class="team">
                 <span class="team-name">{{ participant.team.name }}</span>
-                {% if is_competition_owner %}
+                {% if is_competition_owner or participant.team.id in user_teams_id %}
                 <form method="post" action="{% url 'undo_participation_request' participation_id=participant.id %}">{% csrf_token %}
                     <input type="submit" class="btn btn-danger" value="{% trans 'Decline' %}" />
                 </form>

@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 from tournament.utils import get_tags, get_calendar_events_by_tags, get_events_by_tags_and_day, get_default_participation_state
 from tournament.forms import TournamentForm, AddCompetitionForm
@@ -90,28 +91,28 @@ def view_competition(request, competition_id):
     approved_participants = Participation.objects.filter(
         competition=competition,
         state=Participation.APPROVED)
-    if request.user.is_authenticated():
-        teams_to_add = request.user.userprofile.teams.filter(is_draft=False).exclude(id__in=Participation.objects.filter(
-            competition=competition_id).values_list('id', flat=True))
-        is_competition_owner = is_in_share_tree(request.user, competition.owners)
-    else:
-        teams_to_add = None
-        is_competition_owner = False
     template_name = 'competition.html' if request.user.is_authenticated() else 'unauthenticated_competition.html'
     context = {
         'competition': competition,
         'approved_participants': approved_participants,
-        'is_competition_owner': is_competition_owner,
         'claimants': Team.objects.filter(id__in=Participation.objects.filter(
             competition=competition,
             state=Participation.CLAIM).values_list('id', flat=True)),
-        'teams_to_add': teams_to_add,
+        'user_teams_id': [],
     }
     if request.user.is_authenticated():
-       if is_competition_owner:
-           context.update({
+        is_competition_owner = is_in_share_tree(request.user, competition.owners)
+        if is_competition_owner:
+            context.update({
                'declined_claimants': Participation.objects.filter(competition=competition, state=Participation.DECLINED),
             })
+        context['user_teams_id'] = request.user.userprofile.teams.values_list('id', flat=True)
+        context.update({
+            'teams_to_add': request.user.userprofile.teams.filter(is_draft=False).exclude(
+                id__in=Participation.objects.filter(
+                    Q(competition=competition_id)).values_list('team_id', flat=True)),
+            'is_competition_owner': is_competition_owner,
+        })
     else:
         context.update({
             'redirect_after_login': reverse('view_competition', kwargs={'competition_id': competition_id}),
@@ -141,11 +142,14 @@ def add_participation_request(request, competition_id):
 @login_required
 def undo_participation_request(request, participation_id):
     participation = get_object_or_404(Participation.objects, id=participation_id)
-    if not request.user.userprofile.teams.filter(id=participation.team.id):
-        return HttpResponseForbidden()
-    participation.state = Participation.DECLINED
-    participation.save()
-    return HttpResponse()
+    if request.user.userprofile.teams.filter(id=participation.team.id).exists():
+        participation.delete()
+        return HttpResponse()
+    if is_in_share_tree(request.user, participation.competition.owners):
+        participation.state = Participation.DECLINED
+        participation.save()
+        return HttpResponse()
+    return HttpResponseForbidden()
 
 @require_POST
 @login_required
