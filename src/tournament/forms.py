@@ -3,6 +3,7 @@ from django.utils.translation import ugettext as _
 
 from tournament.models import Tournament, Competition, PlayField, Tag
 from core.forms import BootstrapDateTimeField
+from core.models import ShareTree
 
 
 
@@ -35,13 +36,22 @@ class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
         widgets = {
-            'tournament': forms.Select(attrs={'class': 'form-control'}),
             'first_datetime': BootstrapDateTimeField(attrs={'class': 'form-control'}),
             'last_datetime': BootstrapDateTimeField(attrs={'class': 'form-control'}),
             'tags': forms.CheckboxSelectMultiple(),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+        fields = ('name', 'first_datetime', 'last_datetime', 'tags')
+
     checkbox_fields = ('tags',)
+
+    def save(self, owner, *args, commit=True, **kwargs):
+        """
+        owner: auth.User instance. User, who created this tournament.
+        """
+        if commit:
+            self.instance.owner = ShareTree.objects.create(shared_to=owner)
+        super(TournamentForm, self).save(*args, commit=commit, **kwargs)
 
 
 class CompetitionForm(forms.ModelForm):

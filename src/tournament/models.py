@@ -37,6 +37,7 @@ class Tournament(models.Model):
     first_datetime = models.DateTimeField()
     last_datetime = models.DateTimeField()
     tags = models.ManyToManyField(Tag, related_name='tournaments')
+    owner = models.ForeignKey(ShareTree)
 
     def __str__(self):
         return self.name or _('No-name tournament')

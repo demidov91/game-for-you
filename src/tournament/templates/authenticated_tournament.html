@@ -1,8 +1,18 @@
 {% extends 'authenticated_base.html' %}
 
+{% load i18n %}
+
 {% block nav_calendar_active %}active{% endblock %}
 
 {% block content %}
     {{ block.super }}
     {% include 'parts/tournament_content.html' %}
+{% endblock %}
+
+{% block right_side_content %}
+    {% if is_owner %}
+    <form method="post" action="{% url 'delete_tournament' tournament_id=tournament.id %}">{% csrf_token %}
+        <input type="submit" class="btn btn-danger" value="{% trans 'Delete' %}" />
+    </form>
+    {% endif %}
 {% endblock %}

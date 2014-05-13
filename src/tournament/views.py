@@ -13,6 +13,7 @@ from django.db.models import Q
 from tournament.utils import get_tags, get_calendar_events_by_tags, get_events_by_tags_and_day, get_default_participation_state
 from tournament.forms import TournamentForm, AddCompetitionForm
 from tournament.models import Competition, Participation, Tournament
+from tournament.decorators import tournament_owner_only
 from relations.models import Team
 from core.utils import is_in_share_tree
 
@@ -72,9 +73,8 @@ def add_event(request):
 def add_tournament(request):
     form = TournamentForm(request.POST)
     if form.is_valid():
-        form.save()
+        form.save(request.user)
         return redirect('index')
-    print(form.is_valid())
     return render(request, 'add_event.html',  {
         'tournament_form': form,
         'competition_form': AddCompetitionForm(),
@@ -133,6 +133,7 @@ def view_tournament(request, tournament_id):
     template_name = 'authenticated_tournament.html' if request.user.is_authenticated() else 'unauthenticated_tournament.html'
     return render(request, template_name, {
         'tournament': tournament,
+        'is_owner': is_in_share_tree(request.user, tournament.owner),
     })
 
 
@@ -176,3 +177,11 @@ def accept_participation_request(request, participation_id):
     participation.state = Participation.APPROVED
     participation.save()
     return HttpResponse()
+
+@require_POST
+@tournament_owner_only(set_key='tournament')
+def delete_tournament(request, tournament):
+    tournament.delete()
+    return redirect('index')
+
+
