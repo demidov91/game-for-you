@@ -5,11 +5,11 @@
 {% block nav_calendar_active %}active{% endblock %}
 
 {% block content %}
-<div id="add-event-wrapper">
+<div id="add-event-wrapper" class="{% if show_tournament %}tournament{% else %}competition{% endif %}">
 <div id="add-competition-wrapper">
     <div class="header-wrapper">
         <div class="toLeft view-name"><h4>{% trans 'Add competition' %}</h4></div>
-        <div class="toLeft change-view">{% trans 'add tournament' %} <span class="glyphicon glyphicon-arrow-right"></span></div><div class="clear"></div>
+        <div class="toLeft change-view pointer">{% trans 'add tournament' %} <span class="glyphicon glyphicon-arrow-right"></span></div><div class="clear"></div>
     </div>
     <form action="{% url 'add_competition' %}" role="form" class="form-horizontal" method="POST">{% csrf_token %}
     {% trans 'Create' as submit_text %}
@@ -21,11 +21,19 @@
 </div>
 <div id="add-tournament-wrapper">
     <div class="header-wrapper">
-        <div class="toLeft change-view"><span class="glyphicon glyphicon-arrow-left"></span> {% trans 'add competition' %}</div><div class="toLeft view-name"><h4>{% trans 'Add tournament' %}</h4></div>
+        <div class="toLeft change-view pointer"><span class="glyphicon glyphicon-arrow-left"></span> {% trans 'add competition' %}</div><div class="toLeft view-name"><h4>{% trans 'Add tournament' %}</h4></div>
         <div class="clear"></div></div>
-    <form action="{% url 'add_tournament' %}">{% csrf_token %}
-    {{ tournament_form.as_p }}
+    <form action="{% url 'add_tournament' %}" role="form" class="form-horizontal" method="POST">{% csrf_token %}
+    {% trans 'Create' as submit_text %}
+    {% with tournament_form as form %}
+        {% include 'parts/bootstrap_form.html' %}
+    {% endwith %}
     </form>
 </div>
 </div>
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}js/add_event.js" type="text/javascript"></script>
 {% endblock %}

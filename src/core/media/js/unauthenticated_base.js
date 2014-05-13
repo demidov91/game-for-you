@@ -1,5 +1,5 @@
 $(function(){
-    $('#email-authentication.show').modal();
+    $('#email-authentication.force-show').modal();
     $('#email-authentication').on('submit', 'form', function(event){
         event.preventDefault();
         var jThis = $(this);

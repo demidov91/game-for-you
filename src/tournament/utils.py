@@ -50,8 +50,7 @@ def get_calendar_events_by_tags(tags, start, end):
 def get_events_by_tags_and_day(tags, day):
     next_day = day + timedelta(days=1)
     return {
-        'tournaments': Tournament.objects.filter(Q(tags=tags) &
-                                                 Q(first_datetime__lte=day) | Q(last_datetime__gte=next_day)),
+        'tournaments': Tournament.objects.filter(tags=tags, first_datetime__lte=day, last_datetime__gte=day),
         'competitions':  Competition.objects.filter(tags=tags,
                                                     start_datetime__gte=day,
                                                     start_datetime__lt=next_day),
@@ -62,6 +61,7 @@ def tournaments_to_calendar_events(tournaments):
         'title': t.name,
         'start': t.first_datetime.timestamp(),
         'end': t.last_datetime.timestamp(),
+        'url': reverse('view_tournament', kwargs={'tournament_id': t.id, })
     } for t in tournaments)
 
 def competitions_to_calendar_events(competitions):

@@ -32,4 +32,14 @@
 {% block script %}
    {{ block.super }}
    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+   <script src="{{ STATIC_URL }}js/lib/moment.js" type="text/javascript"></script>
+   <script src="{{ STATIC_URL }}js/lib/bootstrap-datetimepicker.js" type="text/javascript"></script>
+   <script src="{{ STATIC_URL }}js/lib/bootstrap-datetimepicker.by.js" type="text/javascript"></script>
+   <script src="{{ STATIC_URL }}js/lib/bootstrap-datetimepicker.ru.js" type="text/javascript"></script>
+   <script src="{{ STATIC_URL }}js/authenticated_base.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block style %}
+    {{ block.super }}
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-datetimepicker.css" >
 {% endblock %}

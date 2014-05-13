@@ -5,7 +5,10 @@
     <h3>{% trans 'Competitions:' %}</h3>
     {% for competition in competitions %}
     <div>
-        <h4>{{ competition.name }}</h4> {% trans 'Start' %}: <span>{{ competition.start_datetime }}</span>
+        <h4>
+            <a href="{% url 'view_competition' competition_id=competition.id %}">{{ competition.name }}</a>
+        </h4>
+        {% trans 'Start' %}: <span>{{ competition.start_datetime }}</span>
     </div>
     {% endfor%}
 </div>
@@ -14,18 +17,19 @@
 {% if tournaments %}
 <div>
     <h3>{% trans 'Tournaments:' %}</h3>
+    <table>
     {% for tournament in tournaments %}
-    <div>
-        <table>
-            <tr rowspan="2"><td>{{ competition.name }}</td>
-            <td>{% trans 'First day to play' %} {{ competition.start_datetime }}</td>
-            </tr>
-            <tr>
-                <td>{% trans 'Last day to play' %} {{ competition.end_datetime }}</td>
-            </tr>
-        </table>
-    </div>
+        <tr>
+            <td rowspan="2"><a href="{% url 'view_tournament' tournament_id=tournament.id %}">{{ tournament.name }}</a></td>
+            <td>{% trans 'First day to play' %}</td>
+            <td>{{ tournament.first_datetime }}</td>
+        </tr>
+        <tr>
+            <td>{% trans 'Last day to play' %}</td>
+            <td>{{ tournament.last_datetime }}</td>
+        </tr>
     {% endfor%}
+    </table>
 </div>
 {% endif %}
 

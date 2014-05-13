@@ -1,0 +1,6 @@
+{% extends 'unauthenticated_base.html' %}
+
+{% block content %}
+    {{ block.super }}
+    {% include 'parts/tournament_content.html' %}
+{% endblock %}

@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+import time
 
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse, HttpResponseForbidden
@@ -11,7 +12,7 @@ from django.db.models import Q
 
 from tournament.utils import get_tags, get_calendar_events_by_tags, get_events_by_tags_and_day, get_default_participation_state
 from tournament.forms import TournamentForm, AddCompetitionForm
-from tournament.models import Competition, Participation
+from tournament.models import Competition, Participation, Tournament
 from relations.models import Team
 from core.utils import is_in_share_tree
 
@@ -54,9 +55,15 @@ def calendar_events_for_day_ajax(request):
 @require_GET
 @login_required
 def add_event(request):
+    initial = dict(request.GET)
+    start_datetime = initial.get('default_date') or (time.time(), )
+    if start_datetime:
+        initial['start_datetime'] = initial['first_datetime'] = initial['last_datetime'] =\
+            datetime.fromtimestamp(int(start_datetime[0]))
+
     return render(request, 'add_event.html', {
-        'tournament_form': TournamentForm(request.GET),
-        'competition_form': AddCompetitionForm(request.GET),
+        'tournament_form': TournamentForm(initial=initial),
+        'competition_form': AddCompetitionForm(initial=initial),
         })
 
 
@@ -67,9 +74,11 @@ def add_tournament(request):
     if form.is_valid():
         form.save()
         return redirect('index')
+    print(form.is_valid())
     return render(request, 'add_event.html',  {
         'tournament_form': form,
         'competition_form': AddCompetitionForm(),
+        'show_tournament': True,
         })
 
 
@@ -118,6 +127,13 @@ def view_competition(request, competition_id):
             'redirect_after_login': reverse('view_competition', kwargs={'competition_id': competition_id}),
         })
     return render(request, template_name, context)
+
+def view_tournament(request, tournament_id):
+    tournament = get_object_or_404(Tournament.objects, id=tournament_id)
+    template_name = 'authenticated_tournament.html' if request.user.is_authenticated() else 'unauthenticated_tournament.html'
+    return render(request, template_name, {
+        'tournament': tournament,
+    })
 
 
 @require_POST

@@ -1,10 +1,8 @@
-from datetime import datetime
-import time
-
 from django import forms
 from django.utils.translation import ugettext as _
 
 from tournament.models import Tournament, Competition, PlayField, Tag
+from core.forms import BootstrapDateTimeField
 
 
 
@@ -36,16 +34,14 @@ class AddTagForm(TagForm):
 class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
-
-    def __init__(self, data={'default_date': time.time()}, *args, **kwargs):
-        try:
-            default_date = datetime.fromtimestamp(int(data.get('default_date')))
-        except (TypeError, ValueError):
-            super(TournamentForm, self).__init__()
-        else:
-            super(TournamentForm, self).__init__(initial={'first_datetime': default_date})
-
-
+        widgets = {
+            'tournament': forms.Select(attrs={'class': 'form-control'}),
+            'first_datetime': BootstrapDateTimeField(attrs={'class': 'form-control'}),
+            'last_datetime': BootstrapDateTimeField(attrs={'class': 'form-control'}),
+            'tags': forms.CheckboxSelectMultiple(),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+    checkbox_fields = ('tags',)
 
 
 class CompetitionForm(forms.ModelForm):
@@ -54,8 +50,6 @@ class CompetitionForm(forms.ModelForm):
         widgets = {
             'place': forms.Select(attrs={'class': 'form-control'}),
         }
-
-
 
 
 class AddCompetitionForm(forms.ModelForm):
@@ -72,7 +66,7 @@ class AddCompetitionForm(forms.ModelForm):
         model = Competition
         widgets = {
             'tournament': forms.Select(attrs={'class': 'form-control'}),
-            'start_datetime': forms.DateTimeInput(attrs={'class': 'form-control'}),
+            'start_datetime': BootstrapDateTimeField(attrs={'class': 'form-control'}),
             'duration': forms.TextInput(attrs={'class': 'form-control'}),
             'team_limit': forms.TextInput(attrs={'class': 'form-control'}),
             'team_accept_strategy': forms.Select(attrs={'class': 'form-control'}),
@@ -90,14 +84,9 @@ class AddCompetitionForm(forms.ModelForm):
     checkbox_fields = ('tags',)
     owner = None
 
-    def __init__(self, data={'default_date': time.time()}, owner=None, *args, **kwargs):
+    def __init__(self, data=None, owner=None, *args, **kwargs):
+        super(AddCompetitionForm, self).__init__(data, *args, **kwargs)
         self.owner = owner
-        try:
-            default_date = datetime.fromtimestamp(int(data.get('default_date')))
-        except (TypeError, ValueError):
-            super(AddCompetitionForm, self).__init__(data, *args, **kwargs)
-        else:
-            super(AddCompetitionForm, self).__init__(initial={'start_datetime': default_date}, *args, **kwargs)
         for none_reuired in ('short_place_name', 'address', 'tags', 'new_tag_name', 'like_a_place'):
             self.fields[none_reuired].required = False
 

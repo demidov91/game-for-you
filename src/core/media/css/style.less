@@ -170,17 +170,29 @@ li.team-nav.with-button{
 #right-side-content #team-members{ margin-bottom: 1em;}
 #delete-team-button-wrapper{text-align :center; margin-bottom: 1em;}
 .one-day-view h3{text-align: center;}
+.day-events td{padding: 0.5em;}
 /**
 ---------------------------------------event view-------------------------------
 */
+
+
+
 #add-event-wrapper{
+    #add-tournament-wrapper, #add-competition-wrapper {display: none;}
     .change-view{ width: 20%;}
     .view-name{width: 80%;}
     .header-wrapper h4{ font-size: 1.5em; margin-bottom: 1em;}
     form{font-size: 0.8em;}
+    &.competition #add-competition-wrapper{display: block;}
+    &.tournament #add-tournament-wrapper{display: block;}
 }
-#add-tournament-wrapper{display: none;}
+
 .checkbox li{list-style: none;}
+.datetimepicker{
+    input[type="text"], .input-group-addon{display: table-cell;}
+    input[type="text"]{ float: left;}
+}
+
 /**
 -------------------------------------competition-------------------------------
 */
@@ -202,6 +214,9 @@ li.team-nav.with-button{
     }
     .approved-participants form{ text-align: center; margin-top: 1em;}
 }
+
+
+
 
 
 

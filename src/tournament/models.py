@@ -38,6 +38,9 @@ class Tournament(models.Model):
     last_datetime = models.DateTimeField()
     tags = models.ManyToManyField(Tag, related_name='tournaments')
 
+    def __str__(self):
+        return self.name or _('No-name tournament')
+
 
 class PlayField(models.Model):
     """
