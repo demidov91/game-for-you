@@ -1,9 +1,20 @@
 {% extends 'authenticated_base.html' %}
 
+{% load i18n %}
+
 {% block nav_calendar_active %}active{% endblock %}
 
 {% block content %}
     {% include 'parts/competition_content.html' %}
+{% endblock %}
+
+{% block right_side_settings %}
+    {% if is_competition_owner %}
+    <form method="post" action="{% url 'delete_competition' competition_id=competition.id %}" class="delete-instance">{% csrf_token %}
+        <input type="submit" class="btn btn-danger" value="{% trans 'Delete' %}" />
+    </form>
+    {% endif %}
+    {{ block.super }}
 {% endblock %}
 
 {% block script %}

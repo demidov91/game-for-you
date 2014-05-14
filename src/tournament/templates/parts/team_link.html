@@ -15,6 +15,8 @@
     {% for team in user.userprofile.get_active_teams %}
         <li><a href="{% url 'view_team' team_id=team.id %}">{{ team.get_name_or_default }}</a></li>
     {% endfor %}
+        <li class="divider" role="presentation"></li>
+        <li><a href="{% url 'add_team' %}">{% trans 'Add team' %}</a></li>
     </ul>
 </a></div>
 <div class="clear"></div>

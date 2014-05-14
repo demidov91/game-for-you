@@ -21,7 +21,7 @@ class Tag(models.Model):
     #People who are viewing events
     subscribers = models.ManyToManyField(get_user_model(), related_name='subscribed_to', null=True, blank=True)
     #Displayed name.
-    name = models.CharField(max_length=100, verbose_name=_('name'))
+    name = models.CharField(max_length=100, verbose_name=_('name'), unique=True)
 
     def __str__(self):
         return self.name
@@ -80,7 +80,7 @@ class Competition(models.Model):
     owners = models.ForeignKey(ShareTree)
 
     def get_name(self):
-        return self.tournament.name if self.tournament else self.name or ''
+        return self.name or self.tournament and self.tournament.name  or ''
 
     def __str__(self):
         return '{0} {1} {2}'.format(self.get_name(), _('in'), self.place.name)

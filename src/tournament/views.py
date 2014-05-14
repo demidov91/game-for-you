@@ -13,7 +13,7 @@ from django.db.models import Q
 from tournament.utils import get_tags, get_calendar_events_by_tags, get_events_by_tags_and_day, get_default_participation_state
 from tournament.forms import TournamentForm, AddCompetitionForm
 from tournament.models import Competition, Participation, Tournament
-from tournament.decorators import tournament_owner_only
+from tournament.decorators import tournament_owner_only, competition_owner_only
 from relations.models import Team
 from core.utils import is_in_share_tree
 
@@ -61,6 +61,9 @@ def add_event(request):
     if start_datetime:
         initial['start_datetime'] = initial['first_datetime'] = initial['last_datetime'] =\
             datetime.fromtimestamp(int(start_datetime[0]))
+    tournament = initial.get('tournament')
+    if tournament:
+        initial['tournament'] = tournament[0]
 
     return render(request, 'add_event.html', {
         'tournament_form': TournamentForm(initial=initial),
@@ -184,4 +187,10 @@ def delete_tournament(request, tournament):
     tournament.delete()
     return redirect('index')
 
+
+@require_POST
+@competition_owner_only(set_key='competition')
+def delete_competition(request, competition):
+    competition.delete()
+    return redirect('index')
 

@@ -1,4 +1,5 @@
 from django import forms
+from django.db import IntegrityError
 from django.utils.translation import ugettext as _
 
 from tournament.models import Tournament, Competition, PlayField, Tag
@@ -113,10 +114,27 @@ class AddCompetitionForm(forms.ModelForm):
                                                           address=cleaned_data['address'],
                                                           owner=self.owner)
         if cleaned_data.get('new_tag_name'):
-            cleaned_data['tags'].append(Tag.objects.create(name=cleaned_data.get('new_tag_name')))
+            additional_tag_id = Tag.objects.create(name=cleaned_data.get('new_tag_name')).id
+            tags_id = list(cleaned_data['tags'].values_list('id', flat=True))
+            tags_id.append(additional_tag_id)
+            cleaned_data['tags'] = Tag.objects.filter(id__in=tags_id)
         return cleaned_data
+
+    def clean_new_tag_name(self):
+        if self.cleaned_data['new_tag_name'] and Tag.objects.filter(name=self.cleaned_data['new_tag_name']).exists():
+            raise forms.ValidationError(_('Tag ') + self.cleaned_data['new_tag_name'] + _(' already exists.'))
+        return self.cleaned_data['new_tag_name']
+
 
     def clean_like_a_place(self):
         if self.cleaned_data['like_a_place']:
             self.instance.place = self.cleaned_data['like_a_place']
         return self.cleaned_data['like_a_place']
+
+    def save(self, *args, commit=True, **kwargs):
+        """
+        owner: auth.User instance. User, who created this tournament.
+        """
+        if commit:
+            self.instance.owners = ShareTree.objects.create(shared_to=self.owner)
+        super(AddCompetitionForm, self).save(*args, commit=commit, **kwargs)

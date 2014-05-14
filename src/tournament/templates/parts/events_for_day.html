@@ -6,7 +6,7 @@
     {% for competition in competitions %}
     <div>
         <h4>
-            <a href="{% url 'view_competition' competition_id=competition.id %}">{{ competition.name }}</a>
+            <a href="{% url 'view_competition' competition_id=competition.id %}">{{ competition.get_name }}</a>
         </h4>
         {% trans 'Start' %}: <span>{{ competition.start_datetime }}</span>
     </div>

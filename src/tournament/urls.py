@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     url(r'^competition/(?P<competition_id>\d+)/$', view_competition, name='view_competition'),
     url(r'^tournament/(?P<tournament_id>\d+)/$', view_tournament, name='view_tournament'),
     url(r'^tournament/(?P<tournament_id>\d+)/delete/$', delete_tournament, name='delete_tournament'),
+    url(r'^competition/(?P<competition_id>\d+)/delete/$', delete_competition, name='delete_competition'),
 )
 
