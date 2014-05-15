@@ -104,7 +104,7 @@ class Participation(models.Model):
         (REGISTERED, _('registered')),
     )
 
-    team = models.ForeignKey(Team)
+    team = models.ForeignKey(Team, related_name='participations')
     competition = models.ForeignKey(Competition)
     creator = models.ForeignKey(get_user_model())
     state = models.PositiveSmallIntegerField(choices=STATE_CHOICES)

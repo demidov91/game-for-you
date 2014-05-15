@@ -1,0 +1,13 @@
+{% load i18n %}
+
+{% for contact in contacts %}
+<div class="toLeft contact">
+    <form method="post" action="{% url 'remove_contact' contact_id=contact.id %}">{% csrf_token %}
+        <img src="{{ contact.about.get_image }}" />
+        <div>{{ contact.about.get_short_name }}</div>
+        <div>
+            <input class="btn btn-danger" value="{% trans 'Remove' %}" type="submit" />
+        </div>
+    </form>
+</div>
+{% endfor %}

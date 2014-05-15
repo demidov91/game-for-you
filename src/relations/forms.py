@@ -6,7 +6,7 @@ from relations.models import Team
 class TeamForm(forms.ModelForm):
     class Meta:
         model = Team
-        fields = ('name', 'members', 'is_draft')
+        fields = ('name', 'is_draft')
         widgets = {
             'name': forms.TextInput(attrs={
                 'placeholder': _('Enter team name'),

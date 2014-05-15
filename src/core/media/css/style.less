@@ -62,8 +62,6 @@ html{
 }
 
 
-
-
 #right-side{
     #right-side-settings{
         margin-top:10em;   
@@ -74,6 +72,13 @@ html{
     cursor: pointer;
 }
 
+.loader {display: none; position: absolute; }
+.loading .loader {display: block; opacity: 1.0;}
+.loading {opacity: 0.4;}
+.avatar-wrapper{
+    width: 100%;
+    img.avatar {width: 100%;}
+}
 /**
 ---------------------------------base---------------------------
 **/
@@ -172,6 +177,28 @@ li.team-nav.with-button{
 #delete-team-button-wrapper{text-align :center; margin-bottom: 1em;}
 .one-day-view h3{text-align: center;}
 .day-events td{padding: 0.5em;}
+#team-members-placeholder #team-members .member{
+    width: 18%;
+    margin: 1em 3%;
+    img {width: 100%;}
+    text-align: center;
+}
+#right-side-content #team-members .member{
+    padding: 0.7em 20%; 
+    text-align: center;
+    img {width: 100%;}
+}
+#edit-team-contacts{
+    img.avatar{ width: 80%; }
+    text-align: center;
+    .contact-to-add-into-team {margin: 1em 0;}
+    max-height: 30em;
+    overflow: auto;
+}
+#team-members{
+    .status{font-size: 0.75em; }
+}
+
 /**
 ---------------------------------------event view-------------------------------
 */
@@ -215,7 +242,25 @@ li.team-nav.with-button{
     }
     .approved-participants form{ text-align: center; margin-top: 1em;}
 }
-
+/**
+---------------------------------------contacts------------------------------
+*/
+.contacts {
+    text-align: center;
+    .contact{ 
+        width: 10%;
+        img {width: 100%; }
+    }
+    #contacts-list {margin: 0.2em 2%;}
+    .contact {margin: 0 1%;}
+}
+#username-input{width: 100%;}
+#found-users-list .player{
+    width :100%;
+    text-align: center;    
+    img {width: 70%;}
+    margin: 0.5em 2%;   
+}
 
 
 

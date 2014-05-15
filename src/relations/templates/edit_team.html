@@ -6,23 +6,22 @@
 
 {% block content %}
     <form action="" method="post" id="team-edit-form">{% csrf_token %}
-        <div id="team-caption">{{ team_form.name.errors }}{{ team_form.name }}</div>
+        <div id="team-caption">
+            {{ team_form.name.errors }}
+            {{ team_form.name }}
+            <input type="submit" class="btn btn-success"
+               value="{% if team_form.is_draft.value %}{% trans 'Create' %}{% else %}{% trans 'Save' %}{% endif%}" />
+        </div>
+        <input type="hidden" value="False" name="is_draft" />
+     </form>
+
+    <div id="team-members-placeholder">
+        <img src="{{ STATIC_URL }}img/ajax-loader.gif" class="loader" />
         <div id="team-members">
-            <div>{{ team_form.members.errors }}</div>
-            {% for member in team_form.fields.members.queryset %}
-            <div class="toLeft">
-                <div>{{ member.get_full_name }}</div>
-                <div><span class="glyphicon glyphicon-remove-sign"></span></div>
-                <input type="hidden" value="{{ member.id }}" name="{{ team_form.members.html_name }}" />
-            </div>
-            {% endfor %}
+        {% include 'parts/team_members.html' %}
         <div class="clear"></div>
         </div>
-
-        <input type="hidden" value="False" name="is_draft" />
-        <input type="submit" class="btn btn-success"
-               value="{% if team_form.is_draft.value %}{% trans 'Create' %}{% else %}{% trans 'Save' %}{% endif%}" />
-    </form>
+    </div>
 
      <div class="modal" id="delete-team-modal" role="dialog"  aria-hidden="true">
          <div class="modal-dialog">
@@ -35,7 +34,7 @@
                 <h4>{% trans 'Are you sure you want to remove a team?' %}</h4>
               </div>
               <div class="modal-footer">
-                  <form action="{% url 'delete_team' team_id=team_id %}" method="post">{% csrf_token %}
+                  <form action="{% url 'delete_team' team_id=team.id %}" method="post">{% csrf_token %}
                       <button class="btn btn-default">{% trans 'Cancel' %}</button>
                       <input type="submit" class="btn btn-danger" value="{% trans 'Delete team' %}"/>
                   </form>
@@ -48,7 +47,15 @@
 {% block right_side_content %}
     <div id="edit-team-contacts">
     {% for contact in contacts %}
-        <div><span class="glyphicon glyphicon-arrow-left"></span><span>{{ contact.about }}</span></div>
+        <div class="contact-to-add-into-team" data-add-into-team-url="{% url 'add_team_member' userprofile_id=contact.about.id team_id=team.id %}">
+            <div class="avatar-wrapper">
+                <img src="{{ contact.about.get_image }}" class="avatar" />
+            </div>
+            <div>
+                <span class="glyphicon glyphicon-arrow-left add-into-team"></span>
+                <span>{{ contact.about.get_short_name }}</span>
+            </div>
+        </div>
     {% endfor %}
     </div>
 

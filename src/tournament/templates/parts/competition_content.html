@@ -34,7 +34,7 @@
     <form action="{% url 'add_participation_request' competition_id=competition.id %}" method="POST">{% csrf_token%}
         {% if teams_to_add.count > 1 %}
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="caret"></span>
+            <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
             {% for team in teams_to_add %}
                 <li><button type="submit" class="btn btn-success">
@@ -42,7 +42,7 @@
                 </button></li>
             {% endfor %}
             </ul>
-        </a>
+
         {% else %}
         <button type="submit" class="btn btn-success" name="team_id" value="{{ teams_to_add.0.id }}">
             {% trans 'Add team' %} {{ teams_to_add.0.get_name_or_default }}

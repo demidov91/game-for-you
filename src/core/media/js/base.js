@@ -57,3 +57,32 @@ function load_html_content(jObject){
         }
     });
 }
+
+function getCSRF(){
+    return $('input[name="csrfmiddlewaretoken"]').val();
+}
+
+function updateListWithFormAction(jPlaceholder, jList){
+    jList.on('submit', 'form', function(event){
+        event.preventDefault();
+        var jThis = $(this);
+        var formData = jThis.serialize();
+        var url = this.action;
+        var method = this.method;
+        jPlaceholder.addClass('loading'); 
+        $.ajax({
+            url: url,
+            method: method,
+            data: formData,
+            success: function(data){
+                jList.html(data);
+            },
+            complete: function(){
+                jPlaceholder.removeClass('loading');
+            }
+        });
+        return false;
+    });
+    
+}
+

@@ -10,7 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 
-from tournament.utils import get_tags, get_calendar_events_by_tags, get_events_by_tags_and_day, get_default_participation_state
+from tournament.utils import get_tags, get_calendar_events_by_tags, get_events_by_tags_and_day,\
+    get_default_participation_state, get_calendar_events_by_team
 from tournament.forms import TournamentForm, AddCompetitionForm
 from tournament.models import Competition, Participation, Tournament
 from tournament.decorators import tournament_owner_only, competition_owner_only
@@ -51,6 +52,14 @@ def calendar_events_for_day_ajax(request):
     date = datetime(day=int(request.GET.get('day')), month=int(request.GET.get('month')), year=int(request.GET.get('year')))
     tags = get_tags(request)
     return render(request, 'parts/events_for_day.html', get_events_by_tags_and_day(tags, date))
+
+@require_GET
+def calendar_events_for_team_json(request, team_id):
+    start = datetime.fromtimestamp(int(request.GET['start']))
+    end = datetime.fromtimestamp(int(request.GET['end']))
+    team = get_object_or_404(request.user.userprofile.teams, id=team_id)
+    data = json.dumps(get_calendar_events_by_team(team, start, end))
+    return HttpResponse(data, content_type='application/json')
 
 
 @require_GET

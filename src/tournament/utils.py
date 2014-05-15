@@ -46,6 +46,12 @@ def get_calendar_events_by_tags(tags, start, end):
     events += competitions_to_calendar_events(competitions)
     return events
 
+def get_calendar_events_by_team(team, start, end):
+    competitions_id = team.participations.filter(Q(state=Participation.CLAIM) | Q(state=Participation.APPROVED)).values_list('competition_id', flat=True)
+    competitions = Competition.objects.filter(id__in=competitions_id, start_datetime__range=(start, end))
+    events = competitions_to_calendar_events(competitions)
+    return events
+
 
 def get_events_by_tags_and_day(tags, day):
     next_day = day + timedelta(days=1)

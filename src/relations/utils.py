@@ -1,5 +1,6 @@
 from relations.models import Team
 from core.models import ShareTree
+from core.utils import Adapter, is_in_share_tree, has_higher_priority, find_leave_by_owner
 
 
 def create_team(owner):
@@ -27,4 +28,25 @@ def can_delete_team(user, group):
     if group.owner.shared_to == user:
         return True
     return False
+
+
+class TeamMemberForEditor(Adapter):
+    def __init__(self, team, instance, editor):
+        super(TeamMemberForEditor, self).__init__(instance)
+        self.editor = editor
+        self.team = team
+
+    def is_owner(self):
+        return self.adaptee.user and is_in_share_tree(self.adaptee.user, self.team.owner)
+
+    def can_undo_owner(self):
+        return has_higher_priority(self.editor, self.adaptee.user, self.team.owner)
+
+    def get_leave(self):
+        return find_leave_by_owner(self.team.owner, self.adaptee.user)
+
+
+def get_members_for_editor(team, editor):
+    return tuple(TeamMemberForEditor(team, member, editor) for member in team.members.all())
+
 

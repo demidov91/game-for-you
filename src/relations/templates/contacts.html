@@ -1,10 +1,37 @@
 {% extends 'authenticated_base.html' %}
 
+{% load i18n %}
+
 {% block nav_contacts_active %}active{% endblock %}
 
 {% block content %}
-    {% for contact in contacts %}
-    <div class="toLeft">{{ contact.about }}</div>
-    {% endfor %}
-    <div class="clear"></div>
+<div class="contacts">
+    <h1>{% trans 'People you know' %}</h1>
+    <div id="contacts-placeholder">
+        <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" alt="loading..." />
+        <div id="contacts-list">
+            {% include 'parts/contacts_list.html' %}
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
+{% block right_side_content %}
+    <input type="text" placeholder="{% trans 'User name' %}" id="username-input" />
+    {% csrf_token %}
+    <div id="found-users-placeholder">
+        <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" alt="loading..." />
+        <div id="found-users-list"></div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script>
+        findPeopleByNameUrl = "{% url 'find_people_by_name' %}";
+        addContactUrl = "{% url 'add_contact' %}";
+    </script>
+    <script src="{{ STATIC_URL}}js/contacts.js" type="text/javascript"></script>
+{% endblock %}
+

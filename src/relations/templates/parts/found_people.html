@@ -1,0 +1,6 @@
+{% for player in people %}
+<div class="player" data-id="{{ player.id }}">
+    <img src="{{ player.get_image }}">
+    <div class="name">{{ player.get_short_name }}</div>
+</div>
+{% endfor %}

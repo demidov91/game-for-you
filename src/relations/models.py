@@ -14,21 +14,23 @@ class UserProfile(models.Model):
     """
     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True)
     #Some greeting text to be displayed next to profile.
-    status = models.TextField()
+    status = models.TextField(blank=True)
     #Team to display on authenticated_index page.
     primary_team = models.ForeignKey('relations.Team', null=True, blank=True, on_delete=models.SET_NULL)
 
+    patronymic = models.CharField(max_length=100, default='', blank=True)
+
     def get_full_name(self):
         """
-        Actually, this is not 'full' name. This is only combination of Last name and First Name.
+        Full name or username.
         """
         if self.user:
-            return self.user.get_full_name()
+            return (self.user.last_name + self.user.first_name + (self.patronymic or '')) or self.user.username
         return 'No user.'
 
     def get_short_name(self):
         if self.user:
-            return self.user.get_short_name()
+            return self.user.get_short_name() or self.user.username
         return 'No user. (Short name)'
 
     def __unicode__(self):
@@ -39,6 +41,9 @@ class UserProfile(models.Model):
         returns: Collection of *Team* objects.
         """
         return self.teams.filter(is_draft=False)
+
+    def get_image(self):
+        return settings.STATIC_URL + 'img/owl.jpg'
 
 
 @receiver(post_save, sender=User)

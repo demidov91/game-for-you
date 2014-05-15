@@ -20,10 +20,39 @@ def is_in_share_tree(user, share_tree):
     *share_tree*: root tree element.
     returns: **bool**.
     """
-    leaves = deque((share_tree,))
+    return bool(find_leave_by_owner(share_tree, user))
+
+def has_higher_priority(user, acceptor, root):
+    """
+    returns: *bool*.
+    """
+    acceptor_leaf = find_leave_by_owner(root, acceptor)
+    if not acceptor_leaf:
+        return True
+    return bool(find_from_leave_to_root(acceptor_leaf, user))
+
+def find_leave_by_owner(root, user):
+    """
+    *user*: user to find in ShareTree.
+    *share_tree*: root tree element.
+    returns: *ShareTree* instance.
+    """
+    leaves = deque((root,))
     while leaves:
-        leave = leaves.popleft()
-        if leave.shared_to == user:
-            return True
-        leaves.extend(ShareTree.objects.filter(parent=leave))
-    return False
+        leaf = leaves.popleft()
+        if leaf.shared_to == user:
+            return leaf
+        leaves.extend(ShareTree.objects.filter(parent=leaf))
+    return None
+
+def find_from_leave_to_root(leaf, user_to_find):
+    while leaf.parent:
+        if leaf.parent.shared_to == user_to_find:
+            return leaf.parent
+        leaf = leaf.parent
+    return None
+
+def get_root(leaf):
+    while leaf.parent:
+        leaf = leaf.parent
+    return leaf

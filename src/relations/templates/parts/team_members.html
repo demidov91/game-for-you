@@ -1,0 +1,22 @@
+{% load i18n %}
+
+{% for member in members %}
+<div class="toLeft member avatar-wrapper">
+    <div>{{ member.get_full_name }}</div>
+    <img src="{{ member.get_image }}" class="avatar" />
+    {% if not member.is_owner %}
+        <form action="{% url 'make_team_owner' userprofile_id=member.id team_id=team.id %}" method="post">{% csrf_token %}
+            <input type="submit" value="{% trans 'Give management rights' %}" class="btn btn-primary">
+        </form>
+        <form action="{% url 'remove_team_member' userprofile_id=member.id team_id=team.id %}" method="post">{% csrf_token %}
+            <input type="submit" value="{% trans 'Remove' %}" class="btn btn-danger">
+        </form>
+    {% elif member.can_undo_owner %}
+        <form action="{% url 'undo_team_owner' share_tree_id=member.get_leave.id  %}" method="post">{% csrf_token %}
+            <input type="submit" value="{% trans 'Remove management rights' %}" class="btn btn-default">
+        </form>
+    {% else %}
+        <div><span class="status">{% trans 'Can edit team' %}</span></div>
+    {% endif %}
+</div>
+{% endfor %}

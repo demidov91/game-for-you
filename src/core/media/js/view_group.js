@@ -1,3 +1,5 @@
 $(function(){
-    initialize_default_calendar();
+    initialize_default_calendar({
+            events: getEventsUrl
+    });
 });
