@@ -202,7 +202,7 @@ msgstr "Месца гульні:"
 
 #: tournament/models.py:79
 msgid "start date"
-msgstr "адыгрываць з"
+msgstr "пачатак"
 
 #: tournament/models.py:81
 msgid "competition duration (in minutes)"

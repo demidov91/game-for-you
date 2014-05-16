@@ -33,6 +33,6 @@
 {% endif %}
 
 <div id="add-event-wrapper">
-    <a href="{% url 'add_event' %}?tournament={{ tournament.id }}" class="btn btn-success">{% trans 'Add competition place' %}</a>
+    <a href="{% url 'add_event' %}?tournament={{ tournament.id }}&default_date={{ default_competition_start }}" class="btn btn-success">{% trans 'Add competition place' %}</a>
 </div>
 

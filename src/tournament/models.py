@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -33,11 +33,11 @@ def add_default_tag(sender, instance, created, **kwargs):
 
 
 class Tournament(models.Model):
-    name = models.CharField(max_length=100)
-    first_datetime = models.DateTimeField()
-    last_datetime = models.DateTimeField()
-    tags = models.ManyToManyField(Tag, related_name='tournaments')
-    owner = models.ForeignKey(ShareTree)
+    name = models.CharField(max_length=100, verbose_name=_('name'))
+    first_datetime = models.DateTimeField(verbose_name=_('first date'))
+    last_datetime = models.DateTimeField(verbose_name=_('last date'))
+    tags = models.ManyToManyField(Tag, related_name='tournaments', verbose_name=_('tags'))
+    owner = models.ForeignKey(ShareTree, verbose_name=_('owner'))
 
     def __str__(self):
         return self.name or _('No-name tournament')

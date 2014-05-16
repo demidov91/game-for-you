@@ -122,9 +122,11 @@ def view_competition(request, competition_id):
 def view_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament.objects, id=tournament_id)
     template_name = 'authenticated_tournament.html' if request.user.is_authenticated() else 'unauthenticated_tournament.html'
+    default_competition_start = int(max(tournament.first_datetime.timestamp(), datetime.now().timestamp()))
     return render(request, template_name, {
         'tournament': tournament,
         'is_owner': is_in_share_tree(request.user, tournament.owner),
+        'default_competition_start': default_competition_start,
     })
 
 
