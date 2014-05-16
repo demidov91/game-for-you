@@ -4,3 +4,8 @@
     {% include 'parts/competition_content.html' %}
     {{ block.super }}
 {% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}js/competition.js" type="text/javascript"></script>
+{% endblock %}

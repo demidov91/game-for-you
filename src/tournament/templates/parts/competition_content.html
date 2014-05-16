@@ -4,81 +4,23 @@
     <tr>
         <td colspan="2"><h2>{{ competition.get_name }}</h2></td>
     </tr>
+    {% if competition.tournament %}
+    <tr>
+        <td>{% trans 'Tournament' %}</td>
+        <td><a href="{% url 'view_tournament' tournament_id=competition.tournament.id %}">{{ competition.tournament.name }}</a></td>
+    </tr>
+    {% endif %}
     <tr>
         <td>{% trans 'Start at' %}</td>
         <td>{{ competition.start_datetime }}</td>
     </tr>
     <tr>
         <td>{% trans 'Place' %}</td>
-        <td>{% if competition.place.name %}{{ competition.place.name }}. {% endif %}{{ competition.place.address }}</td>
+        <td>{{ competition.place.get_short_description }}</td>
     </tr>
 </table>
-<div id="competition-participants">
-    <div class="toLeft approved-participants">
-    {% if approved_participants %}
-    <h2>{% trans 'Approved participants' %}</h2>
-    {% for participant in approved_participants %}
-        <div class="team">
-            <span class="team-name">{{ participant.team.name }}</span>
-            {% if is_competition_owner or participant.team.id in user_teams_id %}
-            <form method="post" action="{% url 'undo_participation_request' participation_id=participant.id %}">{% csrf_token %}
-                <input type="submit" class="btn btn-danger" value="{% trans 'Decline' %}" />
-            </form>
-            {% endif %}
-        </div>
-    {% endfor %}
-    {% else %}
-        {% trans 'There is no participants yet.' %}
-    {% endif %}
-    {% if teams_to_add %}
-    <form action="{% url 'add_participation_request' competition_id=competition.id %}" method="POST">{% csrf_token%}
-        {% if teams_to_add.count > 1 %}
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-            {% for team in teams_to_add %}
-                <li><button type="submit" class="btn btn-success">
-                    {% trans 'Add team' %} {{ team.name }}
-                </button></li>
-            {% endfor %}
-            </ul>
 
-        {% else %}
-        <button type="submit" class="btn btn-success" name="team_id" value="{{ teams_to_add.0.id }}">
-            {% trans 'Add team' %} {{ teams_to_add.0.get_name_or_default }}
-        </button>
-        {% endif %}
-    </form>
-    {% endif %}
-    </div>
-    {% if is_competition_owner %}
-        <div class="toLeft" id="claimants-and-declined">
-            {% if claimants or declined_claimants %}<h2>{% trans 'Claimants to accept.' %}</h2>{% endif %}
-            {% if claimants %}
-            <div class="claimants">
-            {% for claimant in claimants %}
-                <div class="team">
-                    <span class="team-name">{{ participant.name }}</span>
-                    <button class="btn btn-success">{% trans 'Accept' %}</button>
-                    <button class="btn btn-danger">{% trans 'Decline' %}</button>
-                </div>
-            {% endfor %}
-            </div>
-            {% endif %}
-            {% if declined_claimants %}
-            <div class="declined">
-            {% for declined_claimant in declined_claimants %}
-                <div class="team">
-                    <span class="team-name">{{ declined_claimant.team.name }}</span>
-                    <form method="post" action="{% url 'accept_participation_request' participation_id=declined_claimant.id %}">{% csrf_token %}
-                        <input type="submit" class="btn btn-success" value="{% trans 'Re-Accept' %}" />
-                    </form>
-                </div>
-            {% endfor %}
-            </div>
-            {% endif %}
-            {% if not claimants and not declined_claimants %}<span>{% trans 'No claimants yet.' %}</span>{% endif %}
-        </div>
-    {% endif %}
-    <div class="clear"></div>
+<div id="competition-participants-placeholder">
+    <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" alt="loading..." />
+    <div id="competition-participants" data-url="{% url 'view_competition_part' competition_id=competition.id %}"></div>
 </div>

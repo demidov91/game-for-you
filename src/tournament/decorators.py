@@ -1,4 +1,4 @@
-from tournament.models import Tournament, Competition
+from tournament.models import Tournament, Competition, Participation
 from core.decorators import OwnerOnly
 
 class tournament_owner_only(OwnerOnly):
@@ -20,3 +20,14 @@ class competition_owner_only(OwnerOnly):
 
     def get_instance_owner(self, instance):
         return instance.owners
+
+class can_modify_participation(OwnerOnly):
+    default_get_key = 'participation_id'
+    default_set_key = 'participation'
+
+    __name__ = 'can_modify_participation'
+
+    model_class = Participation
+
+    def get_instance_owner(self, instance):
+        return instance.competition.owners

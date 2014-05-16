@@ -9,7 +9,11 @@ urlpatterns = patterns('',
     url(r'^ajax/calendar-events/team/(?P<team_id>\d+)/$', calendar_events_for_team_json, name='get_calendar_events_for_team'),
     url(r'^ajax/competition/(?P<competition_id>\d+)/add/team/', add_participation_request, name='add_participation_request'),
     url(r'^ajax/competition/(?P<participation_id>\d+)/remove/team/', undo_participation_request, name='undo_participation_request'),
-    url(r'^ajax/competition/(?P<participation_id>\d+)/accept/team/', accept_participation_request, name='accept_participation_request'),
+
+    url(r'^ajax/participation/(?P<participation_id>\d+)/state/(?P<state>\d)/', manage_participation_request, name='change_participation'),
+    url(r'^ajax/competition/(?P<competition_id>\d+)/', view_competition_part, name='view_competition_part'),
+
+
     url(r'^event/add/$', add_event, name='add_event'),
     url(r'^tournament/add/$', add_tournament, name='add_tournament'),
     url(r'^competition/add/$', add_competition, name='add_competition'),

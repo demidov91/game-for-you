@@ -55,6 +55,12 @@ class PlayField(models.Model):
     def __str__(self):
         return self.name
 
+    def get_short_description(self):
+        """
+        returns: *str*. Place name or address.
+        """
+        return self.name or self.address
+
 
 class Competition(models.Model):
     """
@@ -68,7 +74,7 @@ class Competition(models.Model):
         (PRIVATE_STRATEGY, _('private')),
     )
 
-    tournament = models.ForeignKey(Tournament, verbose_name=_('tournament'), null=True, blank=True)
+    tournament = models.ForeignKey(Tournament, verbose_name=_('tournament'), null=True, blank=True, related_name='competitions')
     place = models.ForeignKey(PlayField, verbose_name=_('place to play'))
     start_datetime = models.DateTimeField(verbose_name=_('start date'))
     #duration in minutes

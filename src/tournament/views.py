@@ -14,7 +14,7 @@ from tournament.utils import get_tags, get_calendar_events_by_tags, get_events_b
     get_default_participation_state, get_calendar_events_by_team
 from tournament.forms import TournamentForm, AddCompetitionForm
 from tournament.models import Competition, Participation, Tournament
-from tournament.decorators import tournament_owner_only, competition_owner_only
+from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation
 from relations.models import Team
 from core.utils import is_in_share_tree
 
@@ -109,35 +109,14 @@ def add_competition(request):
 
 def view_competition(request, competition_id):
     competition = get_object_or_404(Competition.objects, id=competition_id)
-    approved_participants = Participation.objects.filter(
-        competition=competition,
-        state=Participation.APPROVED)
     template_name = 'competition.html' if request.user.is_authenticated() else 'unauthenticated_competition.html'
     context = {
         'competition': competition,
-        'approved_participants': approved_participants,
-        'claimants': Team.objects.filter(id__in=Participation.objects.filter(
-            competition=competition,
-            state=Participation.CLAIM).values_list('id', flat=True)),
-        'user_teams_id': [],
     }
     if request.user.is_authenticated():
-        is_competition_owner = is_in_share_tree(request.user, competition.owners)
-        if is_competition_owner:
-            context.update({
-               'declined_claimants': Participation.objects.filter(competition=competition, state=Participation.DECLINED),
-            })
-        context['user_teams_id'] = request.user.userprofile.teams.values_list('id', flat=True)
-        context.update({
-            'teams_to_add': request.user.userprofile.teams.filter(is_draft=False).exclude(
-                id__in=Participation.objects.filter(
-                    Q(competition=competition_id)).values_list('team_id', flat=True)),
-            'is_competition_owner': is_competition_owner,
-        })
+        context['is_competition_owner'] = is_in_share_tree(request.user, competition.owners)
     else:
-        context.update({
-            'redirect_after_login': reverse('view_competition', kwargs={'competition_id': competition_id}),
-        })
+        context['redirect_after_login'] = reverse('view_competition', kwargs={'competition_id': competition_id})
     return render(request, template_name, context)
 
 def view_tournament(request, tournament_id):
@@ -156,6 +135,7 @@ def add_participation_request(request, competition_id):
     AJAX view. Returns 403 or json with key state set to *Participation.state* value.
     """
     try:
+        print((request.POST.get('team_id'), competition_id))
         team = request.user.userprofile.teams.get(id=request.POST.get('team_id'))
         competition = Competition.objects.get(id=competition_id)
     except (Team.DoesNotExist, Competition.DoesNotExist):
@@ -165,7 +145,7 @@ def add_participation_request(request, competition_id):
         competition=competition,
         creator=request.user,
         state=get_default_participation_state(competition))
-    return HttpResponse(json.dumps({'state': participation.state }), content_type='application/json')
+    return redirect('view_competition_part', competition_id=participation.competition.id)
 
 @require_POST
 @login_required
@@ -173,22 +153,42 @@ def undo_participation_request(request, participation_id):
     participation = get_object_or_404(Participation.objects, id=participation_id)
     if request.user.userprofile.teams.filter(id=participation.team.id).exists():
         participation.delete()
-        return HttpResponse()
-    if is_in_share_tree(request.user, participation.competition.owners):
-        participation.state = Participation.DECLINED
-        participation.save()
-        return HttpResponse()
+        return redirect('view_competition_part', competition_id=participation.competition.id)
     return HttpResponseForbidden()
 
 @require_POST
-@login_required
-def accept_participation_request(request, participation_id):
-    participation = get_object_or_404(Participation.objects, id=participation_id)
-    if not is_in_share_tree(request.user, participation.competition.owners):
-        return HttpResponseForbidden()
-    participation.state = Participation.APPROVED
+@can_modify_participation(set_key='participation')
+def manage_participation_request(request, participation, state):
+    participation.state = state
     participation.save()
-    return HttpResponse()
+    return redirect('view_competition_part', competition_id=participation.competition.id)
+
+def view_competition_part(request, competition_id):
+    competition = get_object_or_404(Competition.objects, id=competition_id)
+    context = {
+        'competition': competition,
+        'approved_participants': Participation.objects.filter(
+            competition=competition,
+            state=Participation.APPROVED),
+    }
+    if request.user.is_authenticated():
+        is_competition_owner = is_in_share_tree(request.user, competition.owners)
+        claims = Participation.objects.filter(competition=competition, state=Participation.CLAIM)
+        declined_claims = Participation.objects.filter(competition=competition, state=Participation.DECLINED)
+        if not is_competition_owner:
+            claims = claims.filter(team__in=request.user.userprofile.teams.all())
+            declined_claims = declined_claims.filter(team__in=request.user.userprofile.teams.all())
+        context['claims'] = claims
+        context['declined_claims'] = declined_claims
+        context['user_teams_id'] = request.user.userprofile.teams.values_list('id', flat=True)
+        context.update({
+            'teams_to_add': request.user.userprofile.teams.filter(is_draft=False).exclude(
+                id__in=Participation.objects.filter(
+                    Q(competition=competition_id)).values_list('team_id', flat=True)),
+            'is_competition_owner': is_competition_owner,
+        })
+    return render(request, 'parts/competition_dynamic.html', context)
+
 
 @require_POST
 @tournament_owner_only(set_key='tournament')

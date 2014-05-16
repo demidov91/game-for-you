@@ -1,0 +1,101 @@
+{% load i18n %}
+
+<div class="toLeft approved-participants">
+{% if approved_participants %}
+<h2>{% trans 'Approved participants' %}</h2>
+{% for participant in approved_participants %}
+    <div class="team">
+        <span class="team-name">{{ participant.team.name }}</span>
+        {% if participant.team.id in user_teams_id %}
+        <form method="post" action="{% url 'undo_participation_request' participation_id=participant.id %}">{% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="{% trans 'Undo' %}" />
+        </form>
+        {% elif is_competition_owner %}
+            <form method="post" action="{% url 'change_participation' participation_id=participant.id state=participant.DECLINED  %}">{% csrf_token %}
+                <input type="submit" class="btn btn-danger" value="{% trans 'Decline' %}" />
+            </form>
+        {% endif %}
+    </div>
+{% endfor %}
+{% else %}
+    {% trans 'There is no participants yet.' %}
+{% endif %}
+{% if teams_to_add %}
+<form action="{% url 'add_participation_request' competition_id=competition.id %}" method="POST">{% csrf_token%}
+    {% if teams_to_add.count > 1 %}
+    <div class="btn-group">
+      <button type="button" class="btn btn-success team-to-add-source" data-team-id="{{ teams_to_add.0.id }}">{% trans 'Add team' %} {{ teams_to_add.0.name }}</button>
+      <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        {% for team in teams_to_add %}{% if forloop.counter > 1 %}
+        <li><a href="#" class="team-to-add-source" data-team-id="{{ team.id }}">{% trans 'Add team' %} {{ team.name }}</a></li>
+        {% endif %}{% endfor %}
+      </ul>
+    </div>
+    <input type="hidden" name="team_id" value="" class="team-to-add-destination" />
+    {% else %}
+    <input type="hidden" name="team_id" value="{{ teams_to_add.0.id }}" />
+    <button type="submit" class="btn btn-success" >
+        {% trans 'Add team' %} {{ teams_to_add.0.get_name_or_default }}
+    </button>
+    {% endif %}
+</form>
+{% endif %}
+</div>
+
+{% if claims or declined_claims %}
+    <div class="toLeft" id="claimants-and-declined">
+    {% if is_competition_owner %}
+            <h2>{% trans 'Claimants to accept.' %}</h2>
+            {% if claims %}
+            <div class="claimants">
+            {% for claimant in claims %}
+                <div class="team">
+                    <span class="team-name">{{ claimant.team.name }}</span>
+                    <form action="{% url 'change_participation' participation_id=claimant.id state=claimant.APPROVED %}" method="post">{% csrf_token %}
+                        <button class="btn btn-success" type="submit" >{% trans 'Accept' %}</button>
+                    </form>
+                    <form action="{% url 'change_participation' participation_id=claimant.id state=claimant.DECLINED %}" method="post">{% csrf_token %}
+                        <button class="btn btn-danger" type="submit">{% trans 'Decline' %}</button>
+                    </form>
+                </div>
+            {% endfor %}
+            </div>
+            {% endif %}
+            {% if declined_claims %}
+            <div class="declined">
+            {% for declined_claimant in declined_claims %}
+                <div class="team">
+                    <span class="team-name">{{ declined_claimant.team.name }}</span>
+                    <form method="post" action="{% url 'change_participation' participation_id=declined_claimant.id state=declined_claimant.APPROVED %}">{% csrf_token %}
+                        <input type="submit" class="btn btn-success" value="{% trans 'Re-Accept' %}" />
+                    </form>
+                </div>
+            {% endfor %}
+            </div>
+            {% endif %}
+    {% else %}
+        {% if claims %}<h2>{% trans 'Your teams waiting for confirmation:' %}</h2>{% endif %}
+        {% for claim in claims %}
+                <div class="team">
+                    <span class="team-name">{{ claim.team.name }}</span>
+                    <form method="post" action="{% url 'undo_participation_request' participation_id=claim.id %}">{% csrf_token %}
+                        <input type="submit" class="btn btn-danger" value="{% trans 'Undo' %}" />
+                    </form>
+                </div>
+        {% endfor %}
+        {% if declined_claims %}<h2>{% trans 'Declined teams:' %}</h2>{% endif %}
+        {% for declined_claim in declined_claims %}
+            <div class="team">
+                <span class="team-name">{{ claim.team.name }}</span>
+            </div>
+        {% endfor %}
+    {% endif %}
+    </div>
+{% else %}
+    {% if is_competition_owner %}<span>{% trans 'No claimants yet.' %}</span>{% endif %}
+{% endif %}
+<div class="clear"></div>
