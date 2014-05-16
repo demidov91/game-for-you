@@ -156,19 +156,19 @@ LOGGING = {
         'common_debug': {
             'level': 'DEBUG',
             'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': 'logs/debug.log',
+            'filename': os.path.join(BASE_DIR, '..', 'logs/debug.log'),
             'when': 'W0',
         },
         'common_warning': {
             'level': 'WARNING',
             'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': 'logs/warn.log',
+            'filename': os.path.join(BASE_DIR, '..', 'logs/warn.log'),
             'when': 'W0',
         },
         'common_info': {
             'level': 'INFO',
             'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': 'logs/info.log',
+            'filename': os.path.join(BASE_DIR, '..', 'logs/info.log'),
             'when': 'W0',
         },
     },

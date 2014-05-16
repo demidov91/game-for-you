@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-05 12:09+0000\n"
+"POT-Creation-Date: 2014-05-16 09:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,50 +19,352 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
+#: core/settings.py:192
+msgid "Russian"
+msgstr "Руская"
+
+#: core/settings.py:193
+msgid "Belarussian"
+msgstr "Беларуская"
+
+#: core/templates/authenticated_base.html:9
+msgid "Calendar"
+msgstr "Каляндар"
+
+#: core/templates/authenticated_base.html:16
+msgid "People"
+msgstr "Людзі"
+
+#: core/templates/authenticated_base.html:17
+msgid "Settings"
+msgstr "Налады"
+
+#: core/templates/authenticated_base.html:26
+msgid "Log out"
+msgstr "Выйсці"
+
 #: core/templates/base.html:6
 msgid "What? Where? When? organizer"
-msgstr ""
+msgstr "Каляндар Што? Дзе? Калі?"
 
-#: relations/models.py:81
+#: core/templates/unauthenticated_base.html:30
+msgid "Log in or register."
+msgstr "Увайдзіце ці зарэгіструйесь."
+
+#: core/templates/unauthenticated_base.html:38
+#: custom_registration/templates/account/login.html:3
+msgid "Sign In"
+msgstr "Увайсці"
+
+#: core/templates/unauthenticated_base.html:39
+#: custom_registration/templates/account/signup.html:3
+msgid "Sign Up"
+msgstr "Зарэгістравацца"
+
+#: core/templates/parts/calendar.html:12
+msgid "Add event"
+msgstr "Дабавіць падзею"
+
+#: custom_registration/templates/account/login.html:13
+msgid "Forgot Password?"
+msgstr "Забылі пароль?"
+
+#: relations/forms.py:12
+msgid "Enter team name"
+msgstr "Увядзіце назву каманды"
+
+#: relations/models.py:78
+msgid "NoName (c)"
+msgstr "Безназоўныя (с)"
+
+#: relations/models.py:129
 msgid "Is public record"
-msgstr ""
+msgstr "Бачна ўсім"
 
-#: relations/models.py:82
+#: relations/models.py:130
 msgid "Record for team"
-msgstr ""
+msgstr "Бачна камандзе"
 
-#: relations/models.py:83
+#: relations/models.py:131
 msgid "Is private record"
-msgstr ""
+msgstr "Бачна толькі мне"
 
-#: tournament/models.py:30
+#: relations/templates/contacts.html:9
+msgid "People you know"
+msgstr "Людзі, якіх Вы ведаеце"
+
+#: relations/templates/contacts.html:21
+msgid "User name"
+msgstr "Імя карыстальніка"
+
+#: relations/templates/edit_team.html:13
+#: tournament/templates/add_event.html:15
+#: tournament/templates/add_event.html:27
+msgid "Create"
+msgstr "Стварыць"
+
+#: relations/templates/edit_team.html:13
+msgid "Save"
+msgstr "Захаваць"
+
+#: relations/templates/edit_team.html:34
+msgid "Are you sure you want to remove a team?"
+msgstr "Вы ўпэніны, што жадаеце выдаліць каманду?"
+
+#: relations/templates/edit_team.html:38
+msgid "Cancel"
+msgstr "Адмена"
+
+#: relations/templates/edit_team.html:39 relations/templates/edit_team.html:68
+msgid "Delete team"
+msgstr "Выдалціць каманду"
+
+#: relations/templates/view_team.html:22
+msgid "Edit"
+msgstr "Рэдагаваць"
+
+#: relations/templates/parts/contacts_list.html:9
+#: relations/templates/parts/team_members.html:12
+msgid "Remove"
+msgstr "Выдаліць"
+
+#: relations/templates/parts/team_members.html:9
+msgid "Give management rights"
+msgstr "Надаць правы ўладальніка"
+
+#: relations/templates/parts/team_members.html:16
+msgid "Remove management rights"
+msgstr "Адняць правы ўладальніка"
+
+#: relations/templates/parts/team_members.html:19
+msgid "Can edit team"
+msgstr "Можа рэдагаваць"
+
+#: tournament/forms.py:32 tournament/forms.py:89
+msgid "New tag name"
+msgstr "Назва дадатковага тэга"
+
+#: tournament/forms.py:88
+msgid "Place created earlier"
+msgstr "Месца, унесенае раней"
+
+#: tournament/forms.py:110 tournament/forms.py:111
+msgid "Select place where competition is held."
+msgstr "Азначце месца правядзення мпаборніцтва."
+
+#: tournament/forms.py:125
+msgid "Tag "
+msgstr "Тэг "
+
+#: tournament/forms.py:125
+msgid " already exists."
+msgstr " існуе."
+
+#: tournament/models.py:24
+msgid "name"
+msgstr "назва"
+
+#: tournament/models.py:43
+msgid "No-name tournament"
+msgstr "Безназоўны турнір"
+
+#: tournament/models.py:50
+msgid "place name"
+msgstr "назва месца"
+
+#: tournament/models.py:51
+msgid "address"
+msgstr "адрас"
+
+#: tournament/models.py:52
+msgid "owner"
+msgstr "уладальнік"
+
+#: tournament/models.py:53
+msgid "people who know this place"
+msgstr "людзі, якія ведаюць аб гэтым месцы"
+
+#: tournament/models.py:73
 msgid "open"
-msgstr ""
+msgstr "адкрыты"
 
-#: tournament/models.py:31
+#: tournament/models.py:74
 msgid "private"
-msgstr ""
+msgstr "закрыты"
 
-#: tournament/models.py:54
+#: tournament/models.py:77
+msgid "tournament"
+msgstr "турнір"
+
+#: tournament/models.py:78
+msgid "place to play"
+msgstr "Месца гульні:"
+
+#: tournament/models.py:79
+msgid "start date"
+msgstr "адыгрываць з"
+
+#: tournament/models.py:81
+msgid "competition duration (in minutes)"
+msgstr "працягласць гульні (у хвілінах)"
+
+#: tournament/models.py:82
+msgid "max team count"
+msgstr "абмежаванне на колькасць каманд"
+
+#: tournament/models.py:83
+msgid "team accept strategy"
+msgstr "прыём заявак"
+
+#: tournament/models.py:84
+msgid "tags"
+msgstr "тэгі"
+
+#: tournament/models.py:85
+msgid "competition name"
+msgstr "назва гульні"
+
+#: tournament/models.py:92
+msgid "in"
+msgstr "у"
+
+#: tournament/models.py:106
 msgid "invitation"
-msgstr ""
+msgstr "запрашэнне"
 
-#: tournament/models.py:55
+#: tournament/models.py:107
 msgid "claim"
-msgstr ""
+msgstr "заяўка"
 
-#: tournament/models.py:56
+#: tournament/models.py:108
 msgid "approved"
-msgstr ""
+msgstr "прынята"
 
-#: tournament/models.py:57
+#: tournament/models.py:109
 msgid "declined"
-msgstr ""
+msgstr "адмоўлена"
 
-#: tournament/models.py:58
+#: tournament/models.py:110
 msgid "registered"
-msgstr ""
+msgstr "зарэгістравана"
 
-#: tournament/templates/unauthenticated_index.html:36
+#: tournament/views.py:142
+msgid "Wrong request data."
+msgstr "Хібны запыт."
+
+#: tournament/templates/add_event.html:11
+msgid "Add competition"
+msgstr "Заявіць пляцоўку"
+
+#: tournament/templates/add_event.html:12
+msgid "add tournament"
+msgstr "дабавіць турнір"
+
+#: tournament/templates/add_event.html:24
+msgid "add competition"
+msgstr "дабавіць гульню"
+
+#: tournament/templates/add_event.html:24
+msgid "Add tournament"
+msgstr "Дабавіць турнір"
+
+#: tournament/templates/authenticated_tournament.html:15
+#: tournament/templates/competition.html:14
+msgid "Delete"
+msgstr "Выдаліць"
+
+#: tournament/templates/parts/competition_content.html:9
+msgid "Tournament"
+msgstr "Турнір"
+
+#: tournament/templates/parts/competition_content.html:14
+msgid "Start at"
+msgstr "Пачатак а"
+
+#: tournament/templates/parts/competition_content.html:18
+msgid "Place"
+msgstr "Месца"
+
+#: tournament/templates/parts/competition_dynamic.html:5
+msgid "Approved participants"
+msgstr "Пацверджаныя ўдзельнікі"
+
+#: tournament/templates/parts/competition_dynamic.html:11
+#: tournament/templates/parts/competition_dynamic.html:86
+msgid "Undo"
+msgstr "Адмяніць"
+
+#: tournament/templates/parts/competition_dynamic.html:15
+#: tournament/templates/parts/competition_dynamic.html:62
+msgid "Decline"
+msgstr "Адмовіць"
+
+#: tournament/templates/parts/competition_dynamic.html:21
+msgid "There is no participants yet."
+msgstr "Пакуль што няма пацверджаных удзельнікаў."
+
+#: tournament/templates/parts/competition_dynamic.html:27
+#: tournament/templates/parts/competition_dynamic.html:34
+#: tournament/templates/parts/competition_dynamic.html:42
+#: tournament/templates/parts/team_link.html:8
+#: tournament/templates/parts/team_link.html:19
+msgid "Add team"
+msgstr "Дабавіць каманду"
+
+#: tournament/templates/parts/competition_dynamic.html:52
+msgid "Claimants to accept."
+msgstr "Заяўкі."
+
+#: tournament/templates/parts/competition_dynamic.html:59
+msgid "Accept"
+msgstr "Прыняць"
+
+#: tournament/templates/parts/competition_dynamic.html:74
+msgid "Re-Accept"
+msgstr "Усё ж прыняць"
+
+#: tournament/templates/parts/competition_dynamic.html:81
+msgid "Your teams waiting for confirmation:"
+msgstr "Вашы заяўкі"
+
+#: tournament/templates/parts/competition_dynamic.html:90
+msgid "Declined teams:"
+msgstr "Каманды, якім было адмоўлена"
+
+#: tournament/templates/parts/competition_dynamic.html:99
+msgid "No claimants yet."
+msgstr "Пакуль няма заявак"
+
+#: tournament/templates/parts/events_for_day.html:5
+msgid "Competitions:"
+msgstr "Гульні:"
+
+#: tournament/templates/parts/events_for_day.html:11
+msgid "Start"
+msgstr "Пачатак"
+
+#: tournament/templates/parts/events_for_day.html:19
+msgid "Tournaments:"
+msgstr "Турніры:"
+
+#: tournament/templates/parts/events_for_day.html:24
+#: tournament/templates/parts/tournament_content.html:8
+msgid "First day to play"
+msgstr "Дазволена адыгрываць з"
+
+#: tournament/templates/parts/events_for_day.html:28
+#: tournament/templates/parts/tournament_content.html:12
+msgid "Last day to play"
+msgstr "Дазволена адыгрываць па"
+
+#: tournament/templates/parts/events_for_day.html:37
+msgid "No events for this day."
+msgstr "Няма падзей на гэты дзень."
+
+#: tournament/templates/parts/tags_to_display.html:3
 msgid "Tags to display:"
 msgstr "Актыўныя тэгі:"
+
+#: tournament/templates/parts/tournament_content.html:36
+msgid "Add competition place"
+msgstr "Дадаць месца правядзення гульні"
