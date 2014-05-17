@@ -8,6 +8,9 @@ from django.dispatch import receiver
 from relations.models import Team, Contact
 from core.models import ShareTree
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class Tag(models.Model):
     """
@@ -29,7 +32,11 @@ class Tag(models.Model):
 @receiver(post_save, sender=get_user_model())
 def add_default_tag(sender, instance, created, **kwargs):
     if created:
-        instance.subscribed_to.add(Tag.objects.get(id=1))
+        try:
+            instance.subscribed_to.add(Tag.objects.get(id=1))
+        except Tag.DoesNotExist:
+            logger.error('Default tag does not exist.')
+
 
 
 class Tournament(models.Model):

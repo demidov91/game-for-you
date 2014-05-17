@@ -181,7 +181,7 @@ LOGGING = {
     },
 }
 
-
+SOUTH_TESTS_MIGRATE = False
 
 try:    
     from core.local_settings import *
