@@ -36,7 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    #'django.contrib.staticfiles',
+#    'django.contrib.staticfiles',
     'relations',
     'core',
     'tournament',
@@ -145,6 +145,9 @@ LOGIN_URL = '/?force-login'
 STATIC_URL = '/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'app_static')
 SERVE_STATIC = False
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'core', 'media'),
+)
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = 'index'
