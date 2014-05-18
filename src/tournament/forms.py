@@ -130,7 +130,7 @@ class AddCompetitionForm(forms.ModelForm):
             self.instance.place = self.cleaned_data['like_a_place']
         return self.cleaned_data['like_a_place']
 
-    def save(self, *args, commit=True, **kwargs):
+    def save(self, commit=True, *args, **kwargs):
         """
         owner: auth.User instance. User, who created this tournament.
         """
