@@ -144,6 +144,7 @@ LOGIN_URL = '/?force-login'
 
 STATIC_URL = '/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'app_static')
+SERVE_STATIC = False
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = 'index'

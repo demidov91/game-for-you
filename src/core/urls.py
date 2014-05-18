@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
-
 from django.contrib import admin
+from django.conf import settings
+from django.contrib.staticfiles.views import serve as serve_static
+
 from tournament import urls as tournament_urls
 from relations import urls as relations_urls
 from allauth.account.views import logout
@@ -17,3 +19,8 @@ urlpatterns = patterns('',
     url(r'contacts/', include(relations_urls)),
     url(r'', include(tournament_urls)),
 )
+
+if settings.SERVE_STATIC:
+    urlpatterns += (
+        url(r'^{0}(?P<path>.*)$'.format(settings.STATIC_URL), serve_static),
+    )
