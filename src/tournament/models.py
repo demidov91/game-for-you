@@ -26,7 +26,7 @@ class Tag(models.Model):
     #Displayed name.
     name = models.CharField(max_length=100, verbose_name=_('name'), unique=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 @receiver(post_save, sender=get_user_model())
@@ -46,7 +46,7 @@ class Tournament(models.Model):
     tags = models.ManyToManyField(Tag, related_name='tournaments', verbose_name=_('tags'))
     owner = models.ForeignKey(ShareTree, verbose_name=_('owner'))
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name or _('No-name tournament')
 
 
@@ -59,7 +59,7 @@ class PlayField(models.Model):
     owner = models.ForeignKey(get_user_model(), verbose_name=_('owner'))
     sharers = models.ManyToManyField(get_user_model(), verbose_name=_('people who know this place'), related_name='known_places')
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     def get_short_description(self):
@@ -95,7 +95,7 @@ class Competition(models.Model):
     def get_name(self):
         return self.name or self.tournament and self.tournament.name  or ''
 
-    def __str__(self):
+    def __unicode__(self):
         return '{0} {1} {2}'.format(self.get_name(), _('in'), self.place.name)
 
 

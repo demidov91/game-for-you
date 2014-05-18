@@ -82,7 +82,7 @@ class Team(models.Model):
     owner = models.ForeignKey(ShareTree)
     is_draft = models.BooleanField(default=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return str(self.get_name_or_default())
 
     def get_name_or_default(self):
