@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from django.db.models import Q
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from tournament.models import Tag, Tournament, Competition, Participation
 
@@ -12,7 +13,7 @@ def get_default_tag_ids(request):
     Maybe, it'll be something else or there will be more indicators
     returns: **tuple** of **int**.
     """
-    return 1,
+    return settings.DEFAULT_TAGS
 
 
 

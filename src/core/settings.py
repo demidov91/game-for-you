@@ -154,6 +154,8 @@ LOGIN_REDIRECT_URL = 'index'
 LOGOUT_ON_GET = False
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION=True
 
+DEFAULT_TAGS = (1, )
+
 LOGGING = {
     'version': 1,
     'handlers': {
