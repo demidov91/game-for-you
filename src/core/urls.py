@@ -22,5 +22,5 @@ urlpatterns = patterns('',
 
 if settings.SERVE_STATIC:
     urlpatterns += (
-        url(r'^{0}(?P<path>.*)$'.format(settings.STATIC_URL), serve_static),
+        url(r'^{0}(?P<path>.*)$'.format(settings.STATIC_URL[1:len(settings.STATIC_URL)]), serve_static),
     )
