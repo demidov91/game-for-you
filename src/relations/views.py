@@ -21,7 +21,7 @@ def add_team(request):
     """
     just_created_team = Team.objects.filter(Q(is_draft=True), Q(owner__shared_to=request.user) | (Q(owner__shared_to=None) & Q(owner__sharetree__shared_to=request.user)))
     if just_created_team.exists():
-        just_created_team = just_created_team.last()
+        just_created_team = just_created_team[0]
     else:
         just_created_team = create_team(request.user)
     return redirect('edit_team', just_created_team.id)

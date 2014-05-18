@@ -19,3 +19,4 @@ src/core/media/admin
 *.mo
 /logs/*
 !/logs/README.txt
+src/core/public/*

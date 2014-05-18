@@ -67,4 +67,5 @@ def to_timestamp(date_time):
     """
     if sys.version_info[0] == 3 and sys.version_info[1] > 2:
         return date_time.timestamp()
-    return (date_time - datetime(1970, 1, 1)) / timedelta(seconds=1)
+    td = date_time - datetime(1970, 1, 1)
+    return (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 1e6
