@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 
 from tournament.models import Tag, Tournament, Competition, Participation
+from core.utils import to_timestamp
 
 
 def get_default_tag_ids(request):
@@ -66,15 +67,15 @@ def get_events_by_tags_and_day(tags, day):
 def tournaments_to_calendar_events(tournaments):
     return tuple({
         'title': t.name,
-        'start': t.first_datetime.timestamp(),
-        'end': t.last_datetime.timestamp(),
+        'start': to_timestamp(t.first_datetime),
+        'end': to_timestamp(t.last_datetime),
         'url': reverse('view_tournament', kwargs={'tournament_id': t.id, })
     } for t in tournaments)
 
 def competitions_to_calendar_events(competitions):
     return tuple({
         'title': c.get_name(),
-        'start': c.start_datetime.timestamp(),
+        'start': to_timestamp(c.start_datetime),
         'url': reverse('view_competition', kwargs={'competition_id': c.id}),
     } for c in competitions)
 

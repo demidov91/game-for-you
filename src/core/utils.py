@@ -1,3 +1,6 @@
+import sys
+from datetime import datetime, timedelta
+
 from collections import deque
 
 from core.models import ShareTree
@@ -56,3 +59,12 @@ def get_root(leaf):
     while leaf.parent:
         leaf = leaf.parent
     return leaf
+
+def to_timestamp(date_time):
+    """
+    date_time: *datetime.datetime* instance.
+    returns: *int* - UNIX timestamp.
+    """
+    if sys.version_info.major > 2 and sys.version_info.minor > 2:
+        return date_time.timestamp()
+    return (date_time - datetime(1970, 1, 1)) / timedelta(seconds=1)

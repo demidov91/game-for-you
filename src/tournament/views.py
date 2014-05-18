@@ -16,7 +16,7 @@ from tournament.forms import TournamentForm, AddCompetitionForm
 from tournament.models import Competition, Participation, Tournament
 from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation
 from relations.models import Team
-from core.utils import is_in_share_tree
+from core.utils import is_in_share_tree, to_timestamp
 
 
 def _unauthenticated_view(request):
@@ -122,7 +122,7 @@ def view_competition(request, competition_id):
 def view_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament.objects, id=tournament_id)
     template_name = 'authenticated_tournament.html' if request.user.is_authenticated() else 'unauthenticated_tournament.html'
-    default_competition_start = int(max(tournament.first_datetime.timestamp(), datetime.now().timestamp()))
+    default_competition_start = int(max(to_timestamp(tournament.first_datetime), to_timestamp(datetime.now())))
     return render(request, template_name, {
         'tournament': tournament,
         'is_owner': is_in_share_tree(request.user, tournament.owner),
