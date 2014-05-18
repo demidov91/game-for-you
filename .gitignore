@@ -18,3 +18,4 @@ src/app_static/*
 src/core/media/admin
 *.mo
 /logs/*
+!/logs/README.txt
