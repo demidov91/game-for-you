@@ -65,6 +65,6 @@ def to_timestamp(date_time):
     date_time: *datetime.datetime* instance.
     returns: *int* - UNIX timestamp.
     """
-    if sys.version_info.major > 2 and sys.version_info.minor > 2:
+    if sys.version_info[0] == 3 and sys.version_info[1] > 2:
         return date_time.timestamp()
     return (date_time - datetime(1970, 1, 1)) / timedelta(seconds=1)
