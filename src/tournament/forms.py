@@ -45,7 +45,7 @@ class TournamentForm(forms.ModelForm):
 
     checkbox_fields = ('tags',)
 
-    def save(self, owner, *args, commit=True, **kwargs):
+    def save(self, owner, commit=True, *args, **kwargs):
         """
         owner: auth.User instance. User, who created this tournament.
         """
