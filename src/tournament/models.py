@@ -96,7 +96,7 @@ class Competition(models.Model):
         return self.name or self.tournament and self.tournament.name  or ''
 
     def __unicode__(self):
-        return '{0} {1} {2}'.format(self.get_name(), _('in'), self.place.name)
+        return u'{0} {1} {2}'.format(self.get_name(), _('in'), self.place.name)
 
 
 class Participation(models.Model):
