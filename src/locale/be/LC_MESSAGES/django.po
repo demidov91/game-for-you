@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-16 09:09+0000\n"
+"POT-Creation-Date: 2014-05-19 14:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,11 +18,11 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: core/settings.py:192
+#: core/settings.py:198
 msgid "Russian"
 msgstr "Руская"
 
-#: core/settings.py:193
+#: core/settings.py:199
 msgid "Belarussian"
 msgstr "Беларуская"
 
@@ -59,7 +58,7 @@ msgstr "Увайсці"
 #: core/templates/unauthenticated_base.html:39
 #: custom_registration/templates/account/signup.html:3
 msgid "Sign Up"
-msgstr "Зарэгістравацца"
+msgstr "Рэгістрацыя"
 
 #: core/templates/parts/calendar.html:12
 msgid "Add event"
@@ -140,115 +139,123 @@ msgstr "Адняць правы ўладальніка"
 msgid "Can edit team"
 msgstr "Можа рэдагаваць"
 
-#: tournament/forms.py:32 tournament/forms.py:89
+#: tournament/forms.py:31 tournament/forms.py:88
 msgid "New tag name"
 msgstr "Назва дадатковага тэга"
 
-#: tournament/forms.py:88
+#: tournament/forms.py:87
 msgid "Place created earlier"
 msgstr "Месца, унесенае раней"
 
-#: tournament/forms.py:110 tournament/forms.py:111
+#: tournament/forms.py:109 tournament/forms.py:110
 msgid "Select place where competition is held."
 msgstr "Азначце месца правядзення мпаборніцтва."
 
-#: tournament/forms.py:125
+#: tournament/forms.py:124
 msgid "Tag "
 msgstr "Тэг "
 
-#: tournament/forms.py:125
+#: tournament/forms.py:124
 msgid " already exists."
 msgstr " існуе."
 
-#: tournament/models.py:24
+#: tournament/models.py:27 tournament/models.py:43
 msgid "name"
 msgstr "назва"
 
-#: tournament/models.py:43
-msgid "No-name tournament"
-msgstr "Безназоўны турнір"
+#: tournament/models.py:44
+msgid "first date"
+msgstr "з"
 
-#: tournament/models.py:50
-msgid "place name"
-msgstr "назва месца"
+#: tournament/models.py:45
+msgid "last date"
+msgstr "па"
 
-#: tournament/models.py:51
-msgid "address"
-msgstr "адрас"
-
-#: tournament/models.py:52
-msgid "owner"
-msgstr "уладальнік"
-
-#: tournament/models.py:53
-msgid "people who know this place"
-msgstr "людзі, якія ведаюць аб гэтым месцы"
-
-#: tournament/models.py:73
-msgid "open"
-msgstr "адкрыты"
-
-#: tournament/models.py:74
-msgid "private"
-msgstr "закрыты"
-
-#: tournament/models.py:77
-msgid "tournament"
-msgstr "турнір"
-
-#: tournament/models.py:78
-msgid "place to play"
-msgstr "Месца гульні:"
-
-#: tournament/models.py:79
-msgid "start date"
-msgstr "пачатак"
-
-#: tournament/models.py:81
-msgid "competition duration (in minutes)"
-msgstr "працягласць гульні (у хвілінах)"
-
-#: tournament/models.py:82
-msgid "max team count"
-msgstr "абмежаванне на колькасць каманд"
-
-#: tournament/models.py:83
-msgid "team accept strategy"
-msgstr "прыём заявак"
-
-#: tournament/models.py:84
+#: tournament/models.py:46 tournament/models.py:91
 msgid "tags"
 msgstr "тэгі"
 
+#: tournament/models.py:47 tournament/models.py:59
+msgid "owner"
+msgstr "уладальнік"
+
+#: tournament/models.py:50
+msgid "No-name tournament"
+msgstr "Безназоўны турнір"
+
+#: tournament/models.py:57
+msgid "place name"
+msgstr "назва месца"
+
+#: tournament/models.py:58
+msgid "address"
+msgstr "адрас"
+
+#: tournament/models.py:60
+msgid "people who know this place"
+msgstr "людзі, якія ведаюць аб гэтым месцы"
+
+#: tournament/models.py:80
+msgid "open"
+msgstr "адкрыты"
+
+#: tournament/models.py:81
+msgid "private"
+msgstr "закрыты"
+
+#: tournament/models.py:84
+msgid "tournament"
+msgstr "прапанова адыграць"
+
 #: tournament/models.py:85
+msgid "place to play"
+msgstr "Месца гульні:"
+
+#: tournament/models.py:86
+msgid "start date"
+msgstr "пачатак"
+
+#: tournament/models.py:88
+msgid "competition duration (in minutes)"
+msgstr "працягласць гульні (у хвілінах)"
+
+#: tournament/models.py:89
+msgid "max team count"
+msgstr "абмежаванне на колькасць каманд"
+
+#: tournament/models.py:90
+msgid "team accept strategy"
+msgstr "прыём заявак"
+
+#: tournament/models.py:92
 msgid "competition name"
 msgstr "назва гульні"
 
-#: tournament/models.py:92
+#: tournament/models.py:99
 msgid "in"
 msgstr "у"
 
-#: tournament/models.py:106
+#: tournament/models.py:113
 msgid "invitation"
 msgstr "запрашэнне"
 
-#: tournament/models.py:107
+#: tournament/models.py:114
 msgid "claim"
 msgstr "заяўка"
 
-#: tournament/models.py:108
+#: tournament/models.py:115
 msgid "approved"
 msgstr "прынята"
 
-#: tournament/models.py:109
+#: tournament/models.py:116
 msgid "declined"
 msgstr "адмоўлена"
 
-#: tournament/models.py:110
+#: tournament/models.py:117
 msgid "registered"
 msgstr "зарэгістравана"
 
-#: tournament/views.py:142
+#: tournament/views.py:144
 msgid "Wrong request data."
 msgstr "Хібны запыт."
 
@@ -258,15 +265,15 @@ msgstr "Заявіць пляцоўку"
 
 #: tournament/templates/add_event.html:12
 msgid "add tournament"
-msgstr "дабавіць турнір"
+msgstr "дадаць прапанову адыграць"
 
 #: tournament/templates/add_event.html:24
 msgid "add competition"
-msgstr "дабавіць гульню"
+msgstr "дадаць гульню"
 
 #: tournament/templates/add_event.html:24
 msgid "Add tournament"
-msgstr "Дабавіць турнір"
+msgstr "Дадаць прапанову адыграць"
 
 #: tournament/templates/authenticated_tournament.html:15
 #: tournament/templates/competition.html:14
@@ -275,11 +282,11 @@ msgstr "Выдаліць"
 
 #: tournament/templates/parts/competition_content.html:9
 msgid "Tournament"
-msgstr "Турнір"
+msgstr "Прапанова адыграць"
 
 #: tournament/templates/parts/competition_content.html:14
 msgid "Start at"
-msgstr "Пачатак а"
+msgstr "Пачатак"
 
 #: tournament/templates/parts/competition_content.html:18
 msgid "Place"
@@ -345,7 +352,7 @@ msgstr "Пачатак"
 
 #: tournament/templates/parts/events_for_day.html:19
 msgid "Tournaments:"
-msgstr "Турніры:"
+msgstr "Прапановы адыграць:"
 
 #: tournament/templates/parts/events_for_day.html:24
 #: tournament/templates/parts/tournament_content.html:8

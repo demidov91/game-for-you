@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-16 09:00+0000\n"
+"POT-Creation-Date: 2014-05-19 13:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,11 +18,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: core/settings.py:192
+#: core/settings.py:198
 msgid "Russian"
 msgstr "Русский"
 
-#: core/settings.py:193
+#: core/settings.py:199
 msgid "Belarussian"
 msgstr "Беларуская"
 
@@ -59,7 +58,7 @@ msgstr "Войти"
 #: core/templates/unauthenticated_base.html:39
 #: custom_registration/templates/account/signup.html:3
 msgid "Sign Up"
-msgstr "Регестрация"
+msgstr "Регистрация"
 
 #: core/templates/parts/calendar.html:12
 msgid "Add event"
@@ -140,116 +139,123 @@ msgstr "Запретить редактирование"
 msgid "Can edit team"
 msgstr "Может редактировать"
 
-#: tournament/forms.py:32 tournament/forms.py:89
+#: tournament/forms.py:31 tournament/forms.py:88
 msgid "New tag name"
 msgstr "Название дополнительного тега"
 
-#: tournament/forms.py:88
+#: tournament/forms.py:87
 msgid "Place created earlier"
 msgstr "Ранее сохранённое место"
 
-#: tournament/forms.py:110 tournament/forms.py:111
+#: tournament/forms.py:109 tournament/forms.py:110
 msgid "Select place where competition is held."
 msgstr "Выберите место, где проходит соревнование"
 
-#: tournament/forms.py:125
+#: tournament/forms.py:124
 msgid "Tag "
 msgstr "Тег "
 
-#: tournament/forms.py:125
+#: tournament/forms.py:124
 msgid " already exists."
 msgstr " уже существует."
 
-#: tournament/models.py:24
+#: tournament/models.py:27 tournament/models.py:43
 msgid "name"
 msgstr "название"
 
-#: tournament/models.py:43
-msgid "No-name tournament"
-msgstr "Безымянный турнир"
+#: tournament/models.py:44
+msgid "first date"
+msgstr "с"
 
-#: tournament/models.py:50
-msgid "place name"
-msgstr "название места игры"
+#: tournament/models.py:45
+msgid "last date"
+msgstr "по"
 
-#: tournament/models.py:51
-msgid "address"
-msgstr "адрес"
-
-#: tournament/models.py:52
-msgid "owner"
-msgstr "владелец"
-
-#: tournament/models.py:53
-msgid "people who know this place"
-msgstr "люди, которые знают об этом месте"
-
-#: tournament/models.py:73
-msgid "open"
-msgstr "открытый"
-
-#: tournament/models.py:74
-msgid "private"
-msgstr "закрытый"
-
-#: tournament/models.py:77
-msgid "tournament"
-msgstr "турнир"
-
-#: tournament/models.py:78
-msgid "place to play"
-msgstr "место игры"
-
-#: tournament/models.py:79
-msgid "start date"
-msgstr "начало"
-
-#: tournament/models.py:81
-msgid "competition duration (in minutes)"
-msgstr "продолжительность соревнования (минуты)"
-
-#: tournament/models.py:82
-msgid "max team count"
-msgstr "максимальное количесвто команд"
-
-#: tournament/models.py:83
-msgid "team accept strategy"
-msgstr "Приём заявок"
-
-#: tournament/models.py:84
+#: tournament/models.py:46 tournament/models.py:91
 msgid "tags"
 msgstr "теги"
 
+#: tournament/models.py:47 tournament/models.py:59
+msgid "owner"
+msgstr "владелец"
+
+#: tournament/models.py:50
+msgid "No-name tournament"
+msgstr "Безымянный турнир"
+
+#: tournament/models.py:57
+msgid "place name"
+msgstr "название места игры"
+
+#: tournament/models.py:58
+msgid "address"
+msgstr "адрес"
+
+#: tournament/models.py:60
+msgid "people who know this place"
+msgstr "люди, которые знают об этом месте"
+
+#: tournament/models.py:80
+msgid "open"
+msgstr "открытый"
+
+#: tournament/models.py:81
+msgid "private"
+msgstr "закрытый"
+
+#: tournament/models.py:84
+msgid "tournament"
+msgstr "предложение отыграть"
+
 #: tournament/models.py:85
-#, fuzzy
-msgid "competition name"
-msgstr "добавить игру"
+msgid "place to play"
+msgstr "место игры"
+
+#: tournament/models.py:86
+msgid "start date"
+msgstr "начало"
+
+#: tournament/models.py:88
+msgid "competition duration (in minutes)"
+msgstr "продолжительность соревнования (минуты)"
+
+#: tournament/models.py:89
+msgid "max team count"
+msgstr "максимальное количесвто команд"
+
+#: tournament/models.py:90
+msgid "team accept strategy"
+msgstr "Приём заявок"
 
 #: tournament/models.py:92
+msgid "competition name"
+msgstr "название игры"
+
+#: tournament/models.py:99
 msgid "in"
 msgstr "в"
 
-#: tournament/models.py:106
+#: tournament/models.py:113
 msgid "invitation"
 msgstr "приглашение"
 
-#: tournament/models.py:107
+#: tournament/models.py:114
 msgid "claim"
 msgstr "заявка"
 
-#: tournament/models.py:108
+#: tournament/models.py:115
 msgid "approved"
-msgstr "поддтверждена"
+msgstr "подтверждена"
 
-#: tournament/models.py:109
+#: tournament/models.py:116
 msgid "declined"
 msgstr "отклонена"
 
-#: tournament/models.py:110
+#: tournament/models.py:117
 msgid "registered"
 msgstr "зарегистрирована"
 
-#: tournament/views.py:142
+#: tournament/views.py:144
 msgid "Wrong request data."
 msgstr "Неверный запрос."
 
@@ -259,7 +265,7 @@ msgstr "Добавить игру"
 
 #: tournament/templates/add_event.html:12
 msgid "add tournament"
-msgstr "Добавить турнир"
+msgstr "Добавить предложение отыграть"
 
 #: tournament/templates/add_event.html:24
 msgid "add competition"
@@ -267,7 +273,7 @@ msgstr "добавить игру"
 
 #: tournament/templates/add_event.html:24
 msgid "Add tournament"
-msgstr "Добавить турнир"
+msgstr "Добавить предложение отыграть"
 
 #: tournament/templates/authenticated_tournament.html:15
 #: tournament/templates/competition.html:14
@@ -276,7 +282,7 @@ msgstr "Удалить"
 
 #: tournament/templates/parts/competition_content.html:9
 msgid "Tournament"
-msgstr "Турнир:"
+msgstr "Предлложение отыграть"
 
 #: tournament/templates/parts/competition_content.html:14
 msgid "Start at"
@@ -318,7 +324,7 @@ msgstr "Заявки."
 
 #: tournament/templates/parts/competition_dynamic.html:59
 msgid "Accept"
-msgstr "Подтвержить участие"
+msgstr "Подтвердить участие"
 
 #: tournament/templates/parts/competition_dynamic.html:74
 msgid "Re-Accept"
@@ -342,11 +348,11 @@ msgstr "Игры:"
 
 #: tournament/templates/parts/events_for_day.html:11
 msgid "Start"
-msgstr "начало"
+msgstr "Начало"
 
 #: tournament/templates/parts/events_for_day.html:19
 msgid "Tournaments:"
-msgstr "Турниры:"
+msgstr "Предложения отыграть:"
 
 #: tournament/templates/parts/events_for_day.html:24
 #: tournament/templates/parts/tournament_content.html:8
