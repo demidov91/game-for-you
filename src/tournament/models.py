@@ -93,7 +93,7 @@ class Competition(models.Model):
     owners = models.ForeignKey(ShareTree)
 
     def get_name(self):
-        return self.name or self.tournament and self.tournament.name  or ''
+        return self.name or self.tournament and self.tournament.name or ''
 
     def __unicode__(self):
         return u'{0} {1} {2}'.format(self.get_name(), _('in'), self.place.name)
