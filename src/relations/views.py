@@ -4,11 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponseForbidden
 
 from relations.models import Team, UserProfile, UserContact
 from relations.forms import TeamForm
-from relations.decorators import team_owner_only
+from relations.decorators import team_owner_only, team_member_only
 from relations.utils import create_team, can_delete_team, get_members_for_editor
 from core.utils import is_in_share_tree, has_higher_priority, find_leave_by_owner, find_from_leave_to_root, get_root
 from core.models import ShareTree
@@ -55,9 +55,8 @@ class EditTeamView(View):
     def dispatch(self, request, *args, **kwargs):
         return super(EditTeamView, self).dispatch(request, *args, **kwargs)
 
-
-def view_team(request, team_id):
-    team = get_object_or_404(Team.objects, id=team_id)
+@team_member_only(set_key='team')
+def view_team(request, team):
     return render(request, 'view_team.html', {
         'team': team,
         'is_owner': is_in_share_tree(request.user, team.owner)

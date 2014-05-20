@@ -61,7 +61,10 @@ class AddCompetitionForm(forms.ModelForm):
 
     short_place_name = _temp_place_form.fields['name']
     address = _temp_place_form.fields['address']
-    new_tag_names = forms.CharField(label=_('New tag names'), widget=widgets.TextInput(attrs={'class': 'form-control'}))
+    new_tag_names = forms.CharField(
+        label=_('New tag names'),
+        widget=widgets.TextInput(attrs={'class': 'form-control'}),
+        required=False)
     like_a_place = _temp_competition_form.fields['place']
 
     class Meta:

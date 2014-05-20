@@ -41,7 +41,7 @@ def get_tags(request):
 
 
 def get_calendar_events_by_tags(tags, start, end):
-    tournaments = Tournament.objects.filter(Q(tags=tags) & Q(last_datetime__range=(start, end)) | Q(first_datetime__range=(start, end))).distinct()
+    tournaments = Tournament.objects.filter(tags=tags, last_datetime__gte=start, first_datetime__lte=end)
     competitions = Competition.objects.filter(tags=tags, start_datetime__range=(start, end))
     events = []
     events += tournaments_to_calendar_events(tournaments)
