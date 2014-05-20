@@ -68,7 +68,7 @@ class PlayField(models.Model):
         """
         return self.name or self.address
 
-
+@python_2_unicode_compatible
 class Competition(models.Model):
     """
     Bag for *Tournament* and *PlayField*
@@ -95,7 +95,7 @@ class Competition(models.Model):
     def get_name(self):
         return self.name or self.tournament and self.tournament.name or ''
 
-    def __unicode__(self):
+    def __str__(self):
         return u'{0} {1} {2}'.format(self.get_name(), _('in'), self.place.name)
 
 

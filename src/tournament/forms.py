@@ -81,6 +81,7 @@ class AddCompetitionForm(forms.ModelForm):
         self.owner = owner
         for none_reuired in ('short_place_name', 'address', 'tags', 'place'):
             self.fields[none_reuired].required = False
+        self.fields['place'].queryset = PlayField.objects.filter(owner=owner)
 
     @transaction.commit_on_success
     def clean(self):

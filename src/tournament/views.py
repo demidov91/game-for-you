@@ -76,7 +76,7 @@ def add_event(request):
 
     return render(request, 'add_event.html', {
         'tournament_form': TournamentForm(initial=initial),
-        'competition_form': AddCompetitionForm(initial=initial),
+        'competition_form': AddCompetitionForm(initial=initial, owner=request.user),
         })
 
 
@@ -89,7 +89,7 @@ def add_tournament(request):
         return redirect('index')
     return render(request, 'add_event.html',  {
         'tournament_form': form,
-        'competition_form': AddCompetitionForm(),
+        'competition_form': AddCompetitionForm(owner=request.user),
         'show_tournament': True,
         })
 
