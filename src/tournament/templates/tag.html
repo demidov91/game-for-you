@@ -1,0 +1,10 @@
+{% extends 'authenticated_base.html' %}
+
+{% load i18n %}
+
+{% block nav_calendar_active %}active{% endblock %}
+
+{% block content %}
+    <h1>{{ tag.name }}</h1>
+    <div>{% trans 'Here should be tag chat.' %}</div>
+{% endblock %}

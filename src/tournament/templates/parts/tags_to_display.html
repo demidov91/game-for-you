@@ -3,6 +3,12 @@
 <h3 id="calendar-tags-caption">{% trans 'Tags to display:' %}</h3>
 <div id="calendar-tags">
     {% for tag in tags %}
-    <div class="tag">{{ tag.name }}</div>
+    <div class="tag">
+        <div class="name toLeft"><a href="{% url 'tag_page' tag_id=tag.id %}">{{ tag.name }}</a></div>
+        <form class="remove toLeft" method="post" action="{% url 'unsubscribe_tag' tag_id=tag.id %}">{% csrf_token %}
+            <button type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+        </form>
+        <div class="clear"></div>
+    </div>
     {% endfor %}
 </div>

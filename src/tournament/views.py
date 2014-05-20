@@ -13,7 +13,7 @@ from django.db.models import Q
 from tournament.utils import get_tags, get_calendar_events_by_tags, get_events_by_tags_and_day,\
     get_default_participation_state, get_calendar_events_by_team
 from tournament.forms import TournamentForm, AddCompetitionForm
-from tournament.models import Competition, Participation, Tournament
+from tournament.models import Competition, Participation, Tournament, Tag
 from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation
 from relations.models import Team
 from core.utils import is_in_share_tree, to_timestamp
@@ -204,4 +204,15 @@ def delete_tournament(request, tournament):
 def delete_competition(request, competition):
     competition.delete()
     return redirect('index')
+
+@require_POST
+def unsubscribe_tag(request, tag_id):
+    return HttpResponse()
+
+
+def tag_page(request, tag_id):
+    return render(request, 'tag.html', {
+        'tag': get_object_or_404(Tag.objects, id=tag_id),
+    })
+
 

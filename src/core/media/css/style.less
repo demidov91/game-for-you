@@ -134,7 +134,22 @@ html{
 }
 
 #calendar-tags-caption{text-align: center;}
-#calendar-tags .tag{width: 100%; background-color: #5CB85C; border-radius: 0.1em; padding-left: 0.6em; font-family: Georgia, Times, "Times New Roman", serif;}
+#calendar-tags .tag{
+    width: 100%;
+    font-family: Georgia, Times, "Times New Roman", serif;
+    .name {
+        width: 85%; min-width: 5em; background-color: #5CB85C; border-radius: 0.1em; padding-left: 0.5em; 
+        a {
+            color: inherit;
+            &:hover {text-decoration: none;}
+        }
+    }
+    .remove { 
+        width: 15%; min-width: 1em; text-align: center; opacity: 0.1;
+        button{ background: none; border: none;} 
+    }
+    &:hover .remove{ opacity: 1;}
+}
 #login-placeholder, #register-placeholder {width: 45%;}
 #login-placeholder {margin-left: 2%; margin-right: 8%;}
 #email-authentication>.modal-dialog{font-size: 0.6em;width: 55em;}
