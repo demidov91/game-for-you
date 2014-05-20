@@ -13,6 +13,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+@python_2_unicode_compatible
 class Tag(models.Model):
     """
     Event topic.
@@ -27,7 +28,6 @@ class Tag(models.Model):
     #Displayed name.
     name = models.CharField(max_length=100, verbose_name=_('name'), unique=True)
 
-    @python_2_unicode_compatible
     def __str__(self):
         return self.name
 
@@ -40,7 +40,7 @@ def add_default_tag(sender, instance, created, **kwargs):
             logger.error('Default tag does not exist.')
 
 
-
+@python_2_unicode_compatible
 class Tournament(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('name'))
     first_datetime = models.DateTimeField(verbose_name=_('first date'))
@@ -48,11 +48,11 @@ class Tournament(models.Model):
     tags = models.ManyToManyField(Tag, related_name='tournaments', verbose_name=_('tags'))
     owner = models.ForeignKey(ShareTree, verbose_name=_('owner'))
 
-    @python_2_unicode_compatible
     def __str__(self):
         return self.name or _('No-name tournament')
 
 
+@python_2_unicode_compatible
 class PlayField(models.Model):
     """
     Place where game can be held.
@@ -62,7 +62,6 @@ class PlayField(models.Model):
     owner = models.ForeignKey(get_user_model(), verbose_name=_('owner'))
     sharers = models.ManyToManyField(get_user_model(), verbose_name=_('people who know this place'), related_name='known_places')
 
-    @python_2_unicode_compatible
     def __str__(self):
         return self.name
 

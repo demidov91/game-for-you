@@ -9,6 +9,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from core.models import ShareTree
 
 
+@python_2_unicode_compatible
 class UserProfile(models.Model):
     """
     Contacts describe only this instance, so you can create contacts which describe unregistered users.
@@ -34,7 +35,6 @@ class UserProfile(models.Model):
             return self.user.get_short_name() or self.user.username
         return 'No user. (Short name)'
 
-    @python_2_unicode_compatible
     def __str__(self):
         return self.get_full_name()
 
@@ -76,6 +76,7 @@ class UserProfileRecord(models.Model):
     order = models.IntegerField()
 
 
+@python_2_unicode_compatible
 class Team(models.Model):
     DEFAULT_NAME = _('NoName (c)')
 
@@ -84,7 +85,6 @@ class Team(models.Model):
     owner = models.ForeignKey(ShareTree)
     is_draft = models.BooleanField(default=True)
 
-    @python_2_unicode_compatible
     def __str__(self):
         return str(self.get_name_or_default())
 

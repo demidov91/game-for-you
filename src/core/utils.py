@@ -65,7 +65,7 @@ def to_timestamp(date_time):
     date_time: *datetime.datetime* instance.
     returns: *int* - UNIX timestamp.
     """
-    if sys.version_info[0] == 3 and sys.version_info[1] > 2:
+    if sys.version_info > (3, 2):
         return date_time.timestamp()
     td = date_time - datetime(1970, 1, 1, tzinfo=date_time.tzinfo)
     return td.days * 24 * 3600 + td.seconds + td.microseconds / 1e6
