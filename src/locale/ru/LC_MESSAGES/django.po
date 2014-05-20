@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-19 13:39+0000\n"
+"POT-Creation-Date: 2014-05-20 09:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: core/models.py:18
+msgid "Depends on"
+msgstr "Зависит от"
+
+#: core/models.py:19
+msgid "Root element"
+msgstr "Корневой элемент"
 
 #: core/settings.py:198
 msgid "Russian"
@@ -72,19 +80,19 @@ msgstr "Забыли пароль?"
 msgid "Enter team name"
 msgstr "Введите название команды"
 
-#: relations/models.py:78
+#: relations/models.py:80
 msgid "NoName (c)"
 msgstr "Безымянные (с)"
 
-#: relations/models.py:129
+#: relations/models.py:132
 msgid "Is public record"
 msgstr "Открытая запись"
 
-#: relations/models.py:130
+#: relations/models.py:133
 msgid "Record for team"
 msgstr "Запись для команды"
 
-#: relations/models.py:131
+#: relations/models.py:134
 msgid "Is private record"
 msgstr "Закрытая запись"
 
@@ -139,119 +147,119 @@ msgstr "Запретить редактирование"
 msgid "Can edit team"
 msgstr "Может редактировать"
 
-#: tournament/forms.py:31 tournament/forms.py:88
-msgid "New tag name"
-msgstr "Название дополнительного тега"
-
-#: tournament/forms.py:87
+#: tournament/forms.py:54
 msgid "Place created earlier"
 msgstr "Ранее сохранённое место"
 
-#: tournament/forms.py:109 tournament/forms.py:110
+#: tournament/forms.py:65
+msgid "New tag names"
+msgstr "Название дополнительных тегов"
+
+#: tournament/forms.py:99 tournament/forms.py:100
 msgid "Select place where competition is held."
 msgstr "Выберите место, где проходит соревнование"
 
-#: tournament/forms.py:124
+#: tournament/forms.py:117
 msgid "Tag "
 msgstr "Тег "
 
-#: tournament/forms.py:124
+#: tournament/forms.py:117
 msgid " already exists."
 msgstr " уже существует."
 
-#: tournament/models.py:27 tournament/models.py:43
+#: tournament/models.py:28 tournament/models.py:45
 msgid "name"
 msgstr "название"
 
-#: tournament/models.py:44
+#: tournament/models.py:46
 msgid "first date"
 msgstr "с"
 
-#: tournament/models.py:45
+#: tournament/models.py:47
 msgid "last date"
 msgstr "по"
 
-#: tournament/models.py:46 tournament/models.py:91
+#: tournament/models.py:48 tournament/models.py:95
 msgid "tags"
 msgstr "теги"
 
-#: tournament/models.py:47 tournament/models.py:59
+#: tournament/models.py:49 tournament/models.py:62
 msgid "owner"
 msgstr "владелец"
 
-#: tournament/models.py:50
+#: tournament/models.py:53
 msgid "No-name tournament"
 msgstr "Безымянный турнир"
 
-#: tournament/models.py:57
+#: tournament/models.py:60
 msgid "place name"
 msgstr "название места игры"
 
-#: tournament/models.py:58
+#: tournament/models.py:61
 msgid "address"
 msgstr "адрес"
 
-#: tournament/models.py:60
+#: tournament/models.py:63
 msgid "people who know this place"
 msgstr "люди, которые знают об этом месте"
 
-#: tournament/models.py:80
+#: tournament/models.py:84
 msgid "open"
 msgstr "открытый"
 
-#: tournament/models.py:81
+#: tournament/models.py:85
 msgid "private"
 msgstr "закрытый"
 
-#: tournament/models.py:84
+#: tournament/models.py:88
 msgid "tournament"
 msgstr "предложение отыграть"
 
-#: tournament/models.py:85
+#: tournament/models.py:89
 msgid "place to play"
 msgstr "место игры"
 
-#: tournament/models.py:86
+#: tournament/models.py:90
 msgid "start date"
 msgstr "начало"
 
-#: tournament/models.py:88
+#: tournament/models.py:92
 msgid "competition duration (in minutes)"
 msgstr "продолжительность соревнования (минуты)"
 
-#: tournament/models.py:89
+#: tournament/models.py:93
 msgid "max team count"
 msgstr "максимальное количесвто команд"
 
-#: tournament/models.py:90
+#: tournament/models.py:94
 msgid "team accept strategy"
 msgstr "Приём заявок"
 
-#: tournament/models.py:92
+#: tournament/models.py:96
 msgid "competition name"
 msgstr "название игры"
 
-#: tournament/models.py:99
+#: tournament/models.py:103
 msgid "in"
 msgstr "в"
 
-#: tournament/models.py:113
+#: tournament/models.py:117
 msgid "invitation"
 msgstr "приглашение"
 
-#: tournament/models.py:114
+#: tournament/models.py:118
 msgid "claim"
 msgstr "заявка"
 
-#: tournament/models.py:115
+#: tournament/models.py:119
 msgid "approved"
 msgstr "подтверждена"
 
-#: tournament/models.py:116
+#: tournament/models.py:120
 msgid "declined"
 msgstr "отклонена"
 
-#: tournament/models.py:117
+#: tournament/models.py:121
 msgid "registered"
 msgstr "зарегистрирована"
 
