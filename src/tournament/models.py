@@ -35,11 +35,7 @@ class Tag(models.Model):
 @receiver(post_save, sender=get_user_model())
 def add_default_tag(sender, instance, created, **kwargs):
     if created:
-        try:
-            instance.subscribed_to.add(Tag.objects.filter(id__in=settings.DEFAULT_TAGS))
-        except Tag.DoesNotExist:
-            logger.error('Default tag does not exist.')
-
+        instance.subscribed_to.add(*Tag.objects.filter(id__in=settings.DEFAULT_TAGS))
 
 @python_2_unicode_compatible
 class Tournament(models.Model):
