@@ -5,6 +5,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
+from django.conf import settings
 
 from relations.models import Team, Contact
 from core.models import ShareTree
@@ -35,7 +36,7 @@ class Tag(models.Model):
 def add_default_tag(sender, instance, created, **kwargs):
     if created:
         try:
-            instance.subscribed_to.add(Tag.objects.get(id=1))
+            instance.subscribed_to.add(Tag.objects.filter(id__in=settings.DEFAULT_TAGS))
         except Tag.DoesNotExist:
             logger.error('Default tag does not exist.')
 
