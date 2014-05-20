@@ -43,20 +43,8 @@ class TournamentForm(forms.ModelForm):
         super(TournamentForm, self).save(*args, commit=commit, **kwargs)
 
 
-class CompetitionForm(forms.ModelForm):
-    class Meta:
-        model = Competition
-        widgets = {
-            'place': forms.Select(attrs={'class': 'form-control'}),
-        }
-        labels = {
-            'place': _('Place created earlier'),
-        }
-
-
 class AddCompetitionForm(forms.ModelForm):
     _temp_place_form = PlaceForm()
-    _temp_competition_form = CompetitionForm()
     tags_separator = re.compile('[,;]\s*')
 
     short_place_name = _temp_place_form.fields['name']
@@ -65,7 +53,6 @@ class AddCompetitionForm(forms.ModelForm):
         label=_('New tag names'),
         widget=widgets.TextInput(attrs={'class': 'form-control'}),
         required=False)
-    like_a_place = _temp_competition_form.fields['place']
 
     class Meta:
         model = Competition
@@ -77,18 +64,22 @@ class AddCompetitionForm(forms.ModelForm):
             'team_accept_strategy': forms.Select(attrs={'class': 'form-control'}),
             'tags': forms.CheckboxSelectMultiple(),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'place': widgets.Select(attrs={'class': 'form-control'}),
         }
 
-        fields = ('start_datetime', 'name', 'like_a_place', 'short_place_name', 'address', 'tournament',
+        fields = ('start_datetime', 'name', 'place', 'short_place_name', 'address', 'tournament',
                   'team_limit', 'team_accept_strategy', 'duration', 'tags', 'new_tag_names')
 
     checkbox_fields = ('tags',)
     owner = None
 
+    #*PlayField* object to use until new *PlayField* instance is created.
+    _default_place = PlayField(name='Default place')
+
     def __init__(self, data=None, owner=None, *args, **kwargs):
         super(AddCompetitionForm, self).__init__(data, *args, **kwargs)
         self.owner = owner
-        for none_reuired in ('short_place_name', 'address', 'tags', 'like_a_place'):
+        for none_reuired in ('short_place_name', 'address', 'tags', 'place'):
             self.fields[none_reuired].required = False
 
     @transaction.commit_on_success
@@ -97,13 +88,14 @@ class AddCompetitionForm(forms.ModelForm):
         Creates new *PlayField* and *Tag* instances if it is necessary.
         """
         cleaned_data = super(AddCompetitionForm, self).clean()
-        if not cleaned_data.get('like_a_place') and not cleaned_data.get('address') and not cleaned_data.get('short_place_name'):
-            self._errors['like_a_place'] = [_('Select place where competition is held.')]
+        if cleaned_data.get('place') == self._default_place and not cleaned_data.get('address') and not cleaned_data.get('short_place_name'):
+            self._errors['place'] = [_('Select place where competition is held.')]
             raise forms.ValidationError(_('Select place where competition is held.'))
-        if not cleaned_data.get('like_a_place'):
+        if cleaned_data.get('place') == self._default_place:
             self.instance.place = PlayField.objects.create(name=cleaned_data['short_place_name'],
                                                           address=cleaned_data['address'],
                                                           owner=self.owner)
+            self.cleaned_data['place'] = self.instance.place
         if cleaned_data.get('new_tag_names'):
             new_tag_ids = tuple(Tag.objects.create(name=name,
                                  first_owners=ShareTree.objects.create(shared_to=self.owner),
@@ -114,21 +106,22 @@ class AddCompetitionForm(forms.ModelForm):
             cleaned_data['tags'] = Tag.objects.filter(id__in=tags_id)
         return cleaned_data
 
+    def clean_place(self):
+        if not self.cleaned_data['place']:
+            self.cleaned_data['place'] = self._default_place
+        return self.cleaned_data['place']
+
     def clean_new_tag_name(self):
         if self.cleaned_data['new_tag_name'] and Tag.objects.filter(name=self.cleaned_data['new_tag_name']).exists():
             raise forms.ValidationError(_('Tag ') + self.cleaned_data['new_tag_name'] + _(' already exists.'))
         return self.cleaned_data['new_tag_name']
 
-
-    def clean_like_a_place(self):
-        if self.cleaned_data['like_a_place']:
-            self.instance.place = self.cleaned_data['like_a_place']
-        return self.cleaned_data['like_a_place']
-
     def save(self, commit=True, *args, **kwargs):
         """
         owner: auth.User instance. User, who created this tournament.
         """
+        print('Start saving')
         if commit:
             self.instance.owners = ShareTree.objects.create(shared_to=self.owner)
         super(AddCompetitionForm, self).save(*args, commit=commit, **kwargs)
+        print('Stop saving')
