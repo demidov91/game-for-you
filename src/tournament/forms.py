@@ -1,5 +1,10 @@
+import re
+
 from django import forms
+from django.forms import widgets
+from django.forms import fields
 from django.utils.translation import ugettext_lazy as _
+from django.db import transaction
 
 from tournament.models import Tournament, Competition, PlayField, Tag
 from core.forms import BootstrapDateTimeField
@@ -14,21 +19,6 @@ class PlaceForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.Textarea(attrs={'class': 'form-control'}),
-        }
-
-
-class TagForm(forms.ModelForm):
-    class Meta:
-        model = Tag
-        fields = ('name', )
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-        }
-
-class AddTagForm(TagForm):
-    class Meta(TagForm.Meta):
-        labels = {
-            'name': _('New tag name'),
         }
 
 
@@ -60,16 +50,19 @@ class CompetitionForm(forms.ModelForm):
         widgets = {
             'place': forms.Select(attrs={'class': 'form-control'}),
         }
+        labels = {
+            'place': _('Place created earlier'),
+        }
 
 
 class AddCompetitionForm(forms.ModelForm):
     _temp_place_form = PlaceForm()
-    _temp_tag_form = AddTagForm()
     _temp_competition_form = CompetitionForm()
+    tags_separator = re.compile('[,;]\s*')
 
     short_place_name = _temp_place_form.fields['name']
     address = _temp_place_form.fields['address']
-    new_tag_name = _temp_tag_form.fields['name']
+    new_tag_names = forms.CharField(label=_('New tag names'), widget=widgets.TextInput(attrs={'class': 'form-control'}))
     like_a_place = _temp_competition_form.fields['place']
 
     class Meta:
@@ -83,13 +76,9 @@ class AddCompetitionForm(forms.ModelForm):
             'tags': forms.CheckboxSelectMultiple(),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
-        labels = {
-            'like_a_place': _('Place created earlier'),
-            'new_tag_name': _('New tag name'),
-        }
 
         fields = ('start_datetime', 'name', 'like_a_place', 'short_place_name', 'address', 'tournament',
-                  'team_limit', 'team_accept_strategy', 'duration', 'tags', 'new_tag_name')
+                  'team_limit', 'team_accept_strategy', 'duration', 'tags', 'new_tag_names')
 
     checkbox_fields = ('tags',)
     owner = None
@@ -97,9 +86,10 @@ class AddCompetitionForm(forms.ModelForm):
     def __init__(self, data=None, owner=None, *args, **kwargs):
         super(AddCompetitionForm, self).__init__(data, *args, **kwargs)
         self.owner = owner
-        for none_reuired in ('short_place_name', 'address', 'tags', 'new_tag_name', 'like_a_place'):
+        for none_reuired in ('short_place_name', 'address', 'tags', 'like_a_place'):
             self.fields[none_reuired].required = False
 
+    @transaction.commit_on_success
     def clean(self):
         """
         Creates new *PlayField* and *Tag* instances if it is necessary.
@@ -112,10 +102,13 @@ class AddCompetitionForm(forms.ModelForm):
             self.instance.place = PlayField.objects.create(name=cleaned_data['short_place_name'],
                                                           address=cleaned_data['address'],
                                                           owner=self.owner)
-        if cleaned_data.get('new_tag_name'):
-            additional_tag_id = Tag.objects.create(name=cleaned_data.get('new_tag_name')).id
+        if cleaned_data.get('new_tag_names'):
+            new_tag_ids = tuple(Tag.objects.create(name=name,
+                                 first_owners=ShareTree.objects.create(shared_to=self.owner),
+                                 first_sharers=ShareTree.objects.create(shared_to=self.owner)).id for name in self.tags_separator.split(cleaned_data.get('new_tag_names')))
+
             tags_id = list(cleaned_data['tags'].values_list('id', flat=True))
-            tags_id.append(additional_tag_id)
+            tags_id.extend(new_tag_ids)
             cleaned_data['tags'] = Tag.objects.filter(id__in=tags_id)
         return cleaned_data
 

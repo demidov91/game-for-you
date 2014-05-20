@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.encoding import python_2_unicode_compatible
 
 from relations.models import Team, Contact
 from core.models import ShareTree
@@ -18,15 +19,16 @@ class Tag(models.Model):
     """
     #Owner has as much rights as sharer, can add and remove sharers, remove owners from 'his' ownership tree.
     # Last owner can delete a tag.
-    first_owners = models.ManyToManyField(get_user_model(), related_name='tags_owned')
+    first_owners = models.ForeignKey(ShareTree, related_name='tags_owned', null=True, blank=False)
     #Sharer can add sharers and remove sharers from 'his' sharing tree. Public their and proposed events with this tag.
-    first_sharers = models.ManyToManyField(get_user_model(), related_name='tags_to_publish')
+    first_sharers = models.ForeignKey(ShareTree, related_name='tags_to_publish', null=True, blank=False)
     #People who are viewing events
     subscribers = models.ManyToManyField(get_user_model(), related_name='subscribed_to', null=True, blank=True)
     #Displayed name.
     name = models.CharField(max_length=100, verbose_name=_('name'), unique=True)
 
-    def __unicode__(self):
+    @python_2_unicode_compatible
+    def __str__(self):
         return self.name
 
 @receiver(post_save, sender=get_user_model())
@@ -46,7 +48,8 @@ class Tournament(models.Model):
     tags = models.ManyToManyField(Tag, related_name='tournaments', verbose_name=_('tags'))
     owner = models.ForeignKey(ShareTree, verbose_name=_('owner'))
 
-    def __unicode__(self):
+    @python_2_unicode_compatible
+    def __str__(self):
         return self.name or _('No-name tournament')
 
 
@@ -59,7 +62,8 @@ class PlayField(models.Model):
     owner = models.ForeignKey(get_user_model(), verbose_name=_('owner'))
     sharers = models.ManyToManyField(get_user_model(), verbose_name=_('people who know this place'), related_name='known_places')
 
-    def __unicode__(self):
+    @python_2_unicode_compatible
+    def __str__(self):
         return self.name
 
     def get_short_description(self):

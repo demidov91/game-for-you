@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import python_2_unicode_compatible
 
 
 class ShareTree(models.Model):
@@ -9,3 +10,10 @@ class ShareTree(models.Model):
     def delete(self, using=None):
         ShareTree.objects.filter(parent=self).update(parent=self.parent)
         super(ShareTree, self).delete(using)
+
+    @python_2_unicode_compatible
+    def __str__(self):
+        if self.parent:
+            return u'id {0}, {1}. {2} {3} (id:{4})'.format(
+                self.id, self.shared_to, _('Depends on'), self.parent.shared_to, self.parent.id)
+        return  u'id {0}, {1}. {2}.'.format(self.id, self.shared_to, _('Root element'))

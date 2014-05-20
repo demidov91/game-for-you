@@ -4,6 +4,7 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.conf import settings
+from django.utils.encoding import python_2_unicode_compatible
 
 from core.models import ShareTree
 
@@ -33,7 +34,8 @@ class UserProfile(models.Model):
             return self.user.get_short_name() or self.user.username
         return 'No user. (Short name)'
 
-    def __unicode__(self):
+    @python_2_unicode_compatible
+    def __str__(self):
         return self.get_full_name()
 
     def get_active_teams(self):
@@ -82,7 +84,8 @@ class Team(models.Model):
     owner = models.ForeignKey(ShareTree)
     is_draft = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    @python_2_unicode_compatible
+    def __str__(self):
         return str(self.get_name_or_default())
 
     def get_name_or_default(self):
