@@ -2,7 +2,6 @@ import re
 
 from django import forms
 from django.forms import widgets
-from django.forms import fields
 from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
 
