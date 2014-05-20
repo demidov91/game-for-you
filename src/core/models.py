@@ -5,7 +5,7 @@ from django.utils.encoding import python_2_unicode_compatible
 
 @python_2_unicode_compatible
 class ShareTree(models.Model):
-    parent = models.ForeignKey('core.ShareTree', null=True)
+    parent = models.ForeignKey('core.ShareTree', null=True, blank=True)
     shared_to = models.ForeignKey('auth.User', related_name='shared_to')
 
     def delete(self, using=None):
