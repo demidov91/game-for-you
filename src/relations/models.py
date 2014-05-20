@@ -86,7 +86,7 @@ class Team(models.Model):
     is_draft = models.BooleanField(default=True)
 
     def __str__(self):
-        return str(self.get_name_or_default())
+        return self.get_name_or_default()
 
     def get_name_or_default(self):
         return self.name or Team.DEFAULT_NAME
