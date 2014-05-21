@@ -5,10 +5,17 @@
     {% for tag in tags %}
     <div class="tag">
         <div class="name toLeft"><a href="{% url 'tag_page' tag_id=tag.id %}">{{ tag.name }}</a></div>
-        <form class="remove toLeft" method="post" action="{% url 'unsubscribe_tag' tag_id=tag.id %}">{% csrf_token %}
+        <form class="remove toLeft" method="post" action="{% url 'unsubscribe_tag' %}">{% csrf_token %}
             <button type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+            <input type="hidden" name="id" value="{{ tag.id }}" />
         </form>
         <div class="clear"></div>
     </div>
     {% endfor %}
+</div>
+<div id="add-tag-block">
+    <h4>{% trans 'Add tag:' %}</h4>
+    <form method="post" action="{% url 'subscribe_tag' %}">{% csrf_token %}
+        <input type="text" class="form-control" id="add-tag-name" name="name" placeholder="{% trans 'Tag name' %}" />
+    </form>
 </div>

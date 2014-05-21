@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^ajax/competition/(?P<participation_id>\d+)/remove/team/', undo_participation_request, name='undo_participation_request'),
     url(r'^ajax/participation/(?P<participation_id>\d+)/state/(?P<state>\d)/', manage_participation_request, name='change_participation'),
     url(r'^ajax/competition/(?P<competition_id>\d+)/', view_competition_part, name='view_competition_part'),
-    url(r'^ajax/tag/(?P<tag_id>\d+)/unsubscribe/', unsubscribe_tag, name='unsubscribe_tag'),
+    url(r'^ajax/tag/list/', get_tag_names, name='get_tag_names'),
 
     url(r'^event/add/$', add_event, name='add_event'),
     url(r'^tournament/add/$', add_tournament, name='add_tournament'),
@@ -20,6 +20,8 @@ urlpatterns = patterns('',
     url(r'^tournament/(?P<tournament_id>\d+)/$', view_tournament, name='view_tournament'),
     url(r'^tournament/(?P<tournament_id>\d+)/delete/$', delete_tournament, name='delete_tournament'),
     url(r'^competition/(?P<competition_id>\d+)/delete/$', delete_competition, name='delete_competition'),
+    url(r'^tag/unsubscribe/$', change_tag_subscription_state, {'subscribe': False}, name='unsubscribe_tag'),
+    url(r'^tag/subscribe/$', change_tag_subscription_state, {'subscribe': True}, name='subscribe_tag'),
     url(r'^tag/(?P<tag_id>\d+)/$', tag_page, name='tag_page'),
 )
 

@@ -7,6 +7,84 @@ from django.conf import settings
 from tournament.models import Tag, Tournament, Competition, Participation
 from core.utils import to_timestamp
 
+import logging
+logger = logging.getLogger(__name__)
+
+
+class TagsProvider:
+    def __init__(self, request):
+        pass
+
+    def _get_tag_by_name(self, name):
+        return Tag.objects.get(name=name)
+
+    def get_tags(self):
+        """
+        returns: *iterable* of *Tag* instances.
+        """
+        raise NotImplementedError()
+
+    def remove_tag_by_id(self, id):
+        """
+        Unsubscribe or fail silently.
+        """
+        raise NotImplementedError()
+
+    def add_tag_by_name(self, name):
+        """
+        Subscribe.
+        name: *Tag.name* value.
+        raises: *Tag.DoesNotExist*.
+        """
+        raise NotImplementedError()
+
+
+class AuthenticatedTagsProvider(TagsProvider):
+    def __init__(self, request):
+        self.user = request.user
+
+    def get_tags(self):
+        return self.user.subscribed_to.all()
+
+    def remove_tag_by_id(self, id):
+        self.user.subscribed_to.remove(id)
+
+    def add_tag_by_name(self, name):
+        self.user.subscribed_to.add(self._get_tag_by_name(name))
+
+
+class NoneAuthenticatedTagsProvider(TagsProvider):
+    request = None
+    session = None
+    SESSION_KEY = 'tags'
+
+    def __init__(self, request):
+        self.session = request.session
+
+    def _get_tags_id(self):
+        """
+        returns: iterable of *int*.
+        """
+        ids = self.session.get(self.SESSION_KEY)
+        if ids is None:
+            ids = get_default_tag_ids(self.request)
+        return ids
+
+    def get_tags(self):
+        return Tag.objects.filter(id__in=self._get_tags_id())
+
+    def remove_tag_by_id(self, id):
+        ids = list(self._get_tags_id())
+        if id in ids:
+            ids.remove(id)
+            self.session[self.SESSION_KEY] = ids
+
+    def add_tag_by_name(self, name):
+        ids = list(self._get_tags_id())
+        ids.append(self._get_tag_by_name(name).id)
+        self.session[self.SESSION_KEY] = ids
+
+
 
 def get_default_tag_ids(request):
     """
@@ -16,33 +94,16 @@ def get_default_tag_ids(request):
     """
     return settings.DEFAULT_TAGS
 
-
-
-def _get_tags_for_none_authenticated(request):
+def get_tags_provider(request):
     """
-    This method is supposed to return default tags by host.
-    Maybe, it'll be something else or there will be more indicators.
-    returns: collection of *Tag*
+    returns: *TagsProvider* instance.
     """
-    tags = request.session.get('tags')
-    if tags is None:
-        tags = get_default_tag_ids(request)
-        request.session['tags'] = tags
-    return Tag.objects.filter(id__in=tags)
-
-def get_tags(request):
-    """
-    returns: Tags for authenticated and none authenticated users.
-    """
-    if request.user.is_authenticated():
-        return request.user.subscribed_to.all()
-    else:
-        return _get_tags_for_none_authenticated(request)
+    return (AuthenticatedTagsProvider if request.user.is_authenticated() else NoneAuthenticatedTagsProvider)(request)
 
 
 def get_calendar_events_by_tags(tags, start, end):
-    tournaments = Tournament.objects.filter(tags=tags, last_datetime__gte=start, first_datetime__lte=end)
-    competitions = Competition.objects.filter(tags=tags, start_datetime__range=(start, end))
+    tournaments = Tournament.objects.filter(tags=tags, last_datetime__gte=start, first_datetime__lte=end).distinct()
+    competitions = Competition.objects.filter(tags=tags, start_datetime__range=(start, end)).distinct()
     events = []
     events += tournaments_to_calendar_events(tournaments)
     events += competitions_to_calendar_events(competitions)

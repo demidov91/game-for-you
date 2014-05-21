@@ -4,14 +4,14 @@ import time
 
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 
-from tournament.utils import get_tags, get_calendar_events_by_tags, get_events_by_tags_and_day,\
-    get_default_participation_state, get_calendar_events_by_team
+from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
+    get_default_participation_state, get_calendar_events_by_team, get_tags_provider
 from tournament.forms import TournamentForm, AddCompetitionForm
 from tournament.models import Competition, Participation, Tournament, Tag
 from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation
@@ -20,7 +20,7 @@ from core.utils import is_in_share_tree, to_timestamp
 
 
 def _unauthenticated_view(request):
-    tags = get_tags(request)
+    tags = get_tags_provider(request).get_tags()
     return render(request, 'unauthenticated_index.html', {
         'tags': tags,
         'show_login': 'force-login' in request.GET,
@@ -42,7 +42,7 @@ def index(request):
 def calendar_events_json(request):
     start = datetime.fromtimestamp(int(request.GET['start']))
     end = datetime.fromtimestamp(int(request.GET['end']))
-    tags = get_tags(request)
+    tags = get_tags_provider(request).get_tags()
     data = json.dumps(get_calendar_events_by_tags(tags, start, end))
     return HttpResponse(data, content_type='application/json')
 
@@ -50,7 +50,7 @@ def calendar_events_json(request):
 @require_GET
 def calendar_events_for_day_ajax(request):
     date = datetime(day=int(request.GET.get('day')), month=int(request.GET.get('month')), year=int(request.GET.get('year')))
-    tags = get_tags(request)
+    tags = get_tags_provider(request).get_tags()
     return render(request, 'parts/events_for_day.html', get_events_by_tags_and_day(tags, date))
 
 @require_GET
@@ -206,8 +206,14 @@ def delete_competition(request, competition):
     return redirect('index')
 
 @require_POST
-def unsubscribe_tag(request, tag_id):
-    return HttpResponse()
+def change_tag_subscription_state(request, subscribe):
+    tags_provider = get_tags_provider(request)
+    if subscribe:
+        tags_provider.add_tag_by_name(request.POST.get('name'))
+    else:
+        tags_provider.remove_tag_by_id(int(request.POST.get('id')))
+    return redirect('index')
+
 
 
 def tag_page(request, tag_id):
@@ -215,4 +221,10 @@ def tag_page(request, tag_id):
         'tag': get_object_or_404(Tag.objects, id=tag_id),
     })
 
-
+@require_GET
+def get_tag_names(request):
+    contains = request.GET.get('term')[0]
+    if not contains:
+        raise Http404()
+    data = tuple(Tag.objects.filter(name__icontains=contains).values_list('name', flat=True))
+    return HttpResponse(json.dumps(data), content_type='application/json')

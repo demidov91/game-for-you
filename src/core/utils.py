@@ -5,6 +5,7 @@ from collections import deque
 
 from core.models import ShareTree
 
+
 class Adapter(object):
     """
     Wrapper for all object attributes.
@@ -69,3 +70,11 @@ def to_timestamp(date_time):
         return date_time.timestamp()
     td = date_time - datetime(1970, 1, 1, tzinfo=date_time.tzinfo)
     return td.days * 24 * 3600 + td.seconds + td.microseconds / 1e6
+
+class Mock:
+    pass
+
+class UserMock:
+    _is_authenticated = False
+    def is_authenticated(self):
+        return self._is_authenticated

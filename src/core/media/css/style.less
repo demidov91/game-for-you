@@ -135,8 +135,7 @@ html{
 
 #calendar-tags-caption{text-align: center;}
 #calendar-tags .tag{
-    width: 100%;
-    font-family: Georgia, Times, "Times New Roman", serif;
+    width: 100%; font-family: Georgia, Times, "Times New Roman", serif; margin: 0.3em 0;
     .name {
         width: 85%; min-width: 5em; background-color: #5CB85C; border-radius: 0.1em; padding-left: 0.5em; 
         a {
@@ -145,10 +144,10 @@ html{
         }
     }
     .remove { 
-        width: 15%; min-width: 1em; text-align: center; opacity: 0.1;
+        width: 15%; min-width: 1em; text-align: center; visibility: hidden;
         button{ background: none; border: none;} 
     }
-    &:hover .remove{ opacity: 1;}
+    &:hover .remove{ visibility: visible;}
 }
 #login-placeholder, #register-placeholder {width: 45%;}
 #login-placeholder {margin-left: 2%; margin-right: 8%;}
@@ -180,7 +179,7 @@ li.team-nav.with-button{
 .one-day-view{padding: 1em 1%; display: none;}
 #craete-event-placeholder{display: none;}
 #add-event-wrapper{text-align: center;}
-
+#add-tag-block{ margin-top: 3em;}
 /*
 ----------------------------------------team views-------------------------------
 **/

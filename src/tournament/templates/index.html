@@ -7,19 +7,27 @@
 
 {% endblock %}
 
-{% block right_side_content %}{% include 'parts/tags_to_display.html' %}{% endblock %}
+{% block right_side_content %}
+    {% include 'parts/tags_to_display.html' %}
+{% endblock %}
 
 
 {% block script %}
     {{ block.super }}
+    <script>
+        getTagsAutocompeteUrl = "{% url 'get_tag_names' %}";
+    </script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/fullcalendar.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/index.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery-ui-1.10.4.custom.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/index_base.js"></script>
 {% endblock %}
 
 {% block style %}
     {{ block.super }}
     <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/fullcalendar.css" >
     <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/fullcalendar.print.css" media='print' >
+    <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/jquery-ui-1.10.4.custom.min.css" >
 {% endblock %}
 
 {% block nav_calendar_active %}active{% endblock %}
+
