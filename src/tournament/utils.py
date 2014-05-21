@@ -102,8 +102,8 @@ def get_tags_provider(request):
 
 
 def get_calendar_events_by_tags(tags, start, end):
-    tournaments = Tournament.objects.filter(tags=tags, last_datetime__gte=start, first_datetime__lte=end).distinct()
-    competitions = Competition.objects.filter(tags=tags, start_datetime__range=(start, end)).distinct()
+    tournaments = Tournament.objects.filter(tags__in=tags, last_datetime__gte=start, first_datetime__lte=end).distinct()
+    competitions = Competition.objects.filter(tags__in=tags, start_datetime__range=(start, end)).distinct()
     events = []
     events += tournaments_to_calendar_events(tournaments)
     events += competitions_to_calendar_events(competitions)
@@ -119,7 +119,7 @@ def get_calendar_events_by_team(team, start, end):
 def get_events_by_tags_and_day(tags, day):
     next_day = day + timedelta(days=1)
     return {
-        'tournaments': Tournament.objects.filter(tags=tags, first_datetime__lte=day, last_datetime__gte=day),
+        'tournaments': Tournament.objects.filter(tags__in=tags, first_datetime__lte=day, last_datetime__gte=day),
         'competitions':  Competition.objects.filter(tags=tags,
                                                     start_datetime__gte=day,
                                                     start_datetime__lt=next_day),
