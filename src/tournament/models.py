@@ -19,18 +19,30 @@ class Tag(models.Model):
     """
     Event topic.
     """
-    #Owner has as much rights as sharer, can add and remove sharers, remove owners from 'his' ownership tree.
-    # Last owner can delete a tag.
-    first_owners = models.ForeignKey(ShareTree, related_name='tags_owned', null=True, blank=False)
-    #Sharer can add sharers and remove sharers from 'his' sharing tree. Public their and proposed events with this tag.
-    first_sharers = models.ForeignKey(ShareTree, related_name='tags_to_publish', null=True, blank=False)
-    #People who are viewing events
+    #People who view events
     subscribers = models.ManyToManyField(get_user_model(), related_name='subscribed_to', null=True, blank=True)
     #Displayed name.
     name = models.CharField(max_length=100, verbose_name=_('name'), unique=True)
+    #Tag chat enabled.
+    has_chat = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+
+class TagPublishersTree(ShareTree):
+    """
+    Publisher can add publishers and remove publishers from 'his' sharing tree. Public their and proposed events with managed tag.
+    """
+    managed = models.ForeignKey(Tag, related_name='sharers')
+
+class TagOwnersTree(ShareTree):
+    """
+    Owner has as much rights as sharer, can add and remove sharers, remove owners from 'his' ownership tree.
+    Last owner can delete a tag.
+    """
+    managed = models.ForeignKey(Tag, related_name='owners')
+
 
 @receiver(post_save, sender=get_user_model())
 def add_default_tag(sender, instance, created, **kwargs):
@@ -80,7 +92,12 @@ class Competition(models.Model):
         (PRIVATE_STRATEGY, _('private')),
     )
 
-    tournament = models.ForeignKey(Tournament, verbose_name=_('tournament'), null=True, blank=True, related_name='competitions')
+    tournament = models.ForeignKey(Tournament,
+                                   verbose_name=_('tournament'),
+                                   null=True,
+                                   blank=True,
+                                   related_name='competitions',
+                                   on_delete=models.SET_NULL)
     place = models.ForeignKey(PlayField, verbose_name=_('place to play'), on_delete=models.PROTECT)
     start_datetime = models.DateTimeField(verbose_name=_('start date'))
     #duration in minutes

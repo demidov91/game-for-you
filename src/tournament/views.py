@@ -9,15 +9,16 @@ from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.db import transaction
+from django.contrib.auth import get_user_model
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
-    get_default_participation_state, get_calendar_events_by_team, get_tags_provider
-from tournament.forms import TournamentForm, AddCompetitionForm
-from tournament.models import Competition, Participation, Tournament, Tag
-from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation
+    get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_in_management_tree
+from tournament.forms import TournamentForm, AddCompetitionForm, TagForm
+from tournament.models import Competition, Participation, Tournament, Tag, TagOwnersTree
+from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation,\
+    tag_owner_only
 from relations.models import Team
-from core.utils import is_in_share_tree, to_timestamp
+from core.utils import is_in_share_tree, to_timestamp, get_tree_members
 
 
 def _unauthenticated_view(request):
@@ -217,8 +218,10 @@ def change_tag_subscription_state(request, subscribe):
 
 
 def tag_page(request, tag_id):
+    tag = get_object_or_404(Tag.objects, id=tag_id)
     return render(request, 'tag.html', {
-        'tag': get_object_or_404(Tag.objects, id=tag_id),
+        'tag': tag,
+        'is_owner': is_in_management_tree(TagOwnersTree, tag, request.user),
     })
 
 @require_GET
@@ -228,6 +231,40 @@ def get_tag_names(request):
         raise Http404()
     data = tuple(Tag.objects.filter(name__icontains=contains).values_list('name', flat=True))
     return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+@tag_owner_only(set_key='tag')
+def edit_tag(request, tag):
+    if request.method == 'GET':
+        form = TagForm(instance=tag)
+    else:
+        form = TagForm(instance=tag, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('tag_page', tag_id=tag.id)
+    dependent_owners = get_tree_members(TagOwnersTree.objects.get(managed=tag, shared_to=request.user))
+    independent_owners = tag.owners.exclude(id__in=tuple(x.id for x in dependent_owners))
+    me = dependent_owners[0]
+    dependent_owners = dependent_owners[1:-1]
+    return render(request, 'tag_edit.html', {
+        'form': form,
+        'independent_owners': independent_owners,
+        'me_as_owner': me,
+        'dependent_owners': dependent_owners,
+        'sharers': tag.sharers.all(),
+        'contacts': request.user.known_people.all(),
+        'tag': tag,
+        'is_last_owner': independent_owners.count() == 0,
+    })
+
+@require_POST
+@tag_owner_only(set_key='tag')
+def delete_tag(request, tag):
+    if tag.owners.all().count() != 1:
+        return HttpResponseForbidden()
+    tag.delete()
+    return redirect('index')
+
 
 
 

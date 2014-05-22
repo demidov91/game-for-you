@@ -79,6 +79,7 @@ html{
     width: 100%;
     img.avatar {width: 100%;}
 }
+.center{ text-align: center;}
 /**
 ---------------------------------base---------------------------
 **/
@@ -281,6 +282,22 @@ li.team-nav.with-button{
 #places-forms .one-form{
     display: none;
     &.show {disply: block;} 
+}
+/**
+-----------------------------------------tag---------------------------
+*/
+#tag-accessors-management{
+    #sharers, #owners, #contacts{ 
+        width: 50%; height: 20em; overflow: auto;
+        &>div{ width: 20%;}
+    }
+    #sharers, #owners{ float: left;}
+    #contacts, #stop-edit-owners {display: none;}
+    &.owner-edit{
+        #owners, #contacts{ float: left;}
+        #contacts, #stop-edit-owners {display: block;}
+        #sharers, #edit-owners{display: none;}
+    }
 }
 
 

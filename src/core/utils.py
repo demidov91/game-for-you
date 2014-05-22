@@ -61,6 +61,19 @@ def get_root(leaf):
         leaf = leaf.parent
     return leaf
 
+def get_tree_members(root):
+    """
+    root: *ShareTree* instance.
+    returns: *list* of all dependent *ShareTree* leaves starting with **root**.
+    """
+    plain_tree = []
+    leaves = deque((root,))
+    while leaves:
+        plain_tree.append(leaves.popleft())
+        leaves.extend(ShareTree.objects.filter(parent=plain_tree[-1]))
+    return plain_tree
+
+
 def to_timestamp(date_time):
     """
     date_time: *datetime.datetime* instance.

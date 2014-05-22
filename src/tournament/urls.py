@@ -22,6 +22,8 @@ urlpatterns = patterns('',
     url(r'^competition/(?P<competition_id>\d+)/delete/$', delete_competition, name='delete_competition'),
     url(r'^tag/unsubscribe/$', change_tag_subscription_state, {'subscribe': False}, name='unsubscribe_tag'),
     url(r'^tag/subscribe/$', change_tag_subscription_state, {'subscribe': True}, name='subscribe_tag'),
+    url(r'^tag/(?P<tag_id>\d+)/edit/$', edit_tag, name='edit_tag'),
+    url(r'^tag/(?P<tag_id>\d+)/delete/$', delete_tag, name='delete_tag'),
     url(r'^tag/(?P<tag_id>\d+)/$', tag_page, name='tag_page'),
 )
 

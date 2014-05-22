@@ -159,14 +159,14 @@ def undo_team_owner(request, share_tree_id):
 
 @login_required
 def view_settings(request, update_places=False, update_user=False):
-    if update_user:
+    if request.method == 'POST' and update_user:
         profile_settings = ProfileSettings(instance=request.user.userprofile, data=request.POST)
         if profile_settings.is_valid():
             profile_settings.save()
             return redirect('settings')
     else:
         profile_settings = ProfileSettings(instance=request.user.userprofile)
-    if request.POST and update_places:
+    if request.method == 'POST' and update_places:
         places = UserPlacesFormset(owner=request.user, data=request.POST)
         if places.is_valid():
             places.save()

@@ -1,5 +1,6 @@
-from tournament.models import Tournament, Competition, Participation
-from core.decorators import OwnerOnly
+from tournament.models import Tournament, Competition, Participation, Tag, TagOwnersTree
+from core.decorators import OwnerOnly, InstancePreloaderAndPermissionChecker
+from tournament.utils import is_in_management_tree
 
 class tournament_owner_only(OwnerOnly):
     default_get_key = 'tournament_id'
@@ -31,3 +32,15 @@ class can_modify_participation(OwnerOnly):
 
     def get_instance_owner(self, instance):
         return instance.competition.owners
+
+
+class tag_owner_only(InstancePreloaderAndPermissionChecker):
+    default_get_key = 'tag_id'
+    default_set_key = 'tag'
+
+    __name__ = 'tag_owner_only'
+
+    model_class = Tag
+
+    def has_permission(self, user, instance):
+        return is_in_management_tree(TagOwnersTree, instance, user)

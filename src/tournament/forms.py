@@ -5,7 +5,7 @@ from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
 
-from tournament.models import Tournament, Competition, PlayField, Tag
+from tournament.models import Tournament, Competition, PlayField, Tag, TagPublishersTree, TagOwnersTree
 from core.forms import BootstrapDateTimeField
 from core.models import ShareTree
 
@@ -103,10 +103,12 @@ class AddCompetitionForm(forms.ModelForm):
                                                           owner=self.owner)
             self.cleaned_data['place'] = self.instance.place
         if cleaned_data.get('new_tag_names'):
-            new_tag_ids = tuple(Tag.objects.create(name=name,
-                                 first_owners=ShareTree.objects.create(shared_to=self.owner),
-                                 first_sharers=ShareTree.objects.create(shared_to=self.owner)).id for name in self.tags_separator.split(cleaned_data.get('new_tag_names')))
-
+            new_tag_ids = []
+            for name in self.tags_separator.split(cleaned_data.get('new_tag_names')):
+                tag = Tag.objects.create(name=name)
+                TagPublishersTree.objects.create(managed=tag, shared_to=self.owner)
+                TagOwnersTree.objects.create(managed=tag, shared_to=self.owner)
+                new_tag_ids.append(tag.id)
             tags_id = list(cleaned_data['tags'].values_list('id', flat=True))
             tags_id.extend(new_tag_ids)
             cleaned_data['tags'] = Tag.objects.filter(id__in=tags_id)
@@ -162,3 +164,11 @@ class BaseUserPlacesFormset(forms.models.BaseModelFormSet):
 UserPlacesFormset = forms.models.modelformset_factory(PlayField,
                                                       formset=BaseUserPlacesFormset,
                                                       form=PlaceForm, can_delete=True)
+
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = ('name', 'has_chat')
+        widgets = {
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control'})
+        }

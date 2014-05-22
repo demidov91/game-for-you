@@ -153,6 +153,11 @@ def get_default_participation_state(competition):
     return Participation.CLAIM
 
 
+def is_in_management_tree(clazz, managed, user):
+    return user.is_authenticated() and clazz.objects.filter(managed=managed, shared_to=user).exists()
+
+
+
 
 
 
