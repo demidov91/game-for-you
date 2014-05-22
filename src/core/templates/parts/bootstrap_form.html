@@ -1,11 +1,15 @@
+{% load i18n %}
+
 {{ form.non_field_errors }}
 
 {% for field in form %}
     <div class="form-group">
+        {% if not field.is_hidden %}
         <label id="{{ field.id_for_label }}" class="control-label col-sm-{{ label_size|default:4 }}">
             {{ field.label }}
             {% if field.field.required %}<span>*</span>{% endif %}
         </label>
+        {% endif %}
         <div class="col-sm-{{ inputs_size|default:8 }}">
         {% if field.html_name in form.checkbox_fields %}<div class="checkbox">{% endif %}
             {% if field.errors %}
@@ -22,8 +26,11 @@
         </div>
     </div>
 {% endfor %}
+{% if not no_button %}
 <div class="form-group">
     <div class="col-sm-offset-{{ label_size|default:4 }} col-sm-{{ inputs_size|default:8 }}">
-      <button type="submit" class="btn btn-success">{{ submit_text }}</button>
+      {% trans 'Save' as default_submit_text %}
+      <button type="submit" class="btn btn-success">{{ submit_text|default:default_submit_text }}</button>
     </div>
   </div>
+{% endif %}

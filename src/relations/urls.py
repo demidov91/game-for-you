@@ -19,6 +19,11 @@ urlpatterns = patterns('',
     url(r'team/(?P<team_id>\d+)/delete/', delete_team, name='delete_team'),
     url(r'team/(?P<team_id>\d+)/', view_team, name='view_team'),
 
+    url(r'settings/$', view_settings, name='settings'),
+    url(r'settings/update/places/$', view_settings, {'update_places': True}, name='update_places'),
+    url(r'settings/update/user/$', view_settings, {'update_user': True}, name='edit_private_info'),
+
+
     url(r'$', view_contacts, name='view_contacts'),
 )
 

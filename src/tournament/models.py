@@ -54,10 +54,9 @@ class PlayField(models.Model):
     """
     Place where game can be held.
     """
-    name = models.CharField(max_length=100, verbose_name=_('place name'))
-    address = models.TextField(verbose_name=_('address'))
-    owner = models.ForeignKey(get_user_model(), verbose_name=_('owner'))
-    sharers = models.ManyToManyField(get_user_model(), verbose_name=_('people who know this place'), related_name='known_places')
+    name = models.CharField(max_length=100, verbose_name=_('place name'), null=True, blank=True, default='')
+    address = models.TextField(verbose_name=_('address'), null=True, blank=True, default='')
+    owner = models.ForeignKey(get_user_model(), verbose_name=_('owner'), related_name='known_places')
 
     def __str__(self):
         return self.name
@@ -82,7 +81,7 @@ class Competition(models.Model):
     )
 
     tournament = models.ForeignKey(Tournament, verbose_name=_('tournament'), null=True, blank=True, related_name='competitions')
-    place = models.ForeignKey(PlayField, verbose_name=_('place to play'))
+    place = models.ForeignKey(PlayField, verbose_name=_('place to play'), on_delete=models.PROTECT)
     start_datetime = models.DateTimeField(verbose_name=_('start date'))
     #duration in minutes
     duration = models.IntegerField(null=True, blank=True, verbose_name=_('competition duration (in minutes)'))

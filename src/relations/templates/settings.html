@@ -1,0 +1,49 @@
+{% extends 'authenticated_base.html' %}
+
+{% load i18n %}
+
+{% block nav_settings_active %}active{% endblock %}
+
+{% block content %}
+    <h3>{% trans 'Edit your name' %}</h3>
+    <form class="form-horizontal" method="post" action="{% url 'edit_private_info' %}">{% csrf_token %}
+    {% with profile_form as form %}
+    {% include 'parts/bootstrap_form.html' %}
+    {% endwith %}
+    </form>
+
+    {% if known_places %}
+    <h3>{% trans 'Edit addresses' %}</h3>
+     <select id="select-place">
+    {% for place in known_places %}
+         <option value="{{ place.id }}" {% if forloop.first %}selected="selected"{% endif %}>{{ place.get_short_description }}</option>
+    {% endfor %}
+    </select>
+
+
+    <div id="places-forms">
+        {{ places_formset.non_form_errors }}
+        <form class="form-horizontal" method="post" action="{% url 'update_places' %}">{% csrf_token %}
+            {{ places_formset.management_form }}
+            {% for form in places_formset %}
+                 <div class="one-form" id="place-{{ form.id.value }}">
+                {% with True as no_button %}
+                {% include 'parts/bootstrap_form.html' %}
+                {% endwith %}
+                </div>
+            {% endfor %}
+
+            <div class="form-group">
+                <div class="col-sm-offset-{{ label_size|default:4 }} col-sm-{{ inputs_size|default:8 }}">
+                    <button type="submit" class="btn btn-success">{% trans 'Save' %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/settings.js"></script>
+{% endblock %}

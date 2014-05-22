@@ -7,11 +7,12 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponseForbidden
 
 from relations.models import Team, UserProfile, UserContact
-from relations.forms import TeamForm
+from relations.forms import TeamForm, ProfileSettings
 from relations.decorators import team_owner_only, team_member_only
 from relations.utils import create_team, can_delete_team, get_members_for_editor
 from core.utils import is_in_share_tree, has_higher_priority, find_leave_by_owner, find_from_leave_to_root, get_root
 from core.models import ShareTree
+from tournament.forms import UserPlacesFormset
 
 
 @login_required
@@ -155,3 +156,25 @@ def undo_team_owner(request, share_tree_id):
             'team': team,
         })
     return HttpResponseForbidden()
+
+@login_required
+def view_settings(request, update_places=False, update_user=False):
+    if update_user:
+        profile_settings = ProfileSettings(instance=request.user.userprofile, data=request.POST)
+        if profile_settings.is_valid():
+            profile_settings.save()
+            return redirect('settings')
+    else:
+        profile_settings = ProfileSettings(instance=request.user.userprofile)
+    if request.POST and update_places:
+        places = UserPlacesFormset(owner=request.user, data=request.POST)
+        if places.is_valid():
+            places.save()
+            return redirect('settings')
+    else:
+        places = UserPlacesFormset(owner=request.user)
+    return render(request, 'settings.html', {
+        'profile_form': profile_settings,
+        'places_formset': places,
+        'known_places': places.queryset,
+    })

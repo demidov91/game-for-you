@@ -20,6 +20,12 @@ class PlaceForm(forms.ModelForm):
             'address': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
+    def clean(self):
+        cleaned_data = super(PlaceForm, self).clean()
+        if not cleaned_data['name'] and not cleaned_data['address']:
+            raise forms.ValidationError(_('Enter any data about the place.'))
+        return cleaned_data
+
 
 class TournamentForm(forms.ModelForm):
     class Meta:
@@ -83,7 +89,6 @@ class AddCompetitionForm(forms.ModelForm):
             self.fields[none_reuired].required = False
         self.fields['place'].queryset = PlayField.objects.filter(owner=owner)
 
-    @transaction.commit_on_success
     def clean(self):
         """
         Creates new *PlayField* and *Tag* instances if it is necessary.
@@ -121,8 +126,39 @@ class AddCompetitionForm(forms.ModelForm):
         """
         owner: auth.User instance. User, who created this tournament.
         """
-        print('Start saving')
         if commit:
             self.instance.owners = ShareTree.objects.create(shared_to=self.owner)
         super(AddCompetitionForm, self).save(*args, commit=commit, **kwargs)
-        print('Stop saving')
+
+    @transaction.commit_manually
+    def is_valid(self):
+        if super(AddCompetitionForm, self).is_valid():
+            transaction.commit()
+            return True
+        transaction.rollback()
+        return False
+
+
+
+class BaseUserPlacesFormset(forms.models.BaseModelFormSet):
+    def __init__(self, owner, *args, **kwargs):
+        """
+        owner: *auth.User* instance.
+        """
+        super(BaseUserPlacesFormset, self).__init__(*args, **kwargs)
+        self.queryset = PlayField.objects.filter(owner=owner)
+
+    def clean(self):
+        super(BaseUserPlacesFormset, self).clean()
+        cant_delete = False
+        for form in self.deleted_forms:
+            if Competition.objects.filter(place=form.cleaned_data['id']).exists():
+                form._errors['DELETE'] = [_("You can't delete place which has competitions related.")]
+                cant_delete = True
+        if cant_delete:
+            raise forms.ValidationError(_("Can't perform the action."))
+
+
+UserPlacesFormset = forms.models.modelformset_factory(PlayField,
+                                                      formset=BaseUserPlacesFormset,
+                                                      form=PlaceForm, can_delete=True)

@@ -9,6 +9,7 @@ from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.db import transaction
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
     get_default_participation_state, get_calendar_events_by_team, get_tags_provider
@@ -137,7 +138,6 @@ def add_participation_request(request, competition_id):
     AJAX view. Returns 403 or json with key state set to *Participation.state* value.
     """
     try:
-        print((request.POST.get('team_id'), competition_id))
         team = request.user.userprofile.teams.get(id=request.POST.get('team_id'))
         competition = Competition.objects.get(id=competition_id)
     except (Team.DoesNotExist, Competition.DoesNotExist):
@@ -228,3 +228,7 @@ def get_tag_names(request):
         raise Http404()
     data = tuple(Tag.objects.filter(name__icontains=contains).values_list('name', flat=True))
     return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+
+

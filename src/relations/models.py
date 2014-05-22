@@ -4,7 +4,7 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.conf import settings
-from django.utils.encoding import python_2_unicode_compatible
+from django.utils.encoding import python_2_unicode_compatible, force_text
 
 from core.models import ShareTree
 
@@ -20,7 +20,7 @@ class UserProfile(models.Model):
     #Team to display on authenticated_index page.
     primary_team = models.ForeignKey('relations.Team', null=True, blank=True, on_delete=models.SET_NULL)
 
-    patronymic = models.CharField(max_length=100, default='', blank=True)
+    patronymic = models.CharField(max_length=100, default='', blank=True, verbose_name=_('patronymic'))
 
     def get_full_name(self):
         """
@@ -89,7 +89,7 @@ class Team(models.Model):
         return self.get_name_or_default()
 
     def get_name_or_default(self):
-        return self.name or Team.DEFAULT_NAME
+        return force_text(self.name or Team.DEFAULT_NAME)
 
 
 class Contact(models.Model):

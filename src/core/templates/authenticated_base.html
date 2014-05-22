@@ -14,7 +14,7 @@
       {% include 'parts/team_link.html' %}
   </li>
   <li class="{% block nav_contacts_active %}{% endblock %}"><a href="{% url 'view_contacts' %}">{% trans 'People' %}</a></li>
-  <li class="{% block nav_settings_active %}{% endblock %}"><a href="#">{% trans 'Settings' %}</a></li>
+  <li class="{% block nav_settings_active %}{% endblock %}"><a href="{% url 'settings' %}">{% trans 'Settings' %}</a></li>
 </ul>
 {% endblock %}
 
