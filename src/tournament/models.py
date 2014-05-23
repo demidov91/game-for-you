@@ -29,19 +29,25 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def sharers(self):
+        return self.managers.filter(permissions=TagManagementTree.PUBLISHER)
 
-class TagPublishersTree(ShareTree):
-    """
-    Publisher can add publishers and remove publishers from 'his' sharing tree. Public their and proposed events with managed tag.
-    """
-    managed = models.ForeignKey(Tag, related_name='sharers')
+    @property
+    def owners(self):
+        return self.managers.filter(permissions=TagManagementTree.OWNER)
 
-class TagOwnersTree(ShareTree):
-    """
-    Owner has as much rights as sharer, can add and remove sharers, remove owners from 'his' ownership tree.
-    Last owner can delete a tag.
-    """
-    managed = models.ForeignKey(Tag, related_name='owners')
+
+class TagManagementTree(ShareTree):
+    #Publisher can add publishers and remove publishers from 'his' sharing tree.
+    #Public their and proposed events with managed tag.
+    PUBLISHER = 0
+    #Owner has as much rights as sharer, can add and remove sharers, remove owners from 'his' ownership tree.
+    #Last owner can delete a tag.
+    OWNER = 1
+
+    managed = models.ForeignKey(Tag, related_name='managers')
+    permissions = models.PositiveSmallIntegerField(default=PUBLISHER, null=False, blank=False)
 
 
 @receiver(post_save, sender=get_user_model())

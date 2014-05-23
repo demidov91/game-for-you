@@ -287,16 +287,22 @@ li.team-nav.with-button{
 -----------------------------------------tag---------------------------
 */
 #tag-accessors-management{
-    #sharers, #owners, #contacts{ 
+    #managers, #contacts{ 
         width: 50%; height: 20em; overflow: auto;
-        &>div{ width: 20%;}
+        &>.list-placeholder>div{ width: 20%; margin: 0.1em 2%; text-align: center;}
     }
-    #sharers, #owners{ float: left;}
-    #contacts, #stop-edit-owners {display: none;}
-    &.owner-edit{
-        #owners, #contacts{ float: left;}
-        #contacts, #stop-edit-owners {display: block;}
-        #sharers, #edit-owners{display: none;}
+    #managers>.list-placeholder>div {
+        width: 30%;        
+    }
+    .contact .name {font-size: 0.8em;}
+
+    #managers {
+        form {display: none;}
+        .owner, .me-owner{
+             .owner-action {display: block; }
+        }
+        .sharer .sharer-action {display: block; }
+        .me-owner.is-last .owner-action {display: none;}
     }
 }
 

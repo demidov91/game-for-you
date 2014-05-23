@@ -4,8 +4,8 @@ from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from tournament.models import Tag, Tournament, Competition, Participation
-from core.utils import to_timestamp
+from tournament.models import Tag, Tournament, Competition, Participation, TagManagementTree
+from core.utils import to_timestamp, ShareTreeUtil
 
 import logging
 logger = logging.getLogger(__name__)
@@ -152,12 +152,6 @@ def get_default_participation_state(competition):
         return Participation.CLAIM
     return Participation.CLAIM
 
-
-def is_in_management_tree(clazz, managed, user):
-    return user.is_authenticated() and clazz.objects.filter(managed=managed, shared_to=user).exists()
-
-
-
-
-
-
+class TagOwnersTreeUtil(ShareTreeUtil):
+    def _is_tree_member(self, leaf):
+        return leaf and leaf.permissions == TagManagementTree.OWNER

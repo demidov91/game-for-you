@@ -39,8 +39,9 @@ class InstancePreloaderAndPermissionChecker:
             instance = get_object_or_404(self.model_class.objects, id=instance_id)
             if not self.has_permission(request.user, instance):
                 return HttpResponseForbidden()
-            kwargs[self.set_key] = instance
             del kwargs[self.get_key]
+            if self.set_key:
+                kwargs[self.set_key] = instance
             return view_func(request, *args, **kwargs)
         return wrapper
 

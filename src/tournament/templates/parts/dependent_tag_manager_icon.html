@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<img class="avatar" src="{{ manager.shared_to.userprofile.get_image }}" />
+<div class="center"><span>{{ manager.shared_to.userprofile.get_short_name}}</span></div>
+<form action="{% url 'make_tag_owner' manager_id=manager.id %}" method="post" class="owner-action">{% csrf_token %}
+    <input type="submit" value="{% trans 'Make owner' %}" class="btn btn-success btn-sm" />
+</form>
+<form action="{% url 'remove_tag_owner' manager_id=manager.id %}" method="post" class="owner-action">{% csrf_token %}
+    <input type="submit" value="{% trans 'Make publisher' %}" class="btn btn-warning btn-sm" />
+</form>
+<form action="{% url 'remove_tag_sharer' manager_id=manager.id %}" method="post" class="sharer-action">{% csrf_token %}
+    <input type="submit" value="{% trans 'Remove publisher' %}" class="btn btn-danger btn-sm" />
+</form>

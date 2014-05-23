@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 
 from tournament.views import *
 
+
 urlpatterns = patterns('',
     url(r'^$', index, name='index'),
     url(r'^ajax/calendar-events/one-day/$', calendar_events_for_day_ajax, name='get_calendar_events_for_day'),
@@ -12,6 +13,12 @@ urlpatterns = patterns('',
     url(r'^ajax/participation/(?P<participation_id>\d+)/state/(?P<state>\d)/', manage_participation_request, name='change_participation'),
     url(r'^ajax/competition/(?P<competition_id>\d+)/', view_competition_part, name='view_competition_part'),
     url(r'^ajax/tag/list/', get_tag_names, name='get_tag_names'),
+    url(r'^ajax/tag/(?P<tag_id>\d+)/owners/list/', get_tag_managers_list, name='tag_managers_list'),
+    url(r'^ajax/tag/(?P<manager_id>\d+)/owner/remove/', make_tag_owner, name='make_tag_owner'),
+    url(r'^ajax/tag/(?P<tag_id>\d+)/sharer/add/(?P<user_id>\d+)/',add_tag_sharer, name='make_tag_sharer'),
+    url(r'^ajax/tag/(?P<manager_id>\d+)/owner/remove/', downgrade_to_tag_sharer, name='remove_tag_owner'),
+    url(r'^ajax/tag/(?P<manager_id>\d+)/sharer/remove/', remove_tag_sharer, name='remove_tag_sharer'),
+
 
     url(r'^event/add/$', add_event, name='add_event'),
     url(r'^tournament/add/$', add_tournament, name='add_tournament'),

@@ -7,50 +7,28 @@
     {% include 'parts/bootstrap_form.html' %}
 </form>
 <div id="tag-accessors-management">
-    <div id="owners">
-        <h3>{% trans 'Tag owners:' %}</h3>
-        <h6>{% trans 'Can view this page' %}</h6>
-        {% for owner in independent_owners %}
-        <div class="owner toLeft avatar-wrapper">
-            <img class="avatar" src=" {{ owner.shared_to.userprofile.get_image }}" />
-            <div class="center"><span>{{ owner.shared_to.userprofile.get_short_name}}</span></div>
-        </div>
-        {% endfor %}
-        <div class="clear"></div>
-
-        <div class="owner avatar-wrapper">
-            <img class="avatar" src="{{ me_as_owner.shared_to.userprofile.get_image }}" />
-            <div class="center"><span>{{ me_as_owner.shared_to.userprofile.get_short_name}}</span></div>
-        </div>
-
-        {% for owner in dependent_owners %}
-        <div class="owner toLeft avatar-wrapper">
-            <img class="avatar" src="{{ owner.shared_to.userprofile.get_image }}" />
-            <div class="center"><span>{{ owner.shared_to.userprofile.get_short_name}}</span></div>
-        </div>
-        {% endfor %}
-        <div class="toLeft">
-            <button id="edit-owners" class="btn btn-default">{% trans 'Edit owners list' %} &gt; </button>
-            <button id="stop-edit-owners" class="btn btn-default"> &lt; {% trans 'Hide contacts' %} </button>
-        </div>
-        <div class="clear"></div>
+    <div id="managers" class="toLeft">
+        <h4>{% trans 'Tag managers:' %}</h4>
+        <h6>{% trans 'Owners and publishers' %}</h6>
+        <div class="list-placeholder" data-url="{% url 'tag_managers_list' tag_id=tag.id %}"></div>
     </div>
-    <div id="sharers">
-        {% for sharer in sharers %}
-        <div class="sharer toLeft">
+    <div id="contacts" class="toLeft">
+        <h4>{% trans 'All your contacts:' %}</h4>
+        <h6>{% trans 'Click to make them publishers' %}</h6>
+        <div class="list-placeholder">
+            {% for contact in contacts %}
+            <div class="contact toLeft avatar-wrapper">
+                <img class="avatar" src="{{ contact.about.get_image }}" />
+                <div class="center"><span class="name">{{ contact.about.get_short_name}}</span></div>
+                {% if contact.about.user %}
+                <form action="{% url 'make_tag_sharer' tag_id=tag.id user_id=contact.about.user.id %}" method="post">{% csrf_token %}
+                    <input type="submit" value="{% trans 'Make sharer' %}" class="btn btn-warning btn-sm" />
+                </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div class="clear"></div>
         </div>
-        {% endfor %}
-        <div class="clear"></div>
-    </div>
-    <div id="contacts">
-        {% for contact in contacts %}
-        <div class="contact toLeft avatar-wrapper">
-            <img class="avatar" src="{{ contact.about.get_image }}" />
-            <div class="center"><span>{{ contact.about.get_short_name}}</span></div>
-
-        </div>
-        {% endfor %}
-        <div class="clear"></div>
     </div>
     <div class="clear"></div>
 </div>

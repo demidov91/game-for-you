@@ -33,7 +33,7 @@ def has_higher_priority(user, acceptor, root):
     acceptor_leaf = find_leave_by_owner(root, acceptor)
     if not acceptor_leaf:
         return True
-    return bool(find_from_leave_to_root(acceptor_leaf, user))
+    return bool(find_from_leaf_to_root(acceptor_leaf, user))
 
 def find_leave_by_owner(root, user):
     """
@@ -49,30 +49,47 @@ def find_leave_by_owner(root, user):
         leaves.extend(ShareTree.objects.filter(parent=leaf))
     return None
 
-def find_from_leave_to_root(leaf, user_to_find):
-    while leaf.parent:
-        if leaf.parent.shared_to == user_to_find:
-            return leaf.parent
-        leaf = leaf.parent
-    return None
+def find_from_leaf_to_root(leaf, user_to_find):
+    helper = ShareTreeUtil()
+    return helper.find_from_leaf_to_root(leaf, user_to_find)
+
+
+class ShareTreeUtil:
+    def _is_tree_member(self, leaf):
+        """
+        Method that indicates if the *leaf* can be in this sharing tree.
+        """
+        return leaf
+
+    def find_from_leaf_to_root(self, leaf, user_to_find):
+        """
+        returns: *ShareTree* instance with *share_to*==**user_to_find**.
+        """
+        while self._is_tree_member(leaf.parent):
+            if leaf.parent.shared_to == user_to_find:
+                return leaf.parent
+            leaf = leaf.parent
+        return None
+
+
 
 def get_root(leaf):
     while leaf.parent:
         leaf = leaf.parent
     return leaf
 
-def get_tree_members(root):
+def get_tree_members(root, preselected_tree=ShareTree.objects.all()):
     """
     root: *ShareTree* instance.
+    preselected_tree: *ShareTree* queryset to add some constraint on the search.
     returns: *list* of all dependent *ShareTree* leaves starting with **root**.
     """
     plain_tree = []
     leaves = deque((root,))
     while leaves:
         plain_tree.append(leaves.popleft())
-        leaves.extend(ShareTree.objects.filter(parent=plain_tree[-1]))
+        leaves.extend(preselected_tree.filter(parent=plain_tree[-1]))
     return plain_tree
-
 
 def to_timestamp(date_time):
     """

@@ -5,7 +5,7 @@ from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
 
-from tournament.models import Tournament, Competition, PlayField, Tag, TagPublishersTree, TagOwnersTree
+from tournament.models import Tournament, Competition, PlayField, Tag, TagManagementTree
 from core.forms import BootstrapDateTimeField
 from core.models import ShareTree
 
@@ -106,8 +106,7 @@ class AddCompetitionForm(forms.ModelForm):
             new_tag_ids = []
             for name in self.tags_separator.split(cleaned_data.get('new_tag_names')):
                 tag = Tag.objects.create(name=name)
-                TagPublishersTree.objects.create(managed=tag, shared_to=self.owner)
-                TagOwnersTree.objects.create(managed=tag, shared_to=self.owner)
+                TagManagementTree.objects.create(managed=tag, shared_to=self.owner, permissions=TagManagementTree.OWNER)
                 new_tag_ids.append(tag.id)
             tags_id = list(cleaned_data['tags'].values_list('id', flat=True))
             tags_id.extend(new_tag_ids)

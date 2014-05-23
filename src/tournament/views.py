@@ -7,16 +7,15 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
-    get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_in_management_tree
+    get_default_participation_state, get_calendar_events_by_team, get_tags_provider
 from tournament.forms import TournamentForm, AddCompetitionForm, TagForm
-from tournament.models import Competition, Participation, Tournament, Tag, TagOwnersTree
+from tournament.models import Competition, Participation, Tournament, Tag, TagManagementTree
 from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation,\
-    tag_owner_only
+    tag_owner_only, tag_master_sharer_or_owner_only, tag_master_owner_only, tag_sharer_only
 from relations.models import Team
 from core.utils import is_in_share_tree, to_timestamp, get_tree_members
 
@@ -217,7 +216,10 @@ def tag_page(request, tag_id):
     template_name = 'tag_authenticated.html' if request.user.is_authenticated() else 'tag_unauthenticated.html'
     return render(request, template_name, {
         'tag': tag,
-        'is_owner': is_in_management_tree(TagOwnersTree, tag, request.user),
+        'is_owner': TagManagementTree.objects.filter(
+            managed=tag,
+            shared_to=request.user,
+            permissions=TagManagementTree.OWNER),
     })
 
 @require_GET
@@ -238,28 +240,74 @@ def edit_tag(request, tag):
         if form.is_valid():
             form.save()
             return redirect('tag_page', tag_id=tag.id)
-    dependent_owners = get_tree_members(TagOwnersTree.objects.get(managed=tag, shared_to=request.user))
-    independent_owners = tag.owners.exclude(id__in=tuple(x.id for x in dependent_owners))
-    me = dependent_owners[0]
-    dependent_owners = dependent_owners[1:-1]
+
     return render(request, 'tag_edit.html', {
         'form': form,
-        'independent_owners': independent_owners,
-        'me_as_owner': me,
-        'dependent_owners': dependent_owners,
-        'sharers': tag.sharers.all(),
+        'is_last_owner': tag.owners.count() == 1,
         'contacts': request.user.known_people.all(),
         'tag': tag,
-        'is_last_owner': independent_owners.count() == 0,
+
     })
 
 @require_POST
 @tag_owner_only(set_key='tag')
 def delete_tag(request, tag):
     if tag.owners.all().count() != 1:
-        return HttpResponseForbidden()
+        return HttpResponseForbidden(_('Only the last owner can remove tags.'))
     tag.delete()
     return redirect('index')
+
+@require_GET
+@tag_owner_only(set_key='tag')
+def get_tag_managers_list(request, tag):
+    me = TagManagementTree.objects.get(managed=tag, shared_to=request.user)
+    dependent_owners = get_tree_members(me, TagManagementTree.objects.filter(permissions=TagManagementTree.OWNER))[1:-1]
+    independent_owners = tag.owners.exclude(id__in=tuple(x.id for x in dependent_owners)).exclude(id=me.id)
+    return render(request, 'parts/tag_managers_list.html', {
+        'independent_owners': independent_owners,
+        'me_as_owner': me,
+        'dependent_owners': dependent_owners,
+        'is_last_owner': independent_owners.count() == 0,
+        'sharers': tag.sharers.all(),
+    })
+
+@require_POST
+@tag_sharer_only(set_key='tag')
+def add_tag_sharer(request, tag, user_id):
+    """
+    Use one of the *BaseTagManagerOnly* decorator around this view.
+    """
+    parent_leaf = get_object_or_404(TagManagementTree.objects, managed=tag, shared_to=request.user)
+    new_owner = get_object_or_404(get_user_model(), id=user_id)
+    TagManagementTree.objects.create(
+        managed=tag,
+        parent=parent_leaf,
+        shared_to=new_owner,
+        permissions=TagManagementTree.PUBLISHER)
+    return redirect('get_owners_list', tag_id=tag.id)
+
+@require_POST
+@tag_owner_only(set_key='')
+def make_tag_owner(request, manager_id):
+    manager = get_object_or_404(TagManagementTree.objects, id=manager_id)
+    manager.permissions = TagManagementTree.OWNER
+    manager.save()
+    return HttpResponse()
+
+
+@require_POST
+@tag_master_owner_only(set_key='tag_manager')
+def downgrade_to_tag_sharer(request, tag_manager):
+    tag_manager.remove_from_tree()
+    tag_manager.permissions = TagManagementTree.PUBLISHER
+    tag_manager.save()
+    return HttpResponse()
+
+@require_POST
+@tag_master_sharer_or_owner_only(set_key='tag_manager')
+def remove_tag_sharer(request, tag_manager):
+    tag_manager.delete()
+    return HttpResponse()
 
 
 

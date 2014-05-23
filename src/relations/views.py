@@ -10,7 +10,7 @@ from relations.models import Team, UserProfile, UserContact
 from relations.forms import TeamForm, ProfileSettings
 from relations.decorators import team_owner_only, team_member_only
 from relations.utils import create_team, can_delete_team, get_members_for_editor
-from core.utils import is_in_share_tree, has_higher_priority, find_leave_by_owner, find_from_leave_to_root, get_root
+from core.utils import is_in_share_tree, has_higher_priority, find_leave_by_owner, find_from_leaf_to_root, get_root
 from core.models import ShareTree
 from tournament.forms import UserPlacesFormset
 
@@ -146,7 +146,7 @@ def make_team_owner(request, userprofile_id, team):
 @login_required
 def undo_team_owner(request, share_tree_id):
     leaf = get_object_or_404(ShareTree.objects, id=share_tree_id)
-    my_leaf = find_from_leave_to_root(leaf, request.user)
+    my_leaf = find_from_leaf_to_root(leaf, request.user)
     if my_leaf:
         leaf.delete()
         root = get_root(my_leaf)

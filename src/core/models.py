@@ -8,8 +8,14 @@ class ShareTree(models.Model):
     parent = models.ForeignKey('core.ShareTree', null=True, blank=True)
     shared_to = models.ForeignKey('auth.User', related_name='shared_to')
 
-    def delete(self, using=None):
+    def remove_from_tree(self):
+        """
+        Moves all incoming connections to the *parent*.
+        """
         ShareTree.objects.filter(parent=self).update(parent=self.parent)
+
+    def delete(self, using=None):
+        self.remove_from_tree()
         super(ShareTree, self).delete(using)
 
     def __str__(self):
