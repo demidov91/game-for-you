@@ -49,11 +49,14 @@ function initialize_default_calendar(extraOptions){
 }
 
 
-function load_html_content(jObject){
+function load_html_content(jObject, callback){
     $.ajax({
         url: jObject.data('url'),
         success: function(data){
             jObject.html(data);
+        },
+        complete: function(){
+            if (callback) {callback();}
         }
     });
 }

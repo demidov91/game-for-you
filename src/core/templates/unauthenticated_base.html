@@ -20,8 +20,6 @@
 {% endblock %}
 
 {% block content %}
-
-
 <div class="modal {% if show_login %}force-show{% endif %}" id="email-authentication">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -30,7 +28,7 @@
             <h4 class="modal-title" id="myModalLabel">{% trans 'Log in or register.' %}</h4>
           </div>
           <div class="modal-body">
-            <div id="login-placeholder" data-url="{% url 'account_login' %}?next={{ redirect_after_login|default:'' }}" class="toLeft"></div>
+            <div id="login-placeholder" data-url="{% url 'account_login' %}?next={% url 'index' %}" class="toLeft"></div>
             <div id="register-placeholder" data-url="{% url 'account_signup' %}" class="toLeft"></div>
             <div class="clear"></div>
           </div>
@@ -42,7 +40,6 @@
         </div>
   </div>
 </div>
-
 {% endblock %}
 
 

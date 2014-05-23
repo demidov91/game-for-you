@@ -26,7 +26,6 @@ def _unauthenticated_view(request):
     return render(request, 'unauthenticated_index.html', {
         'tags': tags,
         'show_login': 'force-login' in request.GET,
-        'redirect_after_login': request.GET.get('next'),
         })
 
 def _authenticated_index(request):
@@ -117,8 +116,6 @@ def view_competition(request, competition_id):
     }
     if request.user.is_authenticated():
         context['is_competition_owner'] = is_in_share_tree(request.user, competition.owners)
-    else:
-        context['redirect_after_login'] = reverse('view_competition', kwargs={'competition_id': competition_id})
     return render(request, template_name, context)
 
 def view_tournament(request, tournament_id):
@@ -215,11 +212,10 @@ def change_tag_subscription_state(request, subscribe):
         tags_provider.remove_tag_by_id(int(request.POST.get('id')))
     return redirect('index')
 
-
-
 def tag_page(request, tag_id):
     tag = get_object_or_404(Tag.objects, id=tag_id)
-    return render(request, 'tag.html', {
+    template_name = 'tag_authenticated.html' if request.user.is_authenticated() else 'tag_unauthenticated.html'
+    return render(request, template_name, {
         'tag': tag,
         'is_owner': is_in_management_tree(TagOwnersTree, tag, request.user),
     })

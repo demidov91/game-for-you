@@ -1,0 +1,8 @@
+{% extends 'unauthenticated_base.html' %}
+
+{% load i18n %}
+
+{% block content %}
+    {% include 'parts/tag_content.html' %}
+    {{ block.super }}
+{% endblock %}

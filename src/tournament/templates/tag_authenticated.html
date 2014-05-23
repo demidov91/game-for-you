@@ -5,10 +5,7 @@
 {% block nav_calendar_active %}active{% endblock %}
 
 {% block content %}
-    <h1>{{ tag.name }}</h1>
-    {% if tag.has_chat %}
-    <div>{% trans 'Here should be tag chat.' %}</div>
-    {% endif %}
+    {% include 'parts/tag_content.html' %}
 {% endblock %}
 
 {% block right_side_content %}
