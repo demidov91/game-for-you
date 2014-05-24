@@ -217,7 +217,7 @@ def tag_page(request, tag_id):
     template_name = 'tag_authenticated.html' if request.user.is_authenticated() else 'tag_unauthenticated.html'
     return render(request, template_name, {
         'tag': tag,
-        'is_owner': TagManagementTree.objects.filter(
+        'is_owner': request.user.is_authenticated() and TagManagementTree.objects.filter(
             managed=tag,
             shared_to=request.user,
             permissions=TagManagementTree.OWNER),
