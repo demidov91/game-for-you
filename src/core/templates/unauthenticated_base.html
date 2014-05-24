@@ -4,6 +4,7 @@
 
 {% block left_side %}
 <div id="all-auth-links">
+    <div class="{% block hide_back %}{% endblock %}"><a href="{% url 'index' %}"><img src="{{ STATIC_URL}}img/back.png" alt="back"  /></a></div>
     <div><img src="{{ STATIC_URL}}img/email_144.png" alt="auth_with_email" data-toggle="modal" data-target="#email-authentication" /></div>
     <div><img src="{{ STATIC_URL}}img/facebook_144.png" alt="auth_with_fb" /></div>
     <div><img src="{{ STATIC_URL}}img/gmail_144.jpg" alt="auth_with_gmail" /></div>
