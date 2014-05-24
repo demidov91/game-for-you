@@ -27,7 +27,10 @@ class UserProfile(models.Model):
         Full name or username.
         """
         if self.user:
-            return (self.user.last_name + self.user.first_name + (self.patronymic or '')) or self.user.username
+            if self.user.last_name or self.user.first_name or self.patronymic:
+                return u'{0} {1} {2}'.format(self.user.last_name, self.user.first_name, self.patronymic)
+            else:
+                return self.user.username
         return 'No user.'
 
     def get_short_name(self):

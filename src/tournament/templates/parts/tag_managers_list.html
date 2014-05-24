@@ -1,27 +1,27 @@
 {% load i18n %}
 
 {% for owner in independent_owners %}
-<div class="super-owner toLeft avatar-wrapper">
+<div class="super-owner toLeft avatar-wrapper item">
     {% with owner as manager %}
     {% include 'parts/dependent_tag_manager_icon.html' %}
     {% endwith %}
 </div>
 {% endfor %}
 <div class="clear"></div>
-<div class="me-owner {% if is_last_owner%}is-last{% endif %} avatar-wrapper">
+<div class="me-owner {% if is_last_owner%}is-last{% endif %} avatar-wrapper item">
     {% with me_as_owner as manager %}
     {% include 'parts/dependent_tag_manager_icon.html' %}
     {% endwith %}
 </div>
 {% for owner in dependent_owners %}
-<div class="owner toLeft avatar-wrapper">
+<div class="owner toLeft avatar-wrapper item">
     {% with owner as manager %}
     {% include 'parts/dependent_tag_manager_icon.html' %}
     {% endwith %}
 </div>
 {% endfor %}
 {% for sharer in sharers %}
-<div class="sharer toLeft avatar-wrapper">
+<div class="sharer toLeft avatar-wrapper item">
     {% with sharer as manager %}
     {% include 'parts/dependent_tag_manager_icon.html' %}
     {% endwith %}

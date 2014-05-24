@@ -154,4 +154,4 @@ def get_default_participation_state(competition):
 
 class TagOwnersTreeUtil(ShareTreeUtil):
     def _is_tree_member(self, leaf):
-        return leaf and leaf.permissions == TagManagementTree.OWNER
+        return leaf and  TagManagementTree.objects.get(id=leaf.id).permissions == TagManagementTree.OWNER

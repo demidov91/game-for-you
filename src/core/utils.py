@@ -71,6 +71,9 @@ class ShareTreeUtil:
             leaf = leaf.parent
         return None
 
+    def is_last(self, leaf):
+        return not ShareTree.objects.filter(parent=leaf).exists()
+
 
 
 def get_root(leaf):

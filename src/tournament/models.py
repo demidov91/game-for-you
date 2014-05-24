@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 from relations.models import Team, Contact
 from core.models import ShareTree
@@ -38,6 +39,7 @@ class Tag(models.Model):
         return self.managers.filter(permissions=TagManagementTree.OWNER)
 
 
+@python_2_unicode_compatible
 class TagManagementTree(ShareTree):
     #Publisher can add publishers and remove publishers from 'his' sharing tree.
     #Public their and proposed events with managed tag.
@@ -49,6 +51,8 @@ class TagManagementTree(ShareTree):
     managed = models.ForeignKey(Tag, related_name='managers')
     permissions = models.PositiveSmallIntegerField(default=PUBLISHER, null=False, blank=False)
 
+    def __str__(self):
+        return u'{0} {1} {2}'.format(super(TagManagementTree, self).__str__(), _('for tag'), str(self.managed))
 
 @receiver(post_save, sender=get_user_model())
 def add_default_tag(sender, instance, created, **kwargs):

@@ -1,3 +1,6 @@
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
+
 from tournament.models import Tournament, Competition, Participation, Tag, TagManagementTree
 from core.decorators import OwnerOnly, InstancePreloaderAndPermissionChecker
 from core.utils import ShareTreeUtil
@@ -42,22 +45,42 @@ class BaseTagManagerOnly(InstancePreloaderAndPermissionChecker):
 
     _permission_to_check = None
 
-    def has_permission(self, user, instance):
-        return TagManagementTree.objects.filter(
-            managed=instance,
-            shared_to=user,
-            permissions=self._permission_to_check).exists()
+
 
 
 class tag_owner_only(BaseTagManagerOnly):
     __name__ = 'tag_owner_only'
-    _permission_to_check = TagManagementTree.OWNER
+
+    def has_permission(self, user, instance):
+        return TagManagementTree.objects.filter(
+            managed=instance,
+            shared_to=user,
+            permissions=TagManagementTree.OWNER).exists()
 
 
-class tag_sharer_only(BaseTagManagerOnly):
-    __name__ = 'tag_sharer_only'
-    _permission_to_check = TagManagementTree.PUBLISHER
+class tag_sharer_and_owner_only(BaseTagManagerOnly):
+    __name__ = 'tag_sharer_and_owner_only'
 
+    def has_permission(self, user, instance):
+        return TagManagementTree.objects.filter(
+            Q(managed=instance) &
+            Q(shared_to=user) &
+            Q(permissions=TagManagementTree.OWNER) | Q(permissions=TagManagementTree.PUBLISHER)).exists()
+
+
+class can_upgrade_manager(InstancePreloaderAndPermissionChecker):
+    default_get_key = 'manager_id'
+    default_set_key = 'manager'
+
+    __name__ = 'can_upgrade_manager'
+
+    model_class = TagManagementTree
+
+    def has_permission(self, user, instance):
+        return TagManagementTree.objects.filter(
+            managed=instance.managed,
+            shared_to=user,
+            permissions=TagManagementTree.OWNER).exists()
 
 
 class BaseTagMasterManagerOnly(InstancePreloaderAndPermissionChecker):
@@ -68,7 +91,10 @@ class BaseTagMasterManagerOnly(InstancePreloaderAndPermissionChecker):
     share_tree_util = ShareTreeUtil()
 
     def has_permission(self, user, instance):
+        if instance.shared_to == user and not self.share_tree_util.is_last(instance):
+            return True
         return self.share_tree_util.find_from_leaf_to_root(instance, user)
+
 
 class tag_master_owner_only(BaseTagMasterManagerOnly):
     share_tree_util = TagOwnersTreeUtil()
