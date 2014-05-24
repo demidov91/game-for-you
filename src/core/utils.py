@@ -72,7 +72,7 @@ class ShareTreeUtil:
         return None
 
     def is_last(self, leaf):
-        return not ShareTree.objects.filter(parent=leaf).exists()
+        return not (leaf.parent or ShareTree.objects.filter(parent=leaf).exists())
 
 
 

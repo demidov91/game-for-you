@@ -20,7 +20,7 @@ $(function(){
         event.preventDefault();
         var jThis = $(this);
         var redirect = false;
-        if (jThis.parents('.me-owner')){
+        if (jThis.parents('.me-owner').length == 1){
             if (confirm(confirmRemovingYourselfAsOwnerWords)){
                 redirect = true;
             } else {
@@ -31,7 +31,9 @@ $(function(){
         jThis.ajaxSubmit({
             success: function(){
                 jThis.parents('.item').removeClass('owner').addClass('sharer');
-                window.location.href = redirectToAfterRemovingYourselfAsOwner;
+                if (redirect){
+                    window.location.href = redirectToAfterRemovingYourselfAsOwner;
+                }
             },
             complete: function(){
                 $('#managers .list-placeholder').removeClass('loading');

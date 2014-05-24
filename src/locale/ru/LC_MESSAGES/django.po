@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-22 12:57+0000\n"
+"POT-Creation-Date: 2014-05-24 09:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: core/models.py:18
+#: core/models.py:24
 msgid "Depends on"
 msgstr "Зависит от"
 
-#: core/models.py:19
+#: core/models.py:25
 msgid "Root element"
 msgstr "Корневой элемент"
 
@@ -54,16 +54,16 @@ msgstr "Выйти"
 msgid "What? Where? When? organizer"
 msgstr "Календарь Что? Где? Когда?"
 
-#: core/templates/unauthenticated_base.html:30
+#: core/templates/unauthenticated_base.html:29
 msgid "Log in or register."
 msgstr "Войдите или зарегистрируйтесь"
 
-#: core/templates/unauthenticated_base.html:38
+#: core/templates/unauthenticated_base.html:37
 #: custom_registration/templates/account/login.html:3
 msgid "Sign In"
 msgstr "Войти"
 
-#: core/templates/unauthenticated_base.html:39
+#: core/templates/unauthenticated_base.html:38
 #: custom_registration/templates/account/signup.html:3
 msgid "Sign Up"
 msgstr "Регистрация"
@@ -97,19 +97,19 @@ msgstr "фамилия"
 msgid "patronymic"
 msgstr "отчество"
 
-#: relations/models.py:81
+#: relations/models.py:84
 msgid "NoName (c)"
 msgstr "Безымянные (с)"
 
-#: relations/models.py:132
+#: relations/models.py:135
 msgid "Is public record"
 msgstr "Открытая запись"
 
-#: relations/models.py:133
+#: relations/models.py:136
 msgid "Record for team"
 msgstr "Запись для команды"
 
-#: relations/models.py:134
+#: relations/models.py:137
 msgid "Is private record"
 msgstr "Закрытая запись"
 
@@ -148,6 +148,7 @@ msgid "Edit addresses"
 msgstr "Изменение ранее сохранённых адресов"
 
 #: relations/templates/view_team.html:22
+#: tournament/templates/tag_authenticated.html:13
 msgid "Edit"
 msgstr "Править"
 
@@ -180,117 +181,125 @@ msgstr "Название дополнительных тегов"
 msgid "Select place where competition is held."
 msgstr "Выберите место, где проходит соревнование"
 
-#: tournament/forms.py:122
+#: tournament/forms.py:123
 msgid "Tag "
 msgstr "Тег "
 
-#: tournament/forms.py:122
+#: tournament/forms.py:123
 msgid " already exists."
 msgstr " уже существует."
 
-#: tournament/forms.py:156
+#: tournament/forms.py:157
 msgid "You can't delete place which has competitions related."
 msgstr "Нельзя удалить адрес, на который зарегестрирована игра."
 
-#: tournament/forms.py:159
+#: tournament/forms.py:160
 msgid "Can't perform the action."
 msgstr "Невозможно совершить действие."
 
-#: tournament/models.py:30 tournament/models.py:42
+#: tournament/models.py:26 tournament/models.py:64
 msgid "name"
 msgstr "название"
 
-#: tournament/models.py:43
+#: tournament/models.py:55
+msgid "for tag"
+msgstr "относится к тегу"
+
+#: tournament/models.py:65
 msgid "first date"
 msgstr "с"
 
-#: tournament/models.py:44
+#: tournament/models.py:66
 msgid "last date"
 msgstr "по"
 
-#: tournament/models.py:45 tournament/models.py:90
+#: tournament/models.py:67 tournament/models.py:117
 msgid "tags"
 msgstr "теги"
 
-#: tournament/models.py:46 tournament/models.py:59
+#: tournament/models.py:68 tournament/models.py:81
 msgid "owner"
 msgstr "владелец"
 
-#: tournament/models.py:49
+#: tournament/models.py:71
 msgid "No-name tournament"
 msgstr "Безымянный турнир"
 
-#: tournament/models.py:57
+#: tournament/models.py:79
 msgid "place name"
 msgstr "название места игры"
 
-#: tournament/models.py:58
+#: tournament/models.py:80
 msgid "address"
 msgstr "адрес"
 
-#: tournament/models.py:79
+#: tournament/models.py:101
 msgid "open"
 msgstr "открытый"
 
-#: tournament/models.py:80
+#: tournament/models.py:102
 msgid "private"
 msgstr "закрытый"
 
-#: tournament/models.py:83
+#: tournament/models.py:106
 msgid "tournament"
 msgstr "предложение отыграть"
 
-#: tournament/models.py:84
+#: tournament/models.py:111
 msgid "place to play"
 msgstr "место игры"
 
-#: tournament/models.py:85
+#: tournament/models.py:112
 msgid "start date"
 msgstr "начало"
 
-#: tournament/models.py:87
+#: tournament/models.py:114
 msgid "competition duration (in minutes)"
 msgstr "продолжительность соревнования (минуты)"
 
-#: tournament/models.py:88
+#: tournament/models.py:115
 msgid "max team count"
 msgstr "максимальное количесвто команд"
 
-#: tournament/models.py:89
+#: tournament/models.py:116
 msgid "team accept strategy"
 msgstr "Приём заявок"
 
-#: tournament/models.py:91
+#: tournament/models.py:118
 msgid "competition name"
 msgstr "название игры"
 
-#: tournament/models.py:98
+#: tournament/models.py:125
 msgid "in"
 msgstr "в"
 
-#: tournament/models.py:112
+#: tournament/models.py:139
 msgid "invitation"
 msgstr "приглашение"
 
-#: tournament/models.py:113
+#: tournament/models.py:140
 msgid "claim"
 msgstr "заявка"
 
-#: tournament/models.py:114
+#: tournament/models.py:141
 msgid "approved"
 msgstr "подтверждена"
 
-#: tournament/models.py:115
+#: tournament/models.py:142
 msgid "declined"
 msgstr "отклонена"
 
-#: tournament/models.py:116
+#: tournament/models.py:143
 msgid "registered"
 msgstr "зарегистрирована"
 
-#: tournament/views.py:144
+#: tournament/views.py:142
 msgid "Wrong request data."
 msgstr "Неверный запрос."
+
+#: tournament/views.py:257
+msgid "Only the last owner can remove tags."
+msgstr "Только последний владелец может удалять теги."
 
 #: tournament/templates/add_event.html:11
 msgid "Add competition"
@@ -313,9 +322,33 @@ msgstr "Добавить предложение отыграть"
 msgid "Delete"
 msgstr "Удалить"
 
-#: tournament/templates/tag.html:9
-msgid "Here should be tag chat."
-msgstr "Здесь будет чат тега."
+#: tournament/templates/tag_edit.html:11
+msgid "Tag managers:"
+msgstr "Управление тегом:"
+
+#: tournament/templates/tag_edit.html:12
+msgid "Owners and publishers"
+msgstr "Владельцы и публикаторы"
+
+#: tournament/templates/tag_edit.html:19
+msgid "All your contacts:"
+msgstr "Все Ваши контакты:"
+
+#: tournament/templates/tag_edit.html:20
+msgid "Click to make them publishers"
+msgstr "Клик, чтобы назначить публикатором"
+
+#: tournament/templates/tag_edit.html:28
+msgid "Add"
+msgstr "Добавить"
+
+#: tournament/templates/tag_edit.html:43
+msgid "Remove tag"
+msgstr "Удалить тег"
+
+#: tournament/templates/tag_edit.html:51
+msgid "Are you sure, you want do remove yourself as owner of this tag?"
+msgstr "Вы уверены, что хотите лишить себя возможности управлять этим тегом?"
 
 #: tournament/templates/parts/competition_content.html:9
 msgid "Tournament"
@@ -379,6 +412,19 @@ msgstr "Отклонённые заявки:"
 msgid "No claimants yet."
 msgstr "Заявок нет:"
 
+#: tournament/templates/parts/dependent_tag_manager_icon.html:6
+#, fuzzy
+msgid "Make owner"
+msgstr "Назначить владельцем"
+
+#: tournament/templates/parts/dependent_tag_manager_icon.html:9
+msgid "Make publisher"
+msgstr "Назначить публикатором"
+
+#: tournament/templates/parts/dependent_tag_manager_icon.html:12
+msgid "Remove publisher"
+msgstr "Удалить публикатора"
+
 #: tournament/templates/parts/events_for_day.html:5
 msgid "Competitions:"
 msgstr "Игры:"
@@ -404,6 +450,10 @@ msgstr "Разрешено играть по"
 #: tournament/templates/parts/events_for_day.html:37
 msgid "No events for this day."
 msgstr "Нет событий на сегодня."
+
+#: tournament/templates/parts/tag_content.html:5
+msgid "Here should be tag chat."
+msgstr "Здесь будет чат тега."
 
 #: tournament/templates/parts/tags_to_display.html:3
 msgid "Tags to display:"
