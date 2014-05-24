@@ -4,10 +4,12 @@ from django import forms
 from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
+from django.utils.encoding import force_text
 
 from tournament.models import Tournament, Competition, PlayField, Tag, TagManagementTree
 from core.forms import BootstrapDateTimeField
 from core.models import ShareTree
+from tournament.utils import create_tags
 
 
 
@@ -27,7 +29,34 @@ class PlaceForm(forms.ModelForm):
         return cleaned_data
 
 
-class TournamentForm(forms.ModelForm):
+class AbstractNewTagNamesCleaner:
+    tags_separator = re.compile('[,;]\s*')
+
+    def clean_new_tag_names(self):
+        if self.cleaned_data['new_tag_names']:
+            self.cleaned_data['new_tag_names'] = self.tags_separator.split(self.cleaned_data.get('new_tag_names'))
+            if Tag.objects.filter(name__in=self.cleaned_data['new_tag_names']).exists():
+                raise forms.ValidationError(u'{0} {1} {2}'.format(_('Tags'), u','.join(Tag.objects.filter(name__in=self.cleaned_data['new_tag_names']).values_list('name', flat=True)),  _(' already exist.')))
+        return self.cleaned_data['new_tag_names']
+
+    def clean_and_add_tags(self, cleaned_data):
+        """
+        Creates new *PlayField* and *Tag* instances if it is necessary.
+        """
+        if cleaned_data.get('new_tag_names'):
+            new_tag_ids = create_tags(cleaned_data.get('new_tag_names'), self.owner)
+            tags_id = list(cleaned_data['tags'].values_list('id', flat=True))
+            tags_id.extend(new_tag_ids)
+            cleaned_data['tags'] = Tag.objects.filter(id__in=tags_id)
+        return cleaned_data
+
+
+
+class TournamentForm(forms.ModelForm, AbstractNewTagNamesCleaner):
+    new_tag_names = forms.CharField(
+        label=_('New tag names'),
+        widget=widgets.TextInput(attrs={'class': 'form-control'}),
+        required=False)
     class Meta:
         model = Tournament
         widgets = {
@@ -36,9 +65,23 @@ class TournamentForm(forms.ModelForm):
             'tags': forms.CheckboxSelectMultiple(),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
-        fields = ('name', 'first_datetime', 'last_datetime', 'tags')
+        fields = ('name', 'first_datetime', 'last_datetime', 'tags', 'new_tag_names')
+
+    owner = None
 
     checkbox_fields = ('tags',)
+
+    def __init__(self, owner, *args, **kwargs):
+        """
+        owner: *auth.User* instance.
+        """
+        super(TournamentForm, self).__init__(*args, **kwargs)
+        self.owner = owner
+        self.fields['tags'].queryset = Tag.objects.filter(
+            id__in=TagManagementTree.objects.filter(shared_to=self.owner).values_list('managed__id', flat=True))
+
+    def clean(self):
+        return self.clean_and_add_tags(super(TournamentForm, self).clean())
 
     def save(self, owner, commit=True, *args, **kwargs):
         """
@@ -49,9 +92,8 @@ class TournamentForm(forms.ModelForm):
         super(TournamentForm, self).save(*args, commit=commit, **kwargs)
 
 
-class AddCompetitionForm(forms.ModelForm):
+class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
     _temp_place_form = PlaceForm()
-    tags_separator = re.compile('[,;]\s*')
 
     short_place_name = _temp_place_form.fields['name']
     address = _temp_place_form.fields['address']
@@ -88,6 +130,8 @@ class AddCompetitionForm(forms.ModelForm):
         for none_reuired in ('short_place_name', 'address', 'tags', 'place'):
             self.fields[none_reuired].required = False
         self.fields['place'].queryset = PlayField.objects.filter(owner=owner)
+        self.fields['tags'].queryset = Tag.objects.filter(
+            id__in=TagManagementTree.objects.filter(shared_to=self.owner).values_list('managed__id', flat=True))
 
     def clean(self):
         """
@@ -102,26 +146,12 @@ class AddCompetitionForm(forms.ModelForm):
                                                           address=cleaned_data['address'],
                                                           owner=self.owner)
             self.cleaned_data['place'] = self.instance.place
-        if cleaned_data.get('new_tag_names'):
-            new_tag_ids = []
-            for name in self.tags_separator.split(cleaned_data.get('new_tag_names')):
-                tag = Tag.objects.create(name=name)
-                TagManagementTree.objects.create(managed=tag, shared_to=self.owner, permissions=TagManagementTree.OWNER)
-                new_tag_ids.append(tag.id)
-            tags_id = list(cleaned_data['tags'].values_list('id', flat=True))
-            tags_id.extend(new_tag_ids)
-            cleaned_data['tags'] = Tag.objects.filter(id__in=tags_id)
-        return cleaned_data
+        return self.clean_and_add_tags(cleaned_data)
 
     def clean_place(self):
         if not self.cleaned_data['place']:
             self.cleaned_data['place'] = self._default_place
         return self.cleaned_data['place']
-
-    def clean_new_tag_name(self):
-        if self.cleaned_data['new_tag_name'] and Tag.objects.filter(name=self.cleaned_data['new_tag_name']).exists():
-            raise forms.ValidationError(_('Tag ') + self.cleaned_data['new_tag_name'] + _(' already exists.'))
-        return self.cleaned_data['new_tag_name']
 
     def save(self, commit=True, *args, **kwargs):
         """

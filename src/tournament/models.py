@@ -4,9 +4,8 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.utils.encoding import python_2_unicode_compatible
+from django.utils.encoding import python_2_unicode_compatible, force_text
 from django.conf import settings
-from django.core.exceptions import ValidationError
 
 from relations.models import Team, Contact
 from core.models import ShareTree
@@ -81,7 +80,7 @@ class PlayField(models.Model):
     owner = models.ForeignKey(get_user_model(), verbose_name=_('owner'), related_name='known_places')
 
     def __str__(self):
-        return self.name
+        return self.get_short_description()
 
     def get_short_description(self):
         """
@@ -119,10 +118,10 @@ class Competition(models.Model):
     owners = models.ForeignKey(ShareTree)
 
     def get_name(self):
-        return self.name or self.tournament and self.tournament.name or ''
+        return force_text(self.name or self.tournament and self.tournament.name or _('No-name competition'))
 
     def __str__(self):
-        return u'{0} {1} {2}'.format(self.get_name(), _('in'), self.place.name)
+        return u'{0} {1} {2}'.format(self.get_name(), _('in'), self.place.get_short_description())
 
 
 class Participation(models.Model):

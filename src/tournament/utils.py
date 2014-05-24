@@ -154,4 +154,18 @@ def get_default_participation_state(competition):
 
 class TagOwnersTreeUtil(ShareTreeUtil):
     def _is_tree_member(self, leaf):
-        return leaf and  TagManagementTree.objects.get(id=leaf.id).permissions == TagManagementTree.OWNER
+        return leaf and TagManagementTree.objects.get(id=leaf.id).permissions == TagManagementTree.OWNER
+
+
+def create_tags(names, owner):
+    """
+    names: *str* iterable.
+    owner: *auth.User* instance.
+    returns: *int* iterable.
+    """
+    new_tag_ids = []
+    for name in names:
+        tag = Tag.objects.create(name=name)
+        TagManagementTree.objects.create(managed=tag, shared_to=owner, permissions=TagManagementTree.OWNER)
+        new_tag_ids.append(tag.id)
+    return new_tag_ids

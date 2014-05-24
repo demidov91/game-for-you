@@ -76,7 +76,7 @@ def add_event(request):
         initial['tournament'] = tournament[0]
 
     return render(request, 'add_event.html', {
-        'tournament_form': TournamentForm(initial=initial),
+        'tournament_form': TournamentForm(owner=request.user, initial=initial),
         'competition_form': AddCompetitionForm(initial=initial, owner=request.user),
         })
 
@@ -84,7 +84,7 @@ def add_event(request):
 @require_POST
 @login_required
 def add_tournament(request):
-    form = TournamentForm(request.POST)
+    form = TournamentForm(owner=request.user, data=request.POST)
     if form.is_valid():
         form.save(request.user)
         return redirect('index')
@@ -103,7 +103,7 @@ def add_competition(request):
         form.save()
         return redirect('index')
     return render(request, 'add_event.html',  {
-        'tournament_form': TournamentForm(),
+        'tournament_form': TournamentForm(owner=request.user),
         'competition_form': form,
         })
 
