@@ -81,13 +81,37 @@ def add_event(request):
         })
 
 
+@tournament_owner_only(set_key='tournament')
+def edit_tournament(request, tournament):
+    if request.method == 'GET':
+        form = TournamentForm(owner=request.user, instance=tournament)
+    else:
+        form = TournamentForm(owner=request.user, instance=tournament, data=request.POST)
+        if form.is_valid():
+            return redirect('view_tournament', tournament_id=form.save().id)
+    return render(request, 'tournament_edit.html', {
+        'form': form,
+    })
+
+@competition_owner_only(set_key='competition')
+def edit_competition(request, competition):
+    if request.method == 'GET':
+        form = AddCompetitionForm(owner=request.user, instance=competition)
+    else:
+        form = AddCompetitionForm(owner=request.user, instance=competition, data=request.POST)
+        if form.is_valid():
+            return redirect('view_competition', competition_id=form.save().id)
+    return render(request, 'competition_edit.html', {
+        'form': form,
+    })
+
 @require_POST
 @login_required
 def add_tournament(request):
     form = TournamentForm(owner=request.user, data=request.POST)
     if form.is_valid():
-        form.save(request.user)
-        return redirect('index')
+        instance = form.save()
+        return redirect('view_tournament', tournament_id=instance.id)
     return render(request, 'add_event.html',  {
         'tournament_form': form,
         'competition_form': AddCompetitionForm(owner=request.user),

@@ -4,7 +4,6 @@ from django import forms
 from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
-from django.utils.encoding import force_text
 
 from tournament.models import Tournament, Competition, PlayField, Tag, TagManagementTree
 from core.forms import BootstrapDateTimeField
@@ -83,13 +82,13 @@ class TournamentForm(forms.ModelForm, AbstractNewTagNamesCleaner):
     def clean(self):
         return self.clean_and_add_tags(super(TournamentForm, self).clean())
 
-    def save(self, owner, commit=True, *args, **kwargs):
+    def save(self, commit=True, *args, **kwargs):
         """
         owner: auth.User instance. User, who created this tournament.
         """
         if commit:
-            self.instance.owner = ShareTree.objects.create(shared_to=owner)
-        super(TournamentForm, self).save(*args, commit=commit, **kwargs)
+            self.instance.owner = ShareTree.objects.create(shared_to=self.owner)
+        return super(TournamentForm, self).save(commit=commit, *args, **kwargs)
 
 
 class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
@@ -159,7 +158,7 @@ class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         """
         if commit:
             self.instance.owners = ShareTree.objects.create(shared_to=self.owner)
-        super(AddCompetitionForm, self).save(*args, commit=commit, **kwargs)
+        return super(AddCompetitionForm, self).save(*args, commit=commit, **kwargs)
 
     @transaction.commit_manually
     def is_valid(self):

@@ -11,9 +11,9 @@
 
 {% block right_side_settings %}
     {% if is_owner %}
-    <form method="post" action="{% url 'delete_tournament' tournament_id=tournament.id %}" class="delete-instance">{% csrf_token %}
-        <input type="submit" class="btn btn-danger" value="{% trans 'Delete' %}" />
-    </form>
+    <div class="remove-or-edit-instance">
+        <a href="{% url 'edit_tournament' tournament_id=tournament.id %}" class="btn btn-default">{% trans 'Edit' %}</a>
+    </div>
     {% endif %}
     {{ block.super }}
 {% endblock %}
