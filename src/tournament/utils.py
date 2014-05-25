@@ -111,7 +111,6 @@ def get_tags_provider(request):
     returns: *TagsProvider* instance.
     """
     if request.method == 'GET' and request.GET.get(LimitedTagsProvider.REQUEST_KEY):
-        print('YES')
         return LimitedTagsProvider(request)
     return (AuthenticatedTagsProvider if request.user.is_authenticated() else NoneAuthenticatedTagsProvider)(request)
 

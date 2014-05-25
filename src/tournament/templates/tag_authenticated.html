@@ -9,7 +9,9 @@
 {% endblock %}
 
 {% block right_side_content %}
-    {% if is_publisher %}
+    {% if is_publisher and tag_requests %}
+    <h4 class="center">{% trans 'Events which are waiting for the tag confirmation' %}</h4>
+    <h6>{% trans 'Click on green button to accept it' %}</h6>
     <div id="tag-requests-list">
         {% for event in tag_requests %}
         <div class="tag-requests-item">
@@ -25,9 +27,7 @@
         </div>
         <div class="clear"></div>
         {% endfor %}
-
     </div>
-
     {% endif %}
 
     {% if is_owner %}

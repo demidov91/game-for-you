@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-25 11:52+0000\n"
+"POT-Creation-Date: 2014-05-25 18:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,7 +150,7 @@ msgstr "Праўка раней захаваных адрасаў"
 #: relations/templates/view_team.html:22
 #: tournament/templates/authenticated_tournament.html:15
 #: tournament/templates/competition.html:14
-#: tournament/templates/tag_authenticated.html:13
+#: tournament/templates/tag_authenticated.html:34
 msgid "Edit"
 msgstr "Рэдагаваць"
 
@@ -207,119 +207,119 @@ msgstr "Нельга выдаліць месца, на якое зарэгіст
 msgid "Can't perform the action."
 msgstr "Немагчыма скочыць дзеянне."
 
-#: tournament/models.py:24 tournament/models.py:62
+#: tournament/models.py:27 tournament/models.py:71
 msgid "name"
 msgstr "назва"
 
-#: tournament/models.py:53
+#: tournament/models.py:56
 msgid "Refers to the tag"
 msgstr "Адносіцца к тэгу"
 
-#: tournament/models.py:63
+#: tournament/models.py:72
 msgid "first date"
 msgstr "з"
 
-#: tournament/models.py:64
+#: tournament/models.py:73
 msgid "last date"
 msgstr "па"
 
-#: tournament/models.py:65 tournament/models.py:115
+#: tournament/models.py:74 tournament/models.py:127
 msgid "tags"
 msgstr "тэгі"
 
-#: tournament/models.py:69
+#: tournament/models.py:78
 msgid "No-name tournament"
 msgstr "Безназоўны турнір"
 
-#: tournament/models.py:77
+#: tournament/models.py:89
 msgid "place name"
 msgstr "назва месца"
 
-#: tournament/models.py:78
+#: tournament/models.py:90
 msgid "address"
 msgstr "адрас"
 
-#: tournament/models.py:79
+#: tournament/models.py:91
 msgid "owner"
 msgstr "уладальнік"
 
-#: tournament/models.py:99
+#: tournament/models.py:111
 msgid "open"
 msgstr "адкрыты"
 
-#: tournament/models.py:100
+#: tournament/models.py:112
 msgid "private"
 msgstr "закрыты"
 
-#: tournament/models.py:104
+#: tournament/models.py:116
 msgid "tournament"
 msgstr "прапанова адыграць"
 
-#: tournament/models.py:109
+#: tournament/models.py:121
 msgid "place to play"
 msgstr "Месца гульні:"
 
-#: tournament/models.py:110
+#: tournament/models.py:122
 msgid "start date"
 msgstr "пачатак"
 
-#: tournament/models.py:112
+#: tournament/models.py:124
 msgid "competition duration (in minutes)"
 msgstr "працягласць гульні (у хвілінах)"
 
-#: tournament/models.py:113
+#: tournament/models.py:125
 msgid "max team count"
 msgstr "абмежаванне на колькасць каманд"
 
-#: tournament/models.py:114
+#: tournament/models.py:126
 msgid "team accept strategy"
 msgstr "прыём заявак"
 
-#: tournament/models.py:116
+#: tournament/models.py:128
 msgid "competition name"
 msgstr "назва гульні"
 
-#: tournament/models.py:120
+#: tournament/models.py:132
 msgid "No-name competition"
 msgstr "Безымянная гульня"
 
-#: tournament/models.py:123
+#: tournament/models.py:135
 msgid "in"
 msgstr "у"
 
-#: tournament/models.py:131
+#: tournament/models.py:146
 msgid "Refers to the tournament"
 msgstr "Адносіцца да прапановы адыграць"
 
-#: tournament/models.py:139
+#: tournament/models.py:154
 msgid "Refers to the competition"
 msgstr "Адносіцца да гульні"
 
-#: tournament/models.py:153
+#: tournament/models.py:168
 msgid "invitation"
 msgstr "запрашэнне"
 
-#: tournament/models.py:154
+#: tournament/models.py:169
 msgid "claim"
 msgstr "заяўка"
 
-#: tournament/models.py:155
+#: tournament/models.py:170
 msgid "approved"
 msgstr "прынята"
 
-#: tournament/models.py:156
+#: tournament/models.py:171
 msgid "declined"
 msgstr "адмоўлена"
 
-#: tournament/models.py:157
+#: tournament/models.py:172
 msgid "registered"
 msgstr "зарэгістравана"
 
-#: tournament/views.py:166
+#: tournament/views.py:168
 msgid "Wrong request data."
 msgstr "Хібны запыт."
 
-#: tournament/views.py:278
+#: tournament/views.py:291
 msgid "Only the last owner can remove tags."
 msgstr "Толькі апошні ўладальнік можа выдаліць тэг."
 
@@ -347,6 +347,14 @@ msgstr "Гульня"
 #: tournament/templates/tournament_edit.html:16
 msgid "Delete"
 msgstr "Выдаліць"
+
+#: tournament/templates/tag_authenticated.html:13
+msgid "Events which are waiting for the tag confirmation"
+msgstr "Наступныя падзеі чакаюць пацверджання прыналежнасці гэтаму тэгу"
+
+#: tournament/templates/tag_authenticated.html:14
+msgid "Click on green button to accept it"
+msgstr "Клікніце па зялёная кнопцы, каб падзея была апублікавана пад гэтым тэгам"
 
 #: tournament/templates/tag_edit.html:11
 msgid "Tag managers:"
@@ -487,7 +495,7 @@ msgstr "Дазволена адыгрываць па"
 msgid "No events for this day."
 msgstr "Няма падзей на гэты дзень."
 
-#: tournament/templates/parts/tag_content.html:5
+#: tournament/templates/parts/tag_content.html:8
 msgid "Here should be tag chat."
 msgstr "Тут будзе чат."
 
