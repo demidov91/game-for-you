@@ -122,7 +122,7 @@ class TournamentForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         """
         managed = super(TournamentForm, self).save(commit=commit, *args, **kwargs)
         if commit:
-            TournamentOwnersTree.objects.create(managed=managed, shared_to=self.owner)
+            TournamentOwnersTree.objects.get_or_create(managed=managed, shared_to=self.owner)
         return managed
 
 
@@ -197,7 +197,7 @@ class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         """
         managed = super(AddCompetitionForm, self).save(*args, commit=commit, **kwargs)
         if commit:
-            CompetitionOwnersTree.objects.create(managed=managed, shared_to=self.owner)
+            CompetitionOwnersTree.objects.get_or_create(managed=managed, shared_to=self.owner)
         return managed
 
     @transaction.commit_manually
