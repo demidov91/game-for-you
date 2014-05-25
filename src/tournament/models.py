@@ -63,8 +63,8 @@ class Tournament(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('name'))
     first_datetime = models.DateTimeField(verbose_name=_('first date'))
     last_datetime = models.DateTimeField(verbose_name=_('last date'))
-    tags = models.ManyToManyField(Tag, related_name='tournaments', verbose_name=_('tags'))
-    owner = models.ForeignKey(ShareTree, verbose_name=_('owner'))
+    tags = models.ManyToManyField(Tag, related_name='tournaments', verbose_name=_('tags'), null=True, blank=True)
+    tags_request = models.ManyToManyField(Tag, related_name='tournament_requests')
 
     def __str__(self):
         return self.name or _('No-name tournament')
@@ -113,15 +113,25 @@ class Competition(models.Model):
     duration = models.IntegerField(null=True, blank=True, verbose_name=_('competition duration (in minutes)'))
     team_limit = models.IntegerField(null=True, blank=True, verbose_name=_('max team count'))
     team_accept_strategy = models.PositiveSmallIntegerField(choices=STRATEGY_CHOICES, verbose_name=_('team accept strategy'))
-    tags = models.ManyToManyField(Tag, related_name='competitions', verbose_name=_('tags'))
+    tags = models.ManyToManyField(Tag, related_name='competitions', verbose_name=_('tags'), null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name=_('competition name'), null=True, blank=True)
-    owners = models.ForeignKey(ShareTree)
+    tags_request = models.ManyToManyField(Tag, related_name='competition_requests')
 
     def get_name(self):
         return force_text(self.name or self.tournament and self.tournament.name or _('No-name competition'))
 
     def __str__(self):
         return u'{0} {1} {2}'.format(self.get_name(), _('in'), self.place.get_short_description())
+
+
+@python_2_unicode_compatible
+class TournamentOwnersTree(ShareTree):
+    managed = models.ForeignKey(Tournament, related_name='owners')
+
+
+@python_2_unicode_compatible
+class CompetitionOwnersTree(ShareTree):
+    managed = models.ForeignKey(Competition, related_name='owners')
 
 
 class Participation(models.Model):

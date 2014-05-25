@@ -11,14 +11,14 @@ from django.db.models import Q
 from django.contrib.auth import get_user_model
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
-    get_default_participation_state, get_calendar_events_by_team, get_tags_provider
+    get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_owner
 from tournament.forms import TournamentForm, AddCompetitionForm, TagForm
 from tournament.models import Competition, Participation, Tournament, Tag, TagManagementTree
 from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation,\
     tag_owner_only, tag_master_sharer_or_owner_only, tag_master_owner_only, tag_sharer_and_owner_only,\
     can_upgrade_manager
 from relations.models import Team
-from core.utils import is_in_share_tree, to_timestamp, get_tree_members
+from core.utils import to_timestamp, get_tree_members
 
 
 def _unauthenticated_view(request):
@@ -44,7 +44,7 @@ def calendar_events_json(request):
     start = datetime.fromtimestamp(int(request.GET['start']))
     end = datetime.fromtimestamp(int(request.GET['end']))
     tags = get_tags_provider(request).get_tags()
-    data = json.dumps(get_calendar_events_by_tags(tags, start, end))
+    data = json.dumps(get_calendar_events_by_tags(tags, start, end, request.user))
     return HttpResponse(data, content_type='application/json')
 
 
@@ -139,7 +139,7 @@ def view_competition(request, competition_id):
         'competition': competition,
     }
     if request.user.is_authenticated():
-        context['is_competition_owner'] = is_in_share_tree(request.user, competition.owners)
+        context['is_competition_owner'] = is_owner(competition, request.user)
     return render(request, template_name, context)
 
 def view_tournament(request, tournament_id):
@@ -148,7 +148,7 @@ def view_tournament(request, tournament_id):
     default_competition_start = int(max(to_timestamp(tournament.first_datetime), to_timestamp(datetime.now())))
     return render(request, template_name, {
         'tournament': tournament,
-        'is_owner': is_in_share_tree(request.user, tournament.owner),
+        'is_owner': is_owner(tournament, request.user),
         'default_competition_start': default_competition_start,
     })
 
@@ -196,7 +196,7 @@ def view_competition_part(request, competition_id):
             state=Participation.APPROVED),
     }
     if request.user.is_authenticated():
-        is_competition_owner = is_in_share_tree(request.user, competition.owners)
+        is_competition_owner = is_owner(competition, request.user)
         claims = Participation.objects.filter(competition=competition, state=Participation.CLAIM)
         declined_claims = Participation.objects.filter(competition=competition, state=Participation.DECLINED)
         if not is_competition_owner:
@@ -241,10 +241,7 @@ def tag_page(request, tag_id):
     template_name = 'tag_authenticated.html' if request.user.is_authenticated() else 'tag_unauthenticated.html'
     return render(request, template_name, {
         'tag': tag,
-        'is_owner': request.user.is_authenticated() and TagManagementTree.objects.filter(
-            managed=tag,
-            shared_to=request.user,
-            permissions=TagManagementTree.OWNER),
+        'is_owner': request.user.is_authenticated() and is_owner(tag, request.user),
     })
 
 @require_GET
@@ -317,17 +314,19 @@ def add_tag_sharer(request, tag, user_id):
 @require_POST
 @can_upgrade_manager(set_key='manager')
 def make_tag_owner(request, manager):
+    manager.parent = TagManagementTree.objects.get(shared_to=request.user, managed=manager.managed)
     manager.permissions = TagManagementTree.OWNER
     manager.save()
     return HttpResponse()
 
 
 @require_POST
-@tag_master_owner_only(set_key='tag_manager')
-def downgrade_to_tag_sharer(request, tag_manager):
-    tag_manager.remove_from_tree()
-    tag_manager.permissions = TagManagementTree.PUBLISHER
-    tag_manager.save()
+@tag_master_owner_only(set_key='manager')
+def downgrade_to_tag_sharer(request, manager):
+    manager.remove_from_tree()
+    manager.permissions = TagManagementTree.PUBLISHER
+    manager.parent = TagManagementTree.objects.get(shared_to=request.user, managed=manager.managed)
+    manager.save()
     return HttpResponse()
 
 @require_POST

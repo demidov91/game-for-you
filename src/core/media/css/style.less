@@ -132,6 +132,11 @@ html{
     }
     .observing-date {background-color: grey;}
     .fc-event:hover {color: white;}
+    .tournament {background-color: #5BC0DE; border-color: #46B8DA; color: #FFFFFF;}
+    .tournament, .competition{
+        &.has-tags-to-approve{ background-color: #F0AD4E; border-color: #EEA236; color: #FFFFFF;}
+        &.no-tags{background-color: #D9534F; border-color: #D43F3A; color: #FFFFFF;}
+    }
 }
 
 #calendar-tags-caption{text-align: center;}
@@ -236,6 +241,10 @@ li.team-nav.with-button{
     input[type="text"]{ float: left;}
 }
 #event-edit-header {margin-bottom: 0.75em;}
+.ui-widget {
+    &.tagit-autocomplete, &.tagit {font-size: 0.9em;}
+}
+
 /**
 -------------------------------------competition-------------------------------
 */

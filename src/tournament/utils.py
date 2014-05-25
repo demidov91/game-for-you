@@ -4,7 +4,8 @@ from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from tournament.models import Tag, Tournament, Competition, Participation, TagManagementTree
+from tournament.models import Tag, Tournament, Competition, Participation, TagManagementTree, TournamentOwnersTree,\
+    CompetitionOwnersTree
 from core.utils import to_timestamp, ShareTreeUtil
 
 import logging
@@ -101,10 +102,28 @@ def get_tags_provider(request):
     return (AuthenticatedTagsProvider if request.user.is_authenticated() else NoneAuthenticatedTagsProvider)(request)
 
 
-def get_calendar_events_by_tags(tags, start, end):
+def get_calendar_events_by_tags(tags, start, end, owner=None):
     tournaments = Tournament.objects.filter(tags__in=tags, last_datetime__gte=start, first_datetime__lte=end).distinct()
     competitions = Competition.objects.filter(tags__in=tags, start_datetime__range=(start, end)).distinct()
     events = []
+    if owner and owner.is_authenticated():
+        tournaments_of_interest = Tournament.objects.filter(
+            Q(owners__shared_to__in=(owner,)) & Q(last_datetime__gte=start) & Q(first_datetime__lte=end) &
+            (Q(tags=None) & Q(tags_request=None) | ~Q(tags_request=None))).distinct()
+        danger_tournaments = tournaments_of_interest.filter(tags=None)
+        warn_tournaments = tournaments_of_interest.exclude(tags=None)
+        competitions_of_interest = Competition.objects.filter(
+            Q(owners__shared_to__in=(owner,)) &
+            Q(start_datetime__range=(start, end)) &
+                                    (Q(tags=None) & Q(tags_request=None) | ~Q(tags_request=None))).distinct()
+        danger_competitions = competitions_of_interest.filter(tags=None)
+        warn_competitions = competitions_of_interest.exclude(tags=None)
+        tournaments = tournaments.exclude(id__in=tournaments_of_interest.values_list('id', flat=True))
+        competitions = competitions.exclude(id__in=competitions_of_interest.values_list('id', flat=True))
+        events += tournaments_to_calendar_events(danger_tournaments, class_name='no-tags')
+        events += tournaments_to_calendar_events(warn_tournaments, class_name='has-tags-to-approve')
+        events += competitions_to_calendar_events(danger_competitions, class_name='no-tags')
+        events += competitions_to_calendar_events(warn_competitions, class_name='has-tags-to-approve')
     events += tournaments_to_calendar_events(tournaments)
     events += competitions_to_calendar_events(competitions)
     return events
@@ -125,19 +144,21 @@ def get_events_by_tags_and_day(tags, day):
                                                     start_datetime__lt=next_day),
     }
 
-def tournaments_to_calendar_events(tournaments):
+def tournaments_to_calendar_events(tournaments, class_name=''):
     return tuple({
         'title': t.name,
         'start': to_timestamp(t.first_datetime),
         'end': to_timestamp(t.last_datetime),
-        'url': reverse('view_tournament', kwargs={'tournament_id': t.id, })
+        'url': reverse('view_tournament', kwargs={'tournament_id': t.id, }),
+        'className': 'tournament ' + class_name,
     } for t in tournaments)
 
-def competitions_to_calendar_events(competitions):
+def competitions_to_calendar_events(competitions, class_name=''):
     return tuple({
         'title': c.get_name(),
         'start': to_timestamp(c.start_datetime),
         'url': reverse('view_competition', kwargs={'competition_id': c.id}),
+        'className': 'competition ' + class_name,
     } for c in competitions)
 
 
@@ -152,9 +173,24 @@ def get_default_participation_state(competition):
         return Participation.CLAIM
     return Participation.CLAIM
 
-class TagOwnersTreeUtil(ShareTreeUtil):
+
+class BaseManagementTreeUtil(ShareTreeUtil):
+    def is_manager(self, managed, user):
+        return managed.owners.filter(shared_to=user).exists()
+
+class TagOwnersTreeUtil(BaseManagementTreeUtil):
+    model_class = TagManagementTree
     def _is_tree_member(self, leaf):
-        return leaf and TagManagementTree.objects.get(id=leaf.id).permissions == TagManagementTree.OWNER
+        return leaf and self.model_class.objects.get(id=leaf.id).permissions == TagManagementTree.OWNER
+
+class TagPublishersTreeUtil(BaseManagementTreeUtil):
+    def is_manager(self, managed, user):
+        return managed.sharers.filter(shared_to=user).exists()
+
+_base_owners_util = BaseManagementTreeUtil()
+
+def is_owner(managed, user):
+    return _base_owners_util.is_manager(managed, user)
 
 
 def create_tags(names, owner):

@@ -1,30 +1,9 @@
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
 
 from tournament.models import Tournament, Competition, Participation, Tag, TagManagementTree
 from core.decorators import OwnerOnly, InstancePreloaderAndPermissionChecker
-from core.utils import ShareTreeUtil
-from tournament.utils import TagOwnersTreeUtil
+from tournament.utils import TagOwnersTreeUtil, TagPublishersTreeUtil, BaseManagementTreeUtil, is_owner
 
-class tournament_owner_only(OwnerOnly):
-    default_get_key = 'tournament_id'
-    default_set_key = 'tournament'
-
-    __name__ = 'tournament_owner_only'
-
-    model_class = Tournament
-
-
-class competition_owner_only(OwnerOnly):
-    default_get_key = 'competition_id'
-    default_set_key = 'competition'
-
-    __name__ = 'competition_owner_only'
-
-    model_class = Competition
-
-    def get_instance_owner(self, instance):
-        return instance.owners
 
 class can_modify_participation(OwnerOnly):
     default_get_key = 'participation_id'
@@ -35,27 +14,27 @@ class can_modify_participation(OwnerOnly):
     model_class = Participation
 
     def get_instance_owner(self, instance):
-        return instance.competition.owners
+        return instance.competition.owner
 
 
-class BaseTagManagerOnly(InstancePreloaderAndPermissionChecker):
+class BaseManagerOnly(InstancePreloaderAndPermissionChecker):
+    owners_tree_util = BaseManagementTreeUtil()
+
+    def has_permission(self, user, instance):
+        return self.owners_tree_util.is_manager(instance, user)
+
+
+
+class BaseTagManagerOnly(BaseManagerOnly):
     default_get_key = 'tag_id'
     default_set_key = 'tag'
     model_class = Tag
 
-    _permission_to_check = None
-
-
-
 
 class tag_owner_only(BaseTagManagerOnly):
-    __name__ = 'tag_owner_only'
+    owners_tree_util = TagOwnersTreeUtil()
 
-    def has_permission(self, user, instance):
-        return TagManagementTree.objects.filter(
-            managed=instance,
-            shared_to=user,
-            permissions=TagManagementTree.OWNER).exists()
+    __name__ = 'tag_owner_only'
 
 
 class tag_sharer_and_owner_only(BaseTagManagerOnly):
@@ -68,47 +47,57 @@ class tag_sharer_and_owner_only(BaseTagManagerOnly):
             Q(permissions=TagManagementTree.OWNER) | Q(permissions=TagManagementTree.PUBLISHER)).exists()
 
 
-class can_upgrade_manager(InstancePreloaderAndPermissionChecker):
+class tournament_owner_only(BaseManagerOnly):
+    default_get_key = 'tournament_id'
+    default_set_key = 'tournament'
+    model_class = Tournament
+    __name__ = 'tournament_owner_only'
+
+
+
+class competition_owner_only(BaseManagerOnly):
+    default_get_key = 'competition_id'
+    default_set_key = 'competition'
+    model_class = Competition
+    __name__ = 'competition_owner_only'
+
+class can_upgrade_manager(BaseManagerOnly):
     default_get_key = 'manager_id'
     default_set_key = 'manager'
-
+    model_class = TagManagementTree
     __name__ = 'can_upgrade_manager'
-
-    model_class = TagManagementTree
+    owners_tree_util = TagOwnersTreeUtil()
 
     def has_permission(self, user, instance):
-        return TagManagementTree.objects.filter(
-            managed=instance.managed,
-            shared_to=user,
-            permissions=TagManagementTree.OWNER).exists()
+        return super(can_upgrade_manager, self).has_permission(user, instance.managed)
 
 
-class BaseTagMasterManagerOnly(InstancePreloaderAndPermissionChecker):
+class BaseTagMasterManagerOnly(BaseManagerOnly):
     default_get_key = 'manager_id'
     default_set_key = 'manager'
     model_class = TagManagementTree
 
-    share_tree_util = ShareTreeUtil()
-
     def has_permission(self, user, instance):
-        if instance.shared_to == user and not self.share_tree_util.is_last(instance):
+        if instance.shared_to == user and not self.owners_tree_util.is_last(instance):
             return True
-        return self.share_tree_util.find_from_leaf_to_root(instance, user)
+        return self.owners_tree_util.find_from_leaf_to_root(instance, user)
 
 
 class tag_master_owner_only(BaseTagMasterManagerOnly):
-    share_tree_util = TagOwnersTreeUtil()
-
+    owners_tree_util = TagOwnersTreeUtil()
     __name__ = 'tag_master_owner_only'
 
 
 class tag_master_sharer_or_owner_only(BaseTagMasterManagerOnly):
+    owners_tree_util = TagPublishersTreeUtil()
+    __name__ = 'tag_master_sharer_or_owner_only'
+
     def has_permission(self, user, instance):
-        if instance.managed.owners.filter(shared_to=user).exists():
+        if is_owner(instance.managed, user):
             return True
         return super(tag_master_sharer_or_owner_only, self).has_permission(user, instance)
 
-    __name__ = 'tag_master_sharer_or_owner_only'
+
 
 
 

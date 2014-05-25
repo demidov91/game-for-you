@@ -5,10 +5,34 @@ from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
 
-from tournament.models import Tournament, Competition, PlayField, Tag, TagManagementTree
+from tournament.models import Tournament, Competition, PlayField, Tag, TagManagementTree, CompetitionOwnersTree,\
+    TournamentOwnersTree
 from core.forms import BootstrapDateTimeField
-from core.models import ShareTree
 from tournament.utils import create_tags
+
+
+TAGS_SEPARATOR = re.compile(',\s*')
+
+class TagNamesField(forms.fields.CharField):
+    def to_python(self, value):
+        if not value:
+            return []
+        names = TAGS_SEPARATOR.split(value)
+        tags = Tag.objects.filter(name__in=names)
+        if tags.count() != len(names):
+            lost_tag_names = tuple(tag.name for tag in filter(lambda x: x.name not in names, tags))
+            raise forms.ValidationError(u'{0} {1} {2}'.format(
+                    _('Tags'), u','.join(lost_tag_names), _(' does not exist.')))
+        return tags
+
+    def get_prep_value(self, value):
+        return self.prepare_value(value)
+
+    def prepare_value(self, value):
+        if not value:
+            return ''
+        return u', '.join(tag.name for tag in Tag.objects.filter(id__in=value))
+
 
 
 
@@ -29,13 +53,18 @@ class PlaceForm(forms.ModelForm):
 
 
 class AbstractNewTagNamesCleaner:
-    tags_separator = re.compile('[,;]\s*')
+    tags_separator = re.compile(',\s*')
 
     def clean_new_tag_names(self):
         if self.cleaned_data['new_tag_names']:
-            self.cleaned_data['new_tag_names'] = self.tags_separator.split(self.cleaned_data.get('new_tag_names'))
+            self.cleaned_data['new_tag_names'] = TAGS_SEPARATOR.split(self.cleaned_data.get('new_tag_names'))
             if Tag.objects.filter(name__in=self.cleaned_data['new_tag_names']).exists():
-                raise forms.ValidationError(u'{0} {1} {2}'.format(_('Tags'), u','.join(Tag.objects.filter(name__in=self.cleaned_data['new_tag_names']).values_list('name', flat=True)),  _(' already exist.')))
+                raise forms.ValidationError(
+                    u'{0} {1} {2}'.format(
+                        _('Tags'),
+                        u','.join(Tag.objects.filter(
+                            name__in=self.cleaned_data['new_tag_names']).values_list('name', flat=True)),
+                    _(' already exist.')))
         return self.cleaned_data['new_tag_names']
 
     def clean_and_add_tags(self, cleaned_data):
@@ -56,6 +85,11 @@ class TournamentForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         label=_('New tag names'),
         widget=widgets.TextInput(attrs={'class': 'form-control'}),
         required=False)
+    tags_request = TagNamesField(
+        label=_('Send request for tagging as'),
+        widget=widgets.TextInput(attrs={'class': 'form-control'}),
+        required=False)
+
     class Meta:
         model = Tournament
         widgets = {
@@ -64,7 +98,7 @@ class TournamentForm(forms.ModelForm, AbstractNewTagNamesCleaner):
             'tags': forms.CheckboxSelectMultiple(),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
-        fields = ('name', 'first_datetime', 'last_datetime', 'tags', 'new_tag_names')
+        fields = ('name', 'first_datetime', 'last_datetime', 'tags', 'tags_request', 'new_tag_names')
 
     owner = None
 
@@ -86,9 +120,10 @@ class TournamentForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         """
         owner: auth.User instance. User, who created this tournament.
         """
+        managed = super(TournamentForm, self).save(commit=commit, *args, **kwargs)
         if commit:
-            self.instance.owner = ShareTree.objects.create(shared_to=self.owner)
-        return super(TournamentForm, self).save(commit=commit, *args, **kwargs)
+            TournamentOwnersTree.objects.create(managed=managed, shared_to=self.owner)
+        return managed
 
 
 class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
@@ -98,6 +133,10 @@ class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
     address = _temp_place_form.fields['address']
     new_tag_names = forms.CharField(
         label=_('New tag names'),
+        widget=widgets.TextInput(attrs={'class': 'form-control'}),
+        required=False)
+    tags_request = TagNamesField(
+        label=_('Send request for tagging as'),
         widget=widgets.TextInput(attrs={'class': 'form-control'}),
         required=False)
 
@@ -115,7 +154,7 @@ class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         }
 
         fields = ('start_datetime', 'name', 'place', 'short_place_name', 'address', 'tournament',
-                  'team_limit', 'team_accept_strategy', 'duration', 'tags', 'new_tag_names')
+                  'team_limit', 'team_accept_strategy', 'duration', 'tags', 'tags_request', 'new_tag_names')
 
     checkbox_fields = ('tags',)
     owner = None
@@ -156,9 +195,10 @@ class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         """
         owner: auth.User instance. User, who created this tournament.
         """
+        managed = super(AddCompetitionForm, self).save(*args, commit=commit, **kwargs)
         if commit:
-            self.instance.owners = ShareTree.objects.create(shared_to=self.owner)
-        return super(AddCompetitionForm, self).save(*args, commit=commit, **kwargs)
+            CompetitionOwnersTree.objects.create(managed=managed, shared_to=self.owner)
+        return managed
 
     @transaction.commit_manually
     def is_valid(self):
