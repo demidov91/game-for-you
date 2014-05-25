@@ -63,7 +63,7 @@ class Tournament(models.Model):
     first_datetime = models.DateTimeField(verbose_name=_('first date'))
     last_datetime = models.DateTimeField(verbose_name=_('last date'))
     tags = models.ManyToManyField(Tag, related_name='tournaments', verbose_name=_('tags'), null=True, blank=True)
-    tags_request = models.ManyToManyField(Tag, related_name='tournament_requests')
+    tags_request = models.ManyToManyField(Tag, related_name='tournament_requests', null=True, blank=True)
 
     def __str__(self):
         return self.name or _('No-name tournament')
@@ -114,7 +114,7 @@ class Competition(models.Model):
     team_accept_strategy = models.PositiveSmallIntegerField(choices=STRATEGY_CHOICES, verbose_name=_('team accept strategy'))
     tags = models.ManyToManyField(Tag, related_name='competitions', verbose_name=_('tags'), null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name=_('competition name'), null=True, blank=True)
-    tags_request = models.ManyToManyField(Tag, related_name='competition_requests')
+    tags_request = models.ManyToManyField(Tag, related_name='competition_requests', null=True, blank=True)
 
     def get_name(self):
         return force_text(self.name or self.tournament and self.tournament.name or _('No-name competition'))
