@@ -1,5 +1,6 @@
-from django.utils.translation import ugettext_lazy as _
+import sys
 
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
@@ -51,8 +52,11 @@ class TagManagementTree(ShareTree):
     permissions = models.PositiveSmallIntegerField(default=PUBLISHER, null=False, blank=False)
 
     def __str__(self):
-        super_string = force_text(super(TagManagementTree, self))
-        return u'{0} {1} {2}'.format(super_string, _('for tag'), self.managed)
+        if sys.version_info[0] > 2:
+            super_string = super(TagManagementTree, self).__str__()
+        else:
+            super_string = force_text(super(TagManagementTree, self))
+        return u'{0} {1} {2}'.format(super_string, _('for tag'), self.managed)    
 
 @receiver(post_save, sender=get_user_model())
 def add_default_tag(sender, instance, created, **kwargs):

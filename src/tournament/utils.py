@@ -4,8 +4,7 @@ from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from tournament.models import Tag, Tournament, Competition, Participation, TagManagementTree, TournamentOwnersTree,\
-    CompetitionOwnersTree
+from tournament.models import Tag, Tournament, Competition, Participation, TagManagementTree
 from core.utils import to_timestamp, ShareTreeUtil
 
 import logging
@@ -115,7 +114,7 @@ def get_calendar_events_by_tags(tags, start, end, owner=None):
         competitions_of_interest = Competition.objects.filter(
             Q(owners__shared_to__in=(owner,)) &
             Q(start_datetime__range=(start, end)) &
-                                    (Q(tags=None) & Q(tags_request=None) | ~Q(tags_request=None))).distinct()
+            (Q(tags=None) & Q(tags_request=None) | ~Q(tags_request=None))).distinct()
         danger_competitions = competitions_of_interest.filter(tags=None)
         warn_competitions = competitions_of_interest.exclude(tags=None)
         tournaments = tournaments.exclude(id__in=tournaments_of_interest.values_list('id', flat=True))
@@ -139,7 +138,7 @@ def get_events_by_tags_and_day(tags, day):
     next_day = day + timedelta(days=1)
     return {
         'tournaments': Tournament.objects.filter(tags__in=tags, first_datetime__lte=day, last_datetime__gte=day),
-        'competitions':  Competition.objects.filter(tags=tags,
+        'competitions':  Competition.objects.filter(tags__in=tags,
                                                     start_datetime__gte=day,
                                                     start_datetime__lt=next_day),
     }
