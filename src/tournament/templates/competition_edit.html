@@ -5,8 +5,8 @@
 {% block nav_calendar_active %}active{% endblock %}
 
 {% block content %}
-<h2 class="center" id="event-edit-header">{% trans 'Tournament' %}</h2>
-<form method="post" action="." role="form" class="form-horizontal">{% csrf_token%}
+<h2 class="center" id="event-edit-header">{% trans 'Competition' %}</h2>
+<form method="post" action="." role="form" class="form-horizontal" id="add-event-wrapper">{% csrf_token%}
     {% include 'parts/bootstrap_form.html' %}
 </form>
 {% endblock %}
