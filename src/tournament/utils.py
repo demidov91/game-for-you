@@ -134,13 +134,22 @@ def get_calendar_events_by_team(team, start, end):
     return events
 
 
-def get_events_by_tags_and_day(tags, day):
+def get_events_by_tags_and_day(tags, day, owner=None):
     next_day = day + timedelta(days=1)
+    event_additional_query = Q(tags__in=tags)
+    if owner and owner.is_authenticated():
+        problem_event_query = \
+            Q(owners__shared_to__in=(owner,)) & (Q(tags=None) & Q(tags_request=None) | ~Q(tags_request=None))
+        event_additional_query = event_additional_query | problem_event_query
     return {
-        'tournaments': Tournament.objects.filter(tags__in=tags, first_datetime__lte=day, last_datetime__gte=day),
-        'competitions':  Competition.objects.filter(tags__in=tags,
-                                                    start_datetime__gte=day,
-                                                    start_datetime__lt=next_day),
+        'tournaments': Tournament.objects.filter(
+            Q(first_datetime__lte=day) &
+            Q(last_datetime__gte=day)
+            & event_additional_query),
+        'competitions':  Competition.objects.filter(
+            Q(start_datetime__gte=day)
+            & Q(start_datetime__lt=next_day)
+            & event_additional_query),
     }
 
 def tournaments_to_calendar_events(tournaments, class_name=''):

@@ -52,7 +52,7 @@ def calendar_events_json(request):
 def calendar_events_for_day_ajax(request):
     date = datetime(day=int(request.GET.get('day')), month=int(request.GET.get('month')), year=int(request.GET.get('year')))
     tags = get_tags_provider(request).get_tags()
-    return render(request, 'parts/events_for_day.html', get_events_by_tags_and_day(tags, date))
+    return render(request, 'parts/events_for_day.html', get_events_by_tags_and_day(tags, date, request.user))
 
 @require_GET
 def calendar_events_for_team_json(request, team_id):
