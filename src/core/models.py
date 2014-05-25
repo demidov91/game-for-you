@@ -1,6 +1,19 @@
+import sys
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible, force_text
+from django.utils.encoding import python_2_unicode_compatible
+
+
+def get_models_super_string(instance):
+    """
+    Helper function to get string representation of the super model class in python version independent way.
+    """
+    model_class = instance.__class__
+    if sys.version_info[0] > 2:
+        return super(model_class, instance).__str__()
+    else:
+        return force_text(super(model_class, instance))
 
 
 @python_2_unicode_compatible
@@ -20,6 +33,6 @@ class ShareTree(models.Model):
 
     def __str__(self):
         if self.parent:
-            return force_text(u'id {0}, {1}. {2} {3} (id:{4})'.format(
-                self.id, self.shared_to, _('Depends on'), self.parent.shared_to, self.parent.id))
-        return  force_text(u'id {0}, {1}. {2}.'.format(self.id, self.shared_to, _('Root element')))
+            return u'id {0}, {1}. {2} {3} (id:{4})'.format(
+                self.id, self.shared_to, _('Depends on'), self.parent.shared_to, self.parent.id)
+        return  u'id {0}, {1}. {2}.'.format(self.id, self.shared_to, _('Root element'))

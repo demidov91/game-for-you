@@ -1,5 +1,3 @@
-import sys
-
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -9,7 +7,7 @@ from django.utils.encoding import python_2_unicode_compatible, force_text
 from django.conf import settings
 
 from relations.models import Team, Contact
-from core.models import ShareTree
+from core.models import ShareTree, get_models_super_string
 
 import logging
 logger = logging.getLogger(__name__)
@@ -52,11 +50,7 @@ class TagManagementTree(ShareTree):
     permissions = models.PositiveSmallIntegerField(default=PUBLISHER, null=False, blank=False)
 
     def __str__(self):
-        if sys.version_info[0] > 2:
-            super_string = super(TagManagementTree, self).__str__()
-        else:
-            super_string = force_text(super(TagManagementTree, self))
-        return u'{0} {1} {2}'.format(super_string, _('for tag'), self.managed)    
+        return u'{0} {1} {2}'.format(get_models_super_string(self), _('Refers to the tag'), self.managed)
 
 @receiver(post_save, sender=get_user_model())
 def add_default_tag(sender, instance, created, **kwargs):
@@ -133,10 +127,16 @@ class Competition(models.Model):
 class TournamentOwnersTree(ShareTree):
     managed = models.ForeignKey(Tournament, related_name='owners')
 
+    def __str__(self):
+        return u'{0} {1} {2}'.format(get_models_super_string(self), _('Refers to the tournament'), self.managed)
+
 
 @python_2_unicode_compatible
 class CompetitionOwnersTree(ShareTree):
     managed = models.ForeignKey(Competition, related_name='owners')
+
+    def __str__(self):
+        return u'{0} {1} {2}'.format(get_models_super_string(self), _('Refers to the competition'), self.managed)
 
 
 class Participation(models.Model):
