@@ -20,6 +20,8 @@ class UtilTest(TestCase):
     def _get_request_mock(self):
         request_mock = Mock()
         request_mock.session = {}
+        request_mock.method = 'GET'
+        request_mock.GET = {}
         request_mock.user = UserMock()
         return request_mock
 
@@ -96,6 +98,18 @@ class UtilTest(TestCase):
         ids = tested.get_tags()
         tested.remove_tag_by_id(ids[0].id)
         self._remove_tag_final_check(tested)
+
+    def test_sort_by_key(self):
+        list_to_sort = [
+            {'a': 3, 'b': 2, 'c': 1},
+            {'a': 1, 'b': 3, 'c': 2},
+            {'a': 2, 'b': 1, 'c': 3},
+        ]
+        expected_keys = sorted(x['a'] for x in list_to_sort)
+        tested = utils.sort_by_key(list_to_sort, lambda x: x['a'])
+        self.assertEqual(len(expected_keys), len(tested))
+        for i in range(0, len(tested)):
+            self.assertEqual(expected_keys[i], tested[i]['a'])
 
 
 

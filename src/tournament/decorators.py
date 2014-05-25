@@ -2,7 +2,7 @@ from django.db.models import Q
 
 from tournament.models import Tournament, Competition, Participation, Tag, TagManagementTree
 from core.decorators import OwnerOnly, InstancePreloaderAndPermissionChecker
-from tournament.utils import TagOwnersTreeUtil, TagPublishersTreeUtil, BaseManagementTreeUtil, is_owner
+from tournament.utils import TagOwnersTreeUtil, TagPublishersTreeUtil, BaseManagementTreeUtil, is_owner, can_publish_tag
 
 
 class can_modify_participation(OwnerOnly):
@@ -41,10 +41,7 @@ class tag_sharer_and_owner_only(BaseTagManagerOnly):
     __name__ = 'tag_sharer_and_owner_only'
 
     def has_permission(self, user, instance):
-        return TagManagementTree.objects.filter(
-            Q(managed=instance) &
-            Q(shared_to=user) &
-            Q(permissions=TagManagementTree.OWNER) | Q(permissions=TagManagementTree.PUBLISHER)).exists()
+        return can_publish_tag(instance, user)
 
 
 class tournament_owner_only(BaseManagerOnly):

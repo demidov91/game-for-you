@@ -1,4 +1,5 @@
 from datetime import timedelta
+import sys
 
 from django.db.models import Q
 from django.core.urlresolvers import reverse
@@ -37,6 +38,9 @@ class TagsProvider:
         raises: *Tag.DoesNotExist*.
         """
         raise NotImplementedError()
+
+    def show_draft(self):
+        return True
 
 
 class AuthenticatedTagsProvider(TagsProvider):
@@ -84,6 +88,14 @@ class NoneAuthenticatedTagsProvider(TagsProvider):
         ids.append(self._get_tag_by_name(name).id)
         self.session[self.SESSION_KEY] = ids
 
+class LimitedTagsProvider(TagsProvider):
+    REQUEST_KEY = 'tag_only'
+    def __init__(self, request):
+        self.tag = Tag.objects.filter(id=int(request.GET[self.REQUEST_KEY]))
+    def get_tags(self):
+        return self.tag
+    def show_draft(self):
+        return False
 
 
 def get_default_tag_ids(request):
@@ -98,6 +110,9 @@ def get_tags_provider(request):
     """
     returns: *TagsProvider* instance.
     """
+    if request.method == 'GET' and request.GET.get(LimitedTagsProvider.REQUEST_KEY):
+        print('YES')
+        return LimitedTagsProvider(request)
     return (AuthenticatedTagsProvider if request.user.is_authenticated() else NoneAuthenticatedTagsProvider)(request)
 
 
@@ -196,9 +211,13 @@ class TagPublishersTreeUtil(BaseManagementTreeUtil):
         return managed.sharers.filter(shared_to=user).exists()
 
 _base_owners_util = BaseManagementTreeUtil()
+_tag_publishers_util = TagPublishersTreeUtil()
 
 def is_owner(managed, user):
-    return _base_owners_util.is_manager(managed, user)
+    return user.is_authenticated() and _base_owners_util.is_manager(managed, user)
+
+def can_publish_tag(tag, user):
+    return user.is_authenticated() and (TagManagementTree.objects.filter(managed=tag, shared_to=user)).exists()
 
 
 def create_tags(names, owner):
@@ -213,3 +232,8 @@ def create_tags(names, owner):
         TagManagementTree.objects.create(managed=tag, shared_to=owner, permissions=TagManagementTree.OWNER)
         new_tag_ids.append(tag.id)
     return new_tag_ids
+
+def sort_by_key(iterable, key, reverse=False):
+    if sys.version_info >= (3, 0):
+        return sorted(iterable, key=key, reverse=reverse)
+    return sorted(iterable, lambda x, y: cmp(key(x), key(y)), reverse=reverse)

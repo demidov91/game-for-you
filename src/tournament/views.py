@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 import time
+from functools import cmp_to_key
 
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse, HttpResponseForbidden
@@ -11,7 +12,8 @@ from django.db.models import Q
 from django.contrib.auth import get_user_model
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
-    get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_owner
+    get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_owner, can_publish_tag,\
+    sort_by_key
 from tournament.forms import TournamentForm, AddCompetitionForm, TagForm
 from tournament.models import Competition, Participation, Tournament, Tag, TagManagementTree
 from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation,\
@@ -43,8 +45,9 @@ def index(request):
 def calendar_events_json(request):
     start = datetime.fromtimestamp(int(request.GET['start']))
     end = datetime.fromtimestamp(int(request.GET['end']))
-    tags = get_tags_provider(request).get_tags()
-    data = json.dumps(get_calendar_events_by_tags(tags, start, end, request.user))
+    tag_provider = get_tags_provider(request)
+    tags = tag_provider.get_tags()
+    data = json.dumps(get_calendar_events_by_tags(tags, start, end, request.user if tag_provider.show_draft() else None))
     return HttpResponse(data, content_type='application/json')
 
 
@@ -239,10 +242,21 @@ def change_tag_subscription_state(request, subscribe):
 def tag_page(request, tag_id):
     tag = get_object_or_404(Tag.objects, id=tag_id)
     template_name = 'tag_authenticated.html' if request.user.is_authenticated() else 'tag_unauthenticated.html'
-    return render(request, template_name, {
+    context = {
         'tag': tag,
-        'is_owner': request.user.is_authenticated() and is_owner(tag, request.user),
-    })
+        'is_owner': is_owner(tag, request.user),
+        'is_publisher': can_publish_tag(tag, request.user),
+    }
+    if context['is_publisher']:
+        tournament_requests = Tournament.objects.filter(tags_request__in=(tag, ))
+        competition_requests = Competition.objects.filter(tags_request__in=(tag, ))
+        events = list(tournament_requests)
+        events.extend(competition_requests)
+        events = sort_by_key(events, lambda x: x.create_time, reverse=True)
+        context.update({
+            'tag_requests': events,
+        })
+    return render(request, template_name, context)
 
 @require_GET
 def get_tag_names(request):
@@ -333,6 +347,14 @@ def downgrade_to_tag_sharer(request, manager):
 def remove_tag_sharer(request, tag_manager):
     tag_manager.delete()
     return HttpResponse()
+
+@require_POST
+@tag_sharer_and_owner_only(set_key='tag')
+def accept_tag_request(request, tag, event_id, event_model_class):
+    event = get_object_or_404(event_model_class.objects, id=event_id)
+    event.tags.add(tag)
+    event.tags_request.remove(tag)
+    return redirect('tag_page', tag_id=tag.id)
 
 
 

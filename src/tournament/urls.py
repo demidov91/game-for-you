@@ -33,6 +33,10 @@ urlpatterns = patterns('',
     url(r'^tag/subscribe/$', change_tag_subscription_state, {'subscribe': True}, name='subscribe_tag'),
     url(r'^tag/(?P<tag_id>\d+)/edit/$', edit_tag, name='edit_tag'),
     url(r'^tag/(?P<tag_id>\d+)/delete/$', delete_tag, name='delete_tag'),
+    url(r'^tag/(?P<tag_id>\d+)/accept/competition/(?P<event_id>\d+)/$', accept_tag_request,
+        {'event_model_class': Competition}, name='accept_competition_tag'),
+    url(r'^tag/(?P<tag_id>\d+)/accept/tournament/(?P<event_id>\d+)/$', accept_tag_request,
+        {'event_model_class': Tournament}, name='accept_tournament_tag'),
     url(r'^tag/(?P<tag_id>\d+)/$', tag_page, name='tag_page'),
 )
 

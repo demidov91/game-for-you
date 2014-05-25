@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -5,6 +7,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible, force_text
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 from relations.models import Team, Contact
 from core.models import ShareTree, get_models_super_string
@@ -57,8 +60,14 @@ def add_default_tag(sender, instance, created, **kwargs):
     if created:
         instance.subscribed_to.add(*Tag.objects.filter(id__in=settings.DEFAULT_TAGS))
 
+class CreateTimeMixin(models.Model):
+    class Meta:
+        abstract = True
+    create_time = models.DateTimeField(auto_now_add=True, default=datetime.now())
+
+
 @python_2_unicode_compatible
-class Tournament(models.Model):
+class Tournament(CreateTimeMixin, models.Model):
     name = models.CharField(max_length=100, verbose_name=_('name'))
     first_datetime = models.DateTimeField(verbose_name=_('first date'))
     last_datetime = models.DateTimeField(verbose_name=_('last date'))
@@ -67,6 +76,9 @@ class Tournament(models.Model):
 
     def __str__(self):
         return self.name or _('No-name tournament')
+
+    def get_absolute_url(self):
+        return reverse('view_tournament', tournament_id=self.id)
 
 
 @python_2_unicode_compatible
@@ -88,7 +100,7 @@ class PlayField(models.Model):
         return self.name or self.address
 
 @python_2_unicode_compatible
-class Competition(models.Model):
+class Competition(CreateTimeMixin, models.Model):
     """
     Bag for *Tournament* and *PlayField*
     """
@@ -121,6 +133,9 @@ class Competition(models.Model):
 
     def __str__(self):
         return u'{0} {1} {2}'.format(self.get_name(), _('in'), self.place.get_short_description())
+
+    def get_absolute_url(self):
+        return reverse('view_competition', kwargs={'competition_id': self.id})
 
 
 @python_2_unicode_compatible

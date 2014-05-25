@@ -1,6 +1,9 @@
 {% load i18n %}
 
 <h1>{{ tag.name }}</h1>
+
+{% include 'parts/calendar.html' %}
+
 {% if tag.has_chat %}
 <div>{% trans 'Here should be tag chat.' %}</div>
 {% endif %}
