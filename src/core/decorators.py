@@ -7,7 +7,7 @@ from django.http import HttpResponseForbidden
 from core.utils import is_in_share_tree
 
 
-class InstancePreloaderAndPermissionChecker:
+class InstancePreloaderAndPermissionChecker(object):
     """
     Decorator base class, which can replace id with model instance and throw 403 in defined cases.
     """

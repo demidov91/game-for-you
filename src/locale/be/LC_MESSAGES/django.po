@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-25 11:36+0000\n"
+"POT-Creation-Date: 2014-05-25 11:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,9 +86,8 @@ msgid "Enter team name"
 msgstr "Увядзіце назву каманды"
 
 #: relations/forms.py:23
-#, fuzzy
 msgid "first name"
-msgstr "Імя"
+msgstr "імя"
 
 #: relations/forms.py:27
 msgid "last name"

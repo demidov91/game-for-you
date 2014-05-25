@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-25 11:35+0000\n"
+"POT-Creation-Date: 2014-05-25 11:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -450,7 +450,6 @@ msgid "No claimants yet."
 msgstr "Заявок нет:"
 
 #: tournament/templates/parts/dependent_tag_manager_icon.html:6
-#, fuzzy
 msgid "Make owner"
 msgstr "Назначить владельцем"
 
