@@ -11,6 +11,7 @@ from tournament.models import Tournament, Competition, PlayField, Tag, TagManage
     TournamentOwnersTree
 from core.forms import BootstrapDateTimeField
 from tournament.utils import create_tags
+from core.utils import string_types
 
 
 TAGS_SEPARATOR = re.compile(',\s*')
@@ -19,7 +20,7 @@ class TagNamesField(with_metaclass(SubfieldBase, forms.fields.CharField)):
     def prepare_value(self, value):
         if not value:
             return ''
-        if isinstance(value, str):
+        if isinstance(value, string_types):
             return value
         return u', '.join(tag.name for tag in Tag.objects.filter(id__in=value))
 

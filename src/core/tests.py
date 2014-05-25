@@ -17,3 +17,7 @@ class Utilstest(TestCase):
         self.assertFalse(user_mock.is_authenticated())
         user_mock._is_authenticated = True
         self.assertTrue(user_mock.is_authenticated())
+
+    def test_string_types(self):
+        self.assertTrue(isinstance(u'', utils.string_types))
+        self.assertTrue(isinstance('', utils.string_types))

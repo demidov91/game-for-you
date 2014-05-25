@@ -129,6 +129,8 @@ def to_timestamp(date_time):
     td = date_time - datetime(1970, 1, 1, tzinfo=date_time.tzinfo)
     return td.days * 24 * 3600 + td.seconds + td.microseconds / 1e6
 
+string_types = str if sys.version_info[0] == 3 else basestring
+
 class Mock:
     pass
 
