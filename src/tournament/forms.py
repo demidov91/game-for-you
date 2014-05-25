@@ -4,6 +4,8 @@ from django import forms
 from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
+from django.utils.six import with_metaclass
+from django.db.models import SubfieldBase
 
 from tournament.models import Tournament, Competition, PlayField, Tag, TagManagementTree, CompetitionOwnersTree,\
     TournamentOwnersTree
@@ -13,25 +15,25 @@ from tournament.utils import create_tags
 
 TAGS_SEPARATOR = re.compile(',\s*')
 
-class TagNamesField(forms.fields.CharField):
-    def to_python(self, value):
+class TagNamesField(with_metaclass(SubfieldBase, forms.fields.CharField)):
+    def prepare_value(self, value):
+        if not value:
+            return ''
+        if isinstance(value, str):
+            return value
+        return u', '.join(tag.name for tag in Tag.objects.filter(id__in=value))
+
+    def clean(self, value):
         if not value:
             return []
         names = TAGS_SEPARATOR.split(value)
         tags = Tag.objects.filter(name__in=names)
         if tags.count() != len(names):
-            lost_tag_names = tuple(tag.name for tag in filter(lambda x: x.name not in names, tags))
+            for tag in tags:
+                names.remove(tag.name)
             raise forms.ValidationError(u'{0} {1} {2}'.format(
-                    _('Tags'), u','.join(lost_tag_names), _(' does not exist.')))
+                    _('Tags'), u','.join(names), _(' does not exist.')))
         return tags
-
-    def get_prep_value(self, value):
-        return self.prepare_value(value)
-
-    def prepare_value(self, value):
-        if not value:
-            return ''
-        return u', '.join(tag.name for tag in Tag.objects.filter(id__in=value))
 
 
 

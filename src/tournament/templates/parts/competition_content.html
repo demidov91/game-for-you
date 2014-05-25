@@ -1,6 +1,6 @@
 {% load i18n %}
-
-<table id="competition-info">
+<div id="competition-info">
+<table>
     <tr>
         <td colspan="2"><h2>{{ competition.get_name }}</h2></td>
     </tr>
@@ -16,10 +16,32 @@
     </tr>
     <tr>
         <td>{% trans 'Place' %}</td>
-        <td>{{ competition.place.get_short_description }}</td>
+        <td>
+            {% if competition.place.name %}{{ competition.place.name }}<br />{% endif %}
+            {{ competition.place.address }}
+        </td>
     </tr>
 </table>
+<div>
+    {% if competition.tags.all.count > 0 %}
+    <div>
+    <span>{% trans 'Approved tags:' %}</span>
+    {% with competition.tags.all as tags %}
+    {% include 'parts/event_description_tags.html' %}
+    {% endwith %}
+    </div>
+    {% endif %}
 
+    {% if competition.tags_request.all.count > 0 %}
+    <div>
+    <span>{% trans 'Tags waiting for confirmation:' %}</span>
+    {% with competition.tags_request.all as tags %}
+    {% include 'parts/event_description_tags.html' %}
+    {% endwith %}
+    </div>
+    {% endif %}
+</div>
+</div>
 <div id="competition-participants-placeholder">
     <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" alt="loading..." />
     <div id="competition-participants" data-url="{% url 'view_competition_part' competition_id=competition.id %}"></div>

@@ -285,7 +285,6 @@ def get_tag_managers_list(request, tag):
     me = TagManagementTree.objects.get(managed=tag, shared_to=request.user)
     dependent_owners = get_tree_members(me, TagManagementTree.objects.filter(permissions=TagManagementTree.OWNER))[1:]
     independent_owners = tag.owners.exclude(id__in=tuple(x.id for x in dependent_owners)).exclude(id=me.id)
-    print(independent_owners.count(), len(dependent_owners))
     return render(request, 'parts/tag_managers_list.html', {
         'independent_owners': independent_owners,
         'me_as_owner': me,

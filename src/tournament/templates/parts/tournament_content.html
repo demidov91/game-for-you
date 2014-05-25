@@ -1,18 +1,38 @@
 {% load i18n %}
+<div id="competition-info">
+    <table>
+        <tr>
+            <td colspan="2"><h2>{{ tournament.name }}</h2></td>
+        </tr>
+        <tr>
+            <td>{% trans 'First day to play' %}</td>
+            <td>{{ tournament.first_datetime }}</td>
+        </tr>
+        <tr>
+            <td>{% trans 'Last day to play' %}</td>
+            <td>{{ tournament.last_datetime }}</td>
+        </tr>
+    </table>
+    <div>
+        {% if tournament.tags.all.count > 0 %}
+        <div>
+        <span>{% trans 'Approved tags:' %}</span>
+        {% with tournament.tags.all as tags %}
+        {% include 'parts/event_description_tags.html' %}
+        {% endwith %}
+        </div>
+        {% endif %}
 
-<table id="competition-info">
-    <tr>
-        <td colspan="2"><h2>{{ tournament.name }}</h2></td>
-    </tr>
-    <tr>
-        <td>{% trans 'First day to play' %}</td>
-        <td>{{ tournament.first_datetime }}</td>
-    </tr>
-    <tr>
-        <td>{% trans 'Last day to play' %}</td>
-        <td>{{ tournament.last_datetime }}</td>
-    </tr>
-</table>
+        {% if tournament.tags_request.all.count > 0 %}
+        <div>
+        <span>{% trans 'Tags waiting for confirmation:' %}</span>
+        {% with tournament.tags_request.all as tags %}
+        {% include 'parts/event_description_tags.html' %}
+        {% endwith %}
+        </div>
+        {% endif %}
+    </div>
+</div>
 
 {% if tournament.competitions.all.count > 0 %}
 <table class="table table-striped table-hover">

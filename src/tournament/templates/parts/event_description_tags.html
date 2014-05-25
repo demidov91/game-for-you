@@ -1,0 +1,6 @@
+{% for tag in tags  %}
+    <a class="btn btn-xs btn-default" href="{% url 'tag_page' tag_id=tag.id %}">
+        <span class="glyphicon glyphicon-tag"></span>
+        {{ tag.name }}
+    </a>
+{% endfor %}
