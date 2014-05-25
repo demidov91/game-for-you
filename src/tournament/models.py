@@ -51,7 +51,8 @@ class TagManagementTree(ShareTree):
     permissions = models.PositiveSmallIntegerField(default=PUBLISHER, null=False, blank=False)
 
     def __str__(self):
-        return u'{0} {1} {2}'.format(super(TagManagementTree, self).__str__(), _('for tag'), str(self.managed))
+        super_string = force_text(super(TagManagementTree, self))
+        return u'{0} {1} {2}'.format(super_string, _('for tag'), self.managed)
 
 @receiver(post_save, sender=get_user_model())
 def add_default_tag(sender, instance, created, **kwargs):
