@@ -22,7 +22,7 @@ class Tag(models.Model):
     Event topic.
     """
     #People who view events
-    subscribers = models.ManyToManyField(get_user_model(), related_name='subscribed_to', null=True, blank=True)
+    subscribers = models.ManyToManyField('auth.User', related_name='subscribed_to', null=True, blank=True)
     #Displayed name.
     name = models.CharField(max_length=100, verbose_name=_('name'), unique=True)
     #Tag chat enabled.
