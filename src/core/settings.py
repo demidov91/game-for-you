@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'relations',
     'core',
     'tournament',
+    'messages',
     'custom_registration',
     'django.contrib.sites',
     'allauth',
@@ -126,6 +127,8 @@ DATETIME_INPUT_FORMATS = (
     '%Y-%m-%d',              # '2006-10-25'
 
 )
+
+SHORT_DATE_FORMAT = 'j.n.Y H:i'
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),

@@ -1,0 +1,40 @@
+{% load i18n %}
+
+<form id="send-tag-message-wrapper" action="{% url 'tag_chat' tag_id=tag.id%}" method="post" class="form-horizontal" role="form">{% csrf_token %}
+    <div>
+        {{ form.text }}<input type="submit" class="btn btn-success btn-lg" value="{% trans 'Post'%}" />
+    </div>
+</form>
+<div class="tag-messages">
+{% for message in page.object_list %}
+<div class="message">
+    <div class="avatar-wrapper">
+        <img class="avatar" src="{{ message.author.userprofile.get_image }}" />
+        <div class="center">{{ message.author.userprofile.get_short_name }}</div>
+    </div>
+    <div class="create-date-time">{{ message.create_time|date:'SHORT_DATE_FORMAT'}}</div>
+    <span class="body">{{ message.text }}</span>
+    <div class="clear"></div>
+</div>
+{% endfor %}
+</div>
+
+<div id="tag-chat-page-links" class="center">
+{% if page.paginator.num_pages < 11 %}
+    {% for page_number in page.paginator.page_range %}
+    <a href="{% url 'tag_page' tag_id=tag.id %}?page={{ page_number }}" class="btn btn-default btn-sm {% if page_number == page.number %}active{% endif %}">
+        {{ page_number }}
+    </a>
+    {% endfor %}
+{% else %}
+    {% for page_number in page.paginator.page_range %}
+    {% if forloop.counter < 5 or forloop.revcounter < 5 %}
+    <a href="{% url 'tag_page' tag_id=tag.id %}?page={{ page_number }}" class="btn btn-default btn-sm {% if page_number == page.number %}active{% endif %}">
+        {{ page_number }}
+    </a>
+    {% elif forloop.counter == 5 %}
+    <form action="{% url 'tag_chat' tag_id=tag.id%}" id="open-page-wrapp"><input name="page" type="text" value="{% if page.number > 4 and page.number < page.paginator.num_pages|add:-3 %}{{ page.number }}{% endif %}" /></form>
+    {% endif %}
+    {% endfor %}
+{% endif %}
+</div>

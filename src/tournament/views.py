@@ -238,6 +238,7 @@ def change_tag_subscription_state(request, subscribe):
         tags_provider.remove_tag_by_id(int(request.POST.get('id')))
     return redirect('index')
 
+@require_GET
 def tag_page(request, tag_id):
     tag = get_object_or_404(Tag.objects, id=tag_id)
     template_name = 'tag_authenticated.html' if request.user.is_authenticated() else 'tag_unauthenticated.html'
@@ -245,6 +246,7 @@ def tag_page(request, tag_id):
         'tag': tag,
         'is_owner': is_owner(tag, request.user),
         'is_publisher': can_publish_tag(tag, request.user),
+        'page_number': request.GET.get('page', 1),
     }
     if context['is_publisher']:
         tournament_requests = Tournament.objects.filter(tags_request__in=(tag, ))

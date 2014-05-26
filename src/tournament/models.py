@@ -78,7 +78,7 @@ class Tournament(CreateTimeMixin, models.Model):
         return self.name or _('No-name tournament')
 
     def get_absolute_url(self):
-        return reverse('view_tournament', tournament_id=self.id)
+        return reverse('view_tournament', kwargs={'tournament_id': self.id})
 
 
 @python_2_unicode_compatible
