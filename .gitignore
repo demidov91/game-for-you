@@ -20,3 +20,4 @@ src/core/media/admin
 /logs/*
 !/logs/README.txt
 src/core/public/*
+test_db.sql

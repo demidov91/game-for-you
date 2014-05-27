@@ -1,10 +1,12 @@
 {% load i18n %}
 
+{% if is_authenticated %}
 <form id="send-tag-message-wrapper" action="{% url 'tag_chat' tag_id=tag.id%}" method="post" class="form-horizontal" role="form">{% csrf_token %}
     <div>
         {{ form.text }}<input type="submit" class="btn btn-success btn-lg" value="{% trans 'Post'%}" />
     </div>
 </form>
+{% endif %}
 <div class="tag-messages">
 {% for message in page.object_list %}
 <div class="message">

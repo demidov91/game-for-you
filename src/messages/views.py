@@ -25,6 +25,7 @@ def tag_chat(request, tag_id):
         'form': form,
         'tag': tag,
         'page': paginator.page(page_number),
+        'is_authenticated': request.user.is_authenticated,
     })
 
 

@@ -1,20 +1,6 @@
-from django.db.models import Q
-
 from tournament.models import Tournament, Competition, Participation, Tag, TagManagementTree
-from core.decorators import OwnerOnly, InstancePreloaderAndPermissionChecker
+from core.decorators import InstancePreloaderAndPermissionChecker, OwnerOnly
 from tournament.utils import TagOwnersTreeUtil, TagPublishersTreeUtil, BaseManagementTreeUtil, is_owner, can_publish_tag
-
-
-class can_modify_participation(OwnerOnly):
-    default_get_key = 'participation_id'
-    default_set_key = 'participation'
-
-    __name__ = 'can_modify_participation'
-
-    model_class = Participation
-
-    def get_instance_owner(self, instance):
-        return instance.competition.owner
 
 
 class BaseManagerOnly(InstancePreloaderAndPermissionChecker):
@@ -23,6 +9,15 @@ class BaseManagerOnly(InstancePreloaderAndPermissionChecker):
     def has_permission(self, user, instance):
         return self.owners_tree_util.is_manager(instance, user)
 
+
+class can_modify_participation(BaseManagerOnly):
+    default_get_key = 'participation_id'
+    default_set_key = 'participation'
+    __name__ = 'can_modify_participation'
+    model_class = Participation
+
+    def has_permission(self, user, instance):
+        return super(can_modify_participation, self).has_permission(user, instance.competition)
 
 
 class BaseTagManagerOnly(BaseManagerOnly):

@@ -72,7 +72,7 @@ def is_in_share_tree(user, share_tree):
     *share_tree*: root tree element.
     returns: **bool**.
     """
-    return share_tree_util.is_in_share_tree(share_tree_util, user)
+    return share_tree_util.is_in_share_tree(share_tree, user)
 
 def has_higher_priority(user, acceptor, root):
     """
