@@ -139,8 +139,9 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 SITE_ID = 1
 LOGIN_URL = '/?force-login'
-
-
+ACCOUNT_EMAIL_VERIFICATION='mandatory'
+ACCOUNT_LOGIN_AFTER_EMAIL_CONFIRMATION = True
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -152,10 +153,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'core', 'media'),
 )
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_ON_GET = False
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION=True
 
 DEFAULT_TAGS = (1, )
 
