@@ -22,7 +22,6 @@ install_requires = [
     'psycopg2',
     'django-allauth',
     'south==0.8.4',
-    'factory_boy',
 ]
 
 

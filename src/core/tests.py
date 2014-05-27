@@ -2,9 +2,9 @@ from datetime import datetime
 
 from django.test import TestCase
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 
 from core import utils
-from core.factories import UserFactory
 from core.models import ShareTree
 
 
@@ -30,7 +30,7 @@ class UtilShareTreeTest(TestCase):
         tree = []
         users = []
         for x in range(0, 6):
-            users.append(UserFactory())
+            users.append(get_user_model().objects.create(username='ctust-{0}'.format(x)))
         tree.append(ShareTree.objects.create(shared_to=users[0]))
         tree.append(ShareTree.objects.create(shared_to=users[1], parent=tree[0]))
         tree.append(ShareTree.objects.create(shared_to=users[2], parent=tree[0]))
