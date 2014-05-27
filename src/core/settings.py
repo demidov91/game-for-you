@@ -36,7 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-#    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
     'relations',
     'core',
     'tournament',
@@ -148,7 +148,6 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 STATIC_URL = '/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'app_static')
-SERVE_STATIC = False
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'core', 'media'),
 )
@@ -157,6 +156,7 @@ LOGIN_REDIRECT_URL = 'index'
 LOGOUT_ON_GET = False
 
 DEFAULT_TAGS = (1, )
+SOUTH_TESTS_MIGRATE = False
 
 LOGGING = {
     'version': 1,
@@ -205,7 +205,16 @@ LOGGING = {
     },
 }
 
-SOUTH_TESTS_MIGRATE = False
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'SCOPE': ['email', 'publish_stream'],
+        'METHOD': 'oauth2',
+        'LOCALE_FUNC': lambda x: x.LANGUAGE_CODE,
+        'VERIFIED_EMAIL': True,
+    }
+}
+
+
 
 try:    
     from core.local_settings import *

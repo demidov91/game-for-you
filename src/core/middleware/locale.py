@@ -4,7 +4,6 @@ _active_languages = tuple(lang[0] for lang in settings.LANGUAGES)
 
 
 def add_common_template_variables(request):
-    print(request.LANGUAGE_CODE)
     return {
         'ACTIVE_LANGUAGE': request.LANGUAGE_CODE,
         'OTHER_LANGUAGES': tuple(filter(lambda x: x != request.LANGUAGE_CODE, _active_languages)),

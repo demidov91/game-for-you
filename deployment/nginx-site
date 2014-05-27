@@ -1,0 +1,13 @@
+server{
+    listen 80;
+    server_name letsplay.com 192.168.1.*;
+    error_log /home/dmitry/Python/logs/nginx_error.log;
+    location / {
+        proxy_pass http://localhost:8000;
+        include /etc/nginx/proxy_params;
+    }
+    location ~* \.(css|js|jpeg|jpg|png|less|gif|eot|ttf|svg|woff|html)$ {
+        root /home/dmitry/Python/game-for-you/src/core/media/;
+        access_log off;
+    }
+}

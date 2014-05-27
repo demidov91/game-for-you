@@ -1,7 +1,5 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from django.conf import settings
-from django.contrib.staticfiles.views import serve as serve_static
 
 from tournament import urls as tournament_urls
 from relations import urls as relations_urls
@@ -21,8 +19,3 @@ urlpatterns = patterns('',
     url(r'messages/', include(messages_urls)),
     url(r'', include(tournament_urls)),
 )
-
-if settings.SERVE_STATIC:
-    urlpatterns += (
-        url(r'^{0}(?P<path>.*)$'.format(settings.STATIC_URL[1:len(settings.STATIC_URL)]), serve_static),
-    )

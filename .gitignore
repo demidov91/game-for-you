@@ -16,6 +16,7 @@ src/core/local_settings.py
 src/app_static
 src/app_static/*
 src/core/media/admin
+src/core/media/facebook
 *.mo
 /logs/*
 !/logs/README.txt

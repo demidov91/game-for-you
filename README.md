@@ -15,5 +15,21 @@ Installation:
  * chmod a+x test.sh
  * bin/buildout
  * Collect application static files.
-  * uncomment **'django.contrib.staticfiles',** line in settings.py
   * bin/manage collectstatic
+  * ln -s ../../app_static/facebook/ src/core/media/
+  * ln -s ../../app_static/admin/ src/core/media/
+
+Running site:
+ * django development server
+  * bin/manage runserver --nostatic  (use --nostatic param to avoid 404 error on path clashes)
+
+ * nginx
+  * *sudo cp deployment/nginx-site /etc/nginx/sites-available/nginx-file-for-site*
+  * Replace server_name, error_log, proxy_pass, root with paths and urls.
+  * *sudo ln -s ../sites-available/nginx-file-for-site /etc/nginx/sites-enabled/nginx-file-for-site*
+  * *sudo cp deployment/proxy_params /etc/nginx/proxy_params*
+  * Restart nginx.
+
+After site started:
+ * Enable social authentication:
+  * Create record with social application data for each provider at /admin/socialaccount/socialapp/
