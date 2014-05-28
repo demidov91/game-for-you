@@ -1,5 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.conf import settings
+import django
+from django.conf.urls.static import static
 
 from tournament import urls as tournament_urls
 from relations import urls as relations_urls
@@ -19,3 +22,6 @@ urlpatterns = patterns('',
     url(r'messages/', include(messages_urls)),
     url(r'', include(tournament_urls)),
 )
+
+if settings.DEBUG and django.VERSION < (1, 6):
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
