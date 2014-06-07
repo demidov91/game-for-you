@@ -1,6 +1,9 @@
 {% extends 'authenticated_base.html' %}
 
 {% load i18n %}
+{% load socialaccount %}
+{% providers_media_js %}
+        {% include "socialaccount/snippets/login_extra.html" %}
 
 {% block nav_settings_active %}active{% endblock %}
 
@@ -11,6 +14,12 @@
     {% include 'parts/bootstrap_form.html' %}
     {% endwith %}
     </form>
+    <div id="connect-to-the-social-account">
+        <a href="{% provider_login_url 'facebook' process="connect" %}"><img src="{{ STATIC_URL}}img/facebook_144.png" alt="auth_with_fb" /></a>
+        <img src="{{ STATIC_URL}}img/gmail_144.jpg" alt="auth_with_gmail" />
+        <img src="{{ STATIC_URL}}img/vk_144.jpg" alt="auth_with_vk" />
+        <img src="{{ STATIC_URL}}img/twitter_144.png" alt="auth_with_twitter" />
+    </div>
 
     {% if known_places %}
     <h3>{% trans 'Edit addresses' %}</h3>
