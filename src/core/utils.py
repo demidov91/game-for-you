@@ -22,7 +22,7 @@ class Adapter(object):
 class ShareTreeUtil:
     model_class = ShareTree
 
-    def _is_tree_member(self, leaf):
+    def as_tree_member(self, leaf):
         """
         Method that indicates if the *leaf* can be in this sharing tree.
         """
@@ -32,9 +32,9 @@ class ShareTreeUtil:
         """
         returns: *ShareTree* instance with *share_to*==**user_to_find**.
         """
-        while self._is_tree_member(leaf.parent):
+        while leaf.parent:
             if leaf.parent.shared_to == user_to_find:
-                return leaf.parent
+                return self.as_tree_member(leaf.parent)
             leaf = leaf.parent
         return None
 
@@ -62,6 +62,20 @@ class ShareTreeUtil:
                 return leaf
             leaves.extend(self.model_class.objects.filter(parent=leaf))
         return None
+
+    def get_tree_members(self, root):
+        """
+        root: *ShareTree* instance.
+        returns: *list* of all dependent *ShareTree* leaves starting with **root**.
+        """
+        plain_tree = []
+        leaves = deque((root,))
+        while leaves:
+            leaf_to_add = leaves.popleft()
+            if self.as_tree_member(leaf_to_add):
+                plain_tree.append(leaf_to_add)
+            leaves.extend(self.model_class.objects.filter(parent=leaf_to_add))
+        return plain_tree
 
 share_tree_util = ShareTreeUtil()
 
@@ -98,26 +112,10 @@ def find_from_leaf_to_root(leaf, user_to_find):
     return helper.find_from_leaf_to_root(leaf, user_to_find)
 
 
-
-
-
 def get_root(leaf):
     while leaf.parent:
         leaf = leaf.parent
     return leaf
-
-def get_tree_members(root, preselected_tree=ShareTree.objects.all()):
-    """
-    root: *ShareTree* instance.
-    preselected_tree: *ShareTree* queryset to add some constraint on the search.
-    returns: *list* of all dependent *ShareTree* leaves starting with **root**.
-    """
-    plain_tree = []
-    leaves = deque((root,))
-    while leaves:
-        plain_tree.append(leaves.popleft())
-        leaves.extend(preselected_tree.filter(parent=plain_tree[-1]))
-    return plain_tree
 
 def to_timestamp(date_time):
     """

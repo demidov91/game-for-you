@@ -12,14 +12,14 @@ from django.contrib.auth import get_user_model
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
     get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_owner, can_publish_tag,\
-    sort_by_key
+    sort_by_key, tag_owners_util
 from tournament.forms import TournamentForm, AddCompetitionForm, TagForm
 from tournament.models import Competition, Participation, Tournament, Tag, TagManagementTree
 from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation,\
     tag_owner_only, tag_master_sharer_or_owner_only, tag_master_owner_only, tag_sharer_and_owner_only,\
     can_upgrade_manager
 from relations.models import Team
-from core.utils import to_timestamp, get_tree_members
+from core.utils import to_timestamp
 
 
 def _unauthenticated_view(request):
@@ -298,7 +298,7 @@ def delete_tag(request, tag):
 @tag_owner_only(set_key='tag')
 def get_tag_managers_list(request, tag):
     me = TagManagementTree.objects.get(managed=tag, shared_to=request.user)
-    dependent_owners = get_tree_members(me, TagManagementTree.objects.filter(permissions=TagManagementTree.OWNER))[1:]
+    dependent_owners = tag_owners_util.get_tree_members(me)[1:]
     independent_owners = tag.owners.exclude(id__in=tuple(x.id for x in dependent_owners)).exclude(id=me.id)
     return render(request, 'parts/tag_managers_list.html', {
         'independent_owners': independent_owners,
@@ -328,7 +328,6 @@ def add_tag_sharer(request, tag, user_id):
 @require_POST
 @can_upgrade_manager(set_key='manager')
 def make_tag_owner(request, manager):
-    manager.parent = TagManagementTree.objects.get(shared_to=request.user, managed=manager.managed)
     manager.permissions = TagManagementTree.OWNER
     manager.save()
     return HttpResponse()
@@ -337,9 +336,7 @@ def make_tag_owner(request, manager):
 @require_POST
 @tag_master_owner_only(set_key='manager')
 def downgrade_to_tag_sharer(request, manager):
-    manager.remove_from_tree()
     manager.permissions = TagManagementTree.PUBLISHER
-    manager.parent = TagManagementTree.objects.get(shared_to=request.user, managed=manager.managed)
     manager.save()
     return HttpResponse()
 

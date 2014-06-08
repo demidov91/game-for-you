@@ -202,15 +202,21 @@ class BaseManagementTreeUtil(ShareTreeUtil):
 
 class TagOwnersTreeUtil(BaseManagementTreeUtil):
     model_class = TagManagementTree
-    def _is_tree_member(self, leaf):
-        return leaf and self.model_class.objects.get(id=leaf.id).permissions == TagManagementTree.OWNER
+    def as_tree_member(self, leaf):
+        if not leaf:
+            return None
+        if not isinstance(leaf, self.model_class):
+            leaf = self.model_class.objects.get(id=leaf.id)
+        if leaf.permissions == TagManagementTree.OWNER:
+            return leaf
+        return None
 
 class TagPublishersTreeUtil(BaseManagementTreeUtil):
     def is_manager(self, managed, user):
         return managed.sharers.filter(shared_to=user).exists()
 
 _base_owners_util = BaseManagementTreeUtil()
-_tag_publishers_util = TagPublishersTreeUtil()
+tag_owners_util = TagOwnersTreeUtil()
 
 def is_owner(managed, user):
     return user.is_authenticated() and _base_owners_util.is_manager(managed, user)

@@ -2,7 +2,8 @@ from django.test import TestCase
 
 from core.utils import Mock, UserMock
 from tournament import utils
-from tournament.models import Tag
+from tournament.models import Tag, TagManagementTree
+from tournament.utils import TagOwnersTreeUtil
 
 class SubscribedToMock:
     inner = None
@@ -110,6 +111,16 @@ class UtilTest(TestCase):
         self.assertEqual(len(expected_keys), len(tested))
         for i in range(0, len(tested)):
             self.assertEqual(expected_keys[i], tested[i]['a'])
+
+class TagOwnersTreeUtilTest(TestCase):
+    def test_as_tree_member(self):
+        correct_item = TagManagementTree()
+        correct_item.permissions = TagManagementTree.OWNER
+        incorrect_item = TagManagementTree()
+        incorrect_item.permissions = TagManagementTree.PUBLISHER
+        tested = TagOwnersTreeUtil()
+        self.assertIsInstance(tested.as_tree_member(correct_item), TagManagementTree)
+        self.assertIsNone(tested.as_tree_member(incorrect_item))
 
 
 

@@ -128,7 +128,7 @@ DATETIME_INPUT_FORMATS = (
 
 )
 
-SHORT_DATE_FORMAT = 'j.n.Y H:i'
+SHORT_DATE_FORMAT = 'j.m.Y H:i'
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
