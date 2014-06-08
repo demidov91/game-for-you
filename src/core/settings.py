@@ -50,7 +50,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.vk',
     'allauth.socialaccount.providers.facebook',
-
+    'compressor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -151,6 +151,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'app_static')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'core', 'media'),
 )
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    'compressor.finders.CompressorFinder',
+)
+
 
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_ON_GET = False
@@ -216,6 +222,11 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 
+COMPRESS_PRECOMPILERS = (
+    ('text/less', os.path.relpath(os.path.join(BASE_DIR, '..',  'node_modules/less/bin/lessc {infile} {outfile}'))),
+)
+
+
 try:    
     from core.local_settings import *
 except ImportError:
@@ -223,5 +234,5 @@ except ImportError:
  
 LANGUAGES = (
     ('ru', _('Russian')),
-    ('be', _('Belarussian')),
+    ('be', _('Belarusian')),
 )

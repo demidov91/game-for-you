@@ -1,8 +1,3 @@
-### -*- coding: utf-8 -*- ####################################################
-#
-# Copyright (c) 2009 Key UA. All Rights Reserved.
-#
-##############################################################################
 """
 Configuration file used by setuptools. It creates 'egg', install all dependencies.
 
@@ -22,6 +17,7 @@ install_requires = [
     'psycopg2',
     'django-allauth',
     'south==0.8.4',
+    'django-compressor',
 ]
 
 

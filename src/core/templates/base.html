@@ -1,4 +1,4 @@
-{% load i18n core_tags %}
+{% load i18n core_tags compress %}
 <!DOCTYPE html>
 <html class="lang-{{ ACTIVE_LANGUAGE|into_css }}" data-lang="{{ ACTIVE_LANGUAGE|into_css }}">
 <head>
@@ -6,9 +6,11 @@
     <title>{% block title %}{% trans "What? Where? When? organizer" %}{% endblock %}</title>
     {% block style %}
     <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" >
-    <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/style.less" >
+    {% compress css %}
+    <link type="text/less" rel="stylesheet" href="{{ STATIC_URL }}css/style.less" >
+    {% endcompress %}
     {% endblock %}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/lib/less-1.7.0.min.js"></script>
+
 </head>
 <body>
     <div id="all-wrapper">
