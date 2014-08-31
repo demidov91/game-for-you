@@ -47,7 +47,7 @@
 {% block right_side_content %}
     <div id="edit-team-contacts">
     {% for contact in contacts %}
-        <div class="contact-to-add-into-team" data-add-into-team-url="{% url 'add_team_member' userprofile_id=contact.about.id team_id=team.id %}">
+        <div class="contact-to-add-into-team about-{{ contact.about.id }}" data-add-into-team-url="{% url 'add_team_member' userprofile_id=contact.about.id team_id=team.id %}">
             <div class="avatar-wrapper">
                 <img src="{{ contact.about.get_image }}" class="avatar" />
             </div>
@@ -64,9 +64,11 @@
 
 {% block right_side_settings %}
     <div id="delete-team-button-wrapper">
-        <button {% if can_delete %}disabled="disabled" data-toggle="modal" data-target="#delete-team-modal"{% endif %} class="btn btn-danger" data-toggle="modal" data-target="#delete-team-modal">
-            {% trans 'Delete team' %}
+    {% if is_root_owner %}
+    <button  class="btn btn-danger" data-toggle="modal" data-target="#delete-team-modal">
+        {% trans 'Delete team' %}
     </button>
+    {% endif %}
     </div>
     {{ block.super }}
 {% endblock %}

@@ -65,7 +65,14 @@ function getCSRF(){
     return $('input[name="csrfmiddlewaretoken"]').val();
 }
 
-function loadListWithFormAction(jPlaceholder, jList, jFormsContainer){
+/**
+* jPlaceholder: static jQuery element, which contains updateable list.
+* jList: static jQuery element, which contains dynamic list elements.
+* jFormsContainer: static jQuery element. All dynamic forms will be processed with ajax.
+* ajaxParams: optional object with optional attributes 'success' and 'complete' for ajax events processing.
+*  1st parameter will be form element, 2nd parameter will be ajax response data.  
+*/
+function loadListWithFormAction(jPlaceholder, jList, jFormsContainer, ajaxParams){
     jFormsContainer.on('submit', 'form', function(event){
         event.preventDefault();
         jPlaceholder.addClass('loading'); 
@@ -73,15 +80,21 @@ function loadListWithFormAction(jPlaceholder, jList, jFormsContainer){
         jThis.ajaxSubmit({
             success: function(data){
                 jList.html(data);
+                if (ajaxParams && ajaxParams.success){
+                    ajaxParams.success(jThis, data);
+                }
             },
             complete: function(){
                 jPlaceholder.removeClass('loading');
+                if (ajaxParams && ajaxParams.complete){
+                    ajaxParams.complete(jThis);
+                }
             }
         });
         return false;
     });  
 }
 
-function updateListWithFormAction(jPlaceholder, jList){
-    loadListWithFormAction(jPlaceholder, jList, jList);    
+function updateListWithFormAction(jPlaceholder, jList, ajaxParams){
+    loadListWithFormAction(jPlaceholder, jList, jList, ajaxParams);    
 }

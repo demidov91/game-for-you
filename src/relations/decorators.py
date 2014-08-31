@@ -9,6 +9,16 @@ class team_owner_only(OwnerOnly):
 
     model_class = Team
 
+class team_root_owner_only(team_owner_only):
+    __name__ = 'team_root_owner_only'
+
+    def has_permission(self, user, instance):
+        """
+        Checks if the *user* is *Team.owner*.
+        """
+        return instance.owner.shared_to == user
+
+
 class team_member_only(InstancePreloaderAndPermissionChecker):
     default_get_key = 'team_id'
     default_set_key = 'team'

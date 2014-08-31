@@ -25,9 +25,7 @@ def can_delete_team(user, group):
     group: Team or Tag. It should have *owner* field of **ShareTree** type.
     returns: True/False.
     """
-    if group.owner.shared_to == user:
-        return True
-    return False
+    return group.owner.shared_to == user
 
 
 class TeamMemberForEditor(Adapter):

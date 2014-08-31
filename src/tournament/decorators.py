@@ -1,5 +1,5 @@
 from tournament.models import Tournament, Competition, Participation, Tag, TagManagementTree
-from core.decorators import InstancePreloaderAndPermissionChecker, OwnerOnly
+from core.decorators import InstancePreloaderAndPermissionChecker
 from tournament.utils import TagOwnersTreeUtil, TagPublishersTreeUtil, BaseManagementTreeUtil, is_owner, can_publish_tag
 
 

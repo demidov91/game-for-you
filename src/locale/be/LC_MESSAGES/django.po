@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-25 18:19+0000\n"
+"POT-Creation-Date: 2014-08-30 17:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,12 +26,12 @@ msgstr "Залежыць ад"
 msgid "Root element"
 msgstr "Карэнны элемент"
 
-#: core/settings.py:214
+#: core/settings.py:236
 msgid "Russian"
 msgstr "Руская"
 
-#: core/settings.py:215
-msgid "Belarussian"
+#: core/settings.py:237
+msgid "Belarusian"
 msgstr "Беларуская"
 
 #: core/templates/authenticated_base.html:9
@@ -54,22 +54,26 @@ msgstr "Выйсці"
 msgid "What? Where? When? organizer"
 msgstr "Каляндар Што? Дзе? Калі?"
 
-#: core/templates/unauthenticated_base.html:29
+#: core/templates/base.html:54
+msgid "Mail to developers."
+msgstr "Заўвагі і пажаданні"
+
+#: core/templates/unauthenticated_base.html:30
 msgid "Log in or register."
 msgstr "Увайдзіце ці зарэгіструйесь."
 
-#: core/templates/unauthenticated_base.html:37
+#: core/templates/unauthenticated_base.html:38
 #: custom_registration/templates/account/login.html:3
 msgid "Sign In"
 msgstr "Увайсці"
 
-#: core/templates/unauthenticated_base.html:38
+#: core/templates/unauthenticated_base.html:39
 #: custom_registration/templates/account/signup.html:3
 msgid "Sign Up"
 msgstr "Рэгістрацыя"
 
 #: core/templates/parts/bootstrap_form.html:32
-#: relations/templates/edit_team.html:13 relations/templates/settings.html:38
+#: relations/templates/edit_team.html:13 relations/templates/settings.html:47
 msgid "Save"
 msgstr "Захаваць"
 
@@ -80,6 +84,14 @@ msgstr "Дабавіць падзею"
 #: custom_registration/templates/account/login.html:13
 msgid "Forgot Password?"
 msgstr "Забылі пароль?"
+
+#: messages/models.py:21
+msgid "for tag"
+msgstr "тэга"
+
+#: messages/templates/parts/tag_message_list.html:6
+msgid "Post"
+msgstr "Адаслаць"
 
 #: relations/forms.py:14
 msgid "Enter team name"
@@ -139,11 +151,11 @@ msgstr "Адмена"
 msgid "Delete team"
 msgstr "Выдалціць каманду"
 
-#: relations/templates/settings.html:8
+#: relations/templates/settings.html:11
 msgid "Edit your name"
 msgstr "Профіль карыстальніка"
 
-#: relations/templates/settings.html:16
+#: relations/templates/settings.html:25
 msgid "Edit addresses"
 msgstr "Праўка раней захаваных адрасаў"
 
@@ -167,43 +179,47 @@ msgstr "Надаць правы ўладальніка"
 msgid "Remove management rights"
 msgstr "Адняць правы ўладальніка"
 
-#: relations/templates/parts/team_members.html:19
+#: relations/templates/parts/team_members.html:20
+msgid "Make root team owner"
+msgstr "Зрабіць уладальнікам"
+
+#: relations/templates/parts/team_members.html:24
 msgid "Can edit team"
 msgstr "Можа рэдагаваць"
 
-#: tournament/forms.py:35 tournament/forms.py:66
+#: tournament/forms.py:36 tournament/forms.py:67
 msgid "Tags"
 msgstr "Тэгі"
 
-#: tournament/forms.py:35
+#: tournament/forms.py:36
 msgid " does not exist."
 msgstr "не існуюць."
 
-#: tournament/forms.py:53
+#: tournament/forms.py:54
 msgid "Enter any data about the place."
 msgstr "Увядзіце інфармацыю аб гэтым месцы."
 
-#: tournament/forms.py:69
+#: tournament/forms.py:70
 msgid " already exist."
 msgstr " існуе."
 
-#: tournament/forms.py:87 tournament/forms.py:137
+#: tournament/forms.py:88 tournament/forms.py:138
 msgid "New tag names"
 msgstr "Назвы дадатковых тэгаў"
 
-#: tournament/forms.py:91 tournament/forms.py:141
+#: tournament/forms.py:92 tournament/forms.py:142
 msgid "Send request for tagging as"
 msgstr "Паслаць запыт на публікацыю пад тэгам"
 
-#: tournament/forms.py:182 tournament/forms.py:183
+#: tournament/forms.py:183 tournament/forms.py:184
 msgid "Select place where competition is held."
 msgstr "Азначце месца правядзення мпаборніцтва."
 
-#: tournament/forms.py:228
+#: tournament/forms.py:229
 msgid "You can't delete place which has competitions related."
 msgstr "Нельга выдаліць месца, на якое зарэгістравана гульня."
 
-#: tournament/forms.py:231
+#: tournament/forms.py:232
 msgid "Can't perform the action."
 msgstr "Немагчыма скочыць дзеянне."
 
@@ -319,7 +335,7 @@ msgstr "зарэгістравана"
 msgid "Wrong request data."
 msgstr "Хібны запыт."
 
-#: tournament/views.py:291
+#: tournament/views.py:293
 msgid "Only the last owner can remove tags."
 msgstr "Толькі апошні ўладальнік можа выдаліць тэг."
 
@@ -495,10 +511,6 @@ msgstr "Дазволена адыгрываць па"
 msgid "No events for this day."
 msgstr "Няма падзей на гэты дзень."
 
-#: tournament/templates/parts/tag_content.html:8
-msgid "Here should be tag chat."
-msgstr "Тут будзе чат."
-
 #: tournament/templates/parts/tags_to_display.html:3
 msgid "Tags to display:"
 msgstr "Актыўныя тэгі:"
@@ -515,11 +527,11 @@ msgstr "Назва тэга"
 msgid "Add competition place"
 msgstr "Дадаць месца правядзення гульні"
 
+#~ msgid "Here should be tag chat."
+#~ msgstr "Тут будзе чат."
+
 #~ msgid "Tag "
 #~ msgstr "Тэг "
-
-#~ msgid "for tag"
-#~ msgstr "тэга"
 
 #~ msgid "people who know this place"
 #~ msgstr "людзі, якія ведаюць аб гэтым месцы"

@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'ajax/team/(?P<team_id>\d+)/member/remove/(?P<userprofile_id>\d+)/', remove_team_member, name='remove_team_member'),
     url(r'ajax/team/(?P<team_id>\d+)/owner/create/(?P<userprofile_id>\d+)/', make_team_owner, name='make_team_owner'),
     url(r'ajax/team/owner/remove/(?P<share_tree_id>\d+)/', undo_team_owner, name='undo_team_owner'),
+    url(r'ajax/team/(?P<team_id>\d+)/owner/add/root/(?P<share_tree_id>\d+)/', make_team_root_owner, name='make_team_root_owner'),
 
     url(r'team/add/$', add_team, name='add_team'),
     url(r'team/(?P<team_id>\d+)/edit/$', EditTeamView.as_view(), name='edit_team'),

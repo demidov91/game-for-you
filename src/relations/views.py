@@ -4,11 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 
 from relations.models import Team, UserProfile, UserContact
 from relations.forms import TeamForm, ProfileSettings
-from relations.decorators import team_owner_only, team_member_only
+from relations.decorators import team_owner_only, team_member_only, team_root_owner_only
 from relations.utils import create_team, can_delete_team, get_members_for_editor
 from core.utils import is_in_share_tree, has_higher_priority, find_leave_by_owner, find_from_leaf_to_root, get_root
 from core.models import ShareTree
@@ -38,6 +38,7 @@ class EditTeamView(View):
             'team': team,
             'members': get_members_for_editor(team, request.user),
             'contacts': request.user.known_people.all(),
+            'is_root_owner': team.owner.shared_to == request.user,
         })
 
     def post(self, request, team):
@@ -64,7 +65,7 @@ def view_team(request, team):
     })
 
 
-@team_owner_only(set_key='team')
+@team_root_owner_only(set_key='team')
 @require_POST
 def delete_team(request, team):
     if can_delete_team(request.user, team):
@@ -156,6 +157,22 @@ def undo_team_owner(request, share_tree_id):
             'team': team,
         })
     return HttpResponseForbidden()
+
+@require_POST
+@team_root_owner_only(set_key='team')
+def make_team_root_owner(request, share_tree_id, team):
+    new_owner = get_object_or_404(ShareTree.objects, id=share_tree_id)
+    new_owner.parent = None
+    new_owner.save()
+    team.owner.parent = new_owner
+    team.owner.save()
+    team.owner = new_owner
+    team.save()
+    return render(request, 'parts/team_members.html', {
+            'members': get_members_for_editor(team, request.user),
+            'team': team,
+        })
+
 
 @login_required
 def view_settings(request, update_places=False, update_user=False):

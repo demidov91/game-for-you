@@ -108,8 +108,7 @@ def find_leave_by_owner(root, user):
 
 
 def find_from_leaf_to_root(leaf, user_to_find):
-    helper = ShareTreeUtil()
-    return helper.find_from_leaf_to_root(leaf, user_to_find)
+    return share_tree_util.find_from_leaf_to_root(leaf, user_to_find)
 
 
 def get_root(leaf):

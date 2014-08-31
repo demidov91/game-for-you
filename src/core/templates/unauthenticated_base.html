@@ -9,8 +9,8 @@
     <div><img src="{{ STATIC_URL}}img/email_144.png" alt="auth_with_email" data-toggle="modal" data-target="#email-authentication" /></div>
     <div><a href="{% provider_login_url 'facebook' method='oauth2' %}"><img src="{{ STATIC_URL}}img/facebook_144.png" alt="auth_with_fb" /></a></div>
     <div><img src="{{ STATIC_URL}}img/gmail_144.jpg" alt="auth_with_gmail" /></div>
-    <div><img src="{{ STATIC_URL}}img/vk_144.jpg" alt="auth_with_vk" /></div>
-    <div><img src="{{ STATIC_URL}}img/twitter_144.png" alt="auth_with_twitter" /></div>
+    <div><a href="{% provider_login_url 'vk' %}"><img src="{{ STATIC_URL}}img/vk_144.jpg" alt="auth_with_vk" /></a></div>
+    <div><a href="{% provider_login_url 'twitter' %}"><img src="{{ STATIC_URL}}img/twitter_144.png" alt="auth_with_twitter" /></a></div>
 </div>
 {% endblock %}
 

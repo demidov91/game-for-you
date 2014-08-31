@@ -50,11 +50,5 @@ class OwnerOnly(InstancePreloaderAndPermissionChecker):
     """
     Decorator base class, which can throw 403 if *request.user* is not in the owner tree.
     """
-    def get_instance_owner(self, instance):
-        """
-        returns: *core.ShareTree* field of the instance, *instance.owner* by default.
-        """
-        return instance.owner
-
     def has_permission(self, user, instance):
-        return is_in_share_tree(user, self.get_instance_owner(instance))
+        return is_in_share_tree(user, instance.owner)
