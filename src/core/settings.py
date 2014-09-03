@@ -142,6 +142,7 @@ LOGIN_URL = '/?force-login'
 ACCOUNT_EMAIL_VERIFICATION='mandatory'
 ACCOUNT_LOGIN_AFTER_EMAIL_CONFIRMATION = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'index'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
