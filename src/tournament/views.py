@@ -246,7 +246,7 @@ def tag_page(request, tag_id):
         'tag': tag,
         'is_owner': is_owner(tag, request.user),
         'is_publisher': can_publish_tag(tag, request.user),
-        'page_number': request.GET.get('page', 1),
+        'page_number': request.GET.get('page'),
     }
     if context['is_publisher']:
         tournament_requests = Tournament.objects.filter(tags_request__in=(tag, ))

@@ -11,7 +11,7 @@ from tournament.models import Tag
 @python_2_unicode_compatible
 class TagMessage(models.Model):
     class Meta:
-        ordering = ('-create_time', )
+        ordering = ('create_time', )
     text = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True, default=datetime.now())
     author = models.ForeignKey(get_user_model(), null=False, blank=False)

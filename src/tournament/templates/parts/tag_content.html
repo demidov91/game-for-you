@@ -1,12 +1,12 @@
 {% load i18n %}
 
-<h1>{{ tag.name }}</h1>
+<h1 class="center">{{ tag.name }}</h1>
 <div id="tag-calendar">
     {% include 'parts/calendar.html' %}
 </div>
 {% if tag.has_chat %}
 <div id="tag-chat-placeholder">
     <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" />
-    <div id="tag-chat-wrapper" data-url="{% url 'tag_chat' tag_id=tag.id %}?page={{ page_number }}"></div>
+    <div id="tag-chat-wrapper" data-url="{% url 'tag_chat' tag_id=tag.id %}{% if page_number %}?page={{ page_number }}{% endif %}"></div>
 </div>
 {% endif %}

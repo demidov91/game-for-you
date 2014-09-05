@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'relations',
     'core',
     'tournament',
-    'messages',
+    'chat',
     'custom_registration',
     'django.contrib.sites',
     'allauth',

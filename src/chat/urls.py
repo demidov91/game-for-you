@@ -1,6 +1,6 @@
 from django.conf.urls import patterns,  url
 
-from messages.views import *
+from chat.views import *
 
 
 urlpatterns = patterns('',

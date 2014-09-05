@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 
 from tournament import urls as tournament_urls
 from relations import urls as relations_urls
-from messages import urls as messages_urls
+from chat import urls as messages_urls
 from allauth.account.views import logout
 
 
@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('allauth.urls')),
     url(r'^auth/', include('django.contrib.auth.urls')),
     url(r'contacts/', include(relations_urls)),
-    url(r'messages/', include(messages_urls)),
+    url(r'chat/', include(messages_urls)),
     url(r'', include(tournament_urls)),
 )
 

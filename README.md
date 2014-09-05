@@ -5,7 +5,10 @@ Web-tool for distributed command game organization.
 
 Requires:
  * One of: python3.4 python3.3 python2.6
-  * zc.buildout
+  * zc.buildout (?)
+  * libpq-dev
+  * python3-dev (python-dev)
+ * build-essential (make, g++) 
 
 Installation:
  * git clone **repo-url**

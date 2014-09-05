@@ -1,6 +1,6 @@
 from django import forms
 
-from messages.models import TagMessage
+from chat.models import TagMessage
 
 class TagMessageForm(forms.models.ModelForm):
     class Meta:
