@@ -213,7 +213,7 @@ msgstr "Паслаць запыт на публікацыю пад тэгам"
 
 #: tournament/forms.py:183 tournament/forms.py:184
 msgid "Select place where competition is held."
-msgstr "Азначце месца правядзення мпаборніцтва."
+msgstr "Азначце месца правядзення спаборніцтва."
 
 #: tournament/forms.py:229
 msgid "You can't delete place which has competitions related."
@@ -245,7 +245,7 @@ msgstr "тэгі"
 
 #: tournament/models.py:78
 msgid "No-name tournament"
-msgstr "Безназоўны турнір"
+msgstr "Безназоўны сінхрон"
 
 #: tournament/models.py:89
 msgid "place name"
@@ -305,7 +305,7 @@ msgstr "у"
 
 #: tournament/models.py:146
 msgid "Refers to the tournament"
-msgstr "Адносіцца да прапановы адыграць"
+msgstr "Адносіцца да сінхрона"
 
 #: tournament/models.py:154
 msgid "Refers to the competition"
@@ -345,7 +345,7 @@ msgstr "Заявіць пляцоўку"
 
 #: tournament/templates/add_event.html:12
 msgid "add tournament"
-msgstr "дадаць прапанову адыграць"
+msgstr "дадаць сінхрон"
 
 #: tournament/templates/add_event.html:24
 msgid "add competition"
@@ -353,7 +353,7 @@ msgstr "дадаць гульню"
 
 #: tournament/templates/add_event.html:24
 msgid "Add tournament"
-msgstr "Дадаць прапанову адыграць"
+msgstr "Дадаць сінхрон"
 
 #: tournament/templates/competition_edit.html:8
 msgid "Competition"
@@ -403,7 +403,7 @@ msgstr "Вы ўпэніны, што жадаеце адмовіцца ад пр�
 #: tournament/templates/tournament_edit.html:8
 #: tournament/templates/parts/competition_content.html:9
 msgid "Tournament"
-msgstr "Прапанова адыграць"
+msgstr "Сінхрон"
 
 #: tournament/templates/parts/competition_content.html:14
 msgid "Start at"
@@ -495,7 +495,7 @@ msgstr "Пачатак"
 
 #: tournament/templates/parts/events_for_day.html:19
 msgid "Tournaments:"
-msgstr "Прапановы адыграць:"
+msgstr "Сінхроны:"
 
 #: tournament/templates/parts/events_for_day.html:24
 #: tournament/templates/parts/tournament_content.html:8

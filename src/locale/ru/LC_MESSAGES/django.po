@@ -245,7 +245,7 @@ msgstr "теги"
 
 #: tournament/models.py:78
 msgid "No-name tournament"
-msgstr "Безымянный турнир"
+msgstr "Безымянный синхрон"
 
 #: tournament/models.py:89
 msgid "place name"
@@ -269,7 +269,7 @@ msgstr "закрытый"
 
 #: tournament/models.py:116
 msgid "tournament"
-msgstr "предложение отыграть"
+msgstr "синхрон"
 
 #: tournament/models.py:121
 msgid "place to play"
@@ -305,7 +305,7 @@ msgstr "в"
 
 #: tournament/models.py:146
 msgid "Refers to the tournament"
-msgstr "Относится к предложению отыграть"
+msgstr "Относится к синхрону"
 
 #: tournament/models.py:154
 msgid "Refers to the competition"
@@ -345,7 +345,7 @@ msgstr "Добавить игру"
 
 #: tournament/templates/add_event.html:12
 msgid "add tournament"
-msgstr "Добавить предложение отыграть"
+msgstr "Добавить синхрон"
 
 #: tournament/templates/add_event.html:24
 msgid "add competition"
@@ -353,7 +353,7 @@ msgstr "добавить игру"
 
 #: tournament/templates/add_event.html:24
 msgid "Add tournament"
-msgstr "Добавить предложение отыграть"
+msgstr "Добавить синхрон"
 
 #: tournament/templates/competition_edit.html:8
 msgid "Competition"
@@ -403,7 +403,7 @@ msgstr "Вы уверены, что хотите лишить себя возм�
 #: tournament/templates/tournament_edit.html:8
 #: tournament/templates/parts/competition_content.html:9
 msgid "Tournament"
-msgstr "Предлложение отыграть"
+msgstr "Синхрон"
 
 #: tournament/templates/parts/competition_content.html:14
 msgid "Start at"
@@ -495,7 +495,7 @@ msgstr "Начало"
 
 #: tournament/templates/parts/events_for_day.html:19
 msgid "Tournaments:"
-msgstr "Предложения отыграть:"
+msgstr "Синхроны:"
 
 #: tournament/templates/parts/events_for_day.html:24
 #: tournament/templates/parts/tournament_content.html:8
