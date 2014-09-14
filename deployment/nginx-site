@@ -6,8 +6,7 @@ server{
         proxy_pass http://localhost:8000;
         include /etc/nginx/proxy_params;
     }
-    location ~* \.(css|js|jpeg|jpg|png|less|gif|eot|ttf|svg|woff|html)$ {
-        root /home/dmitry/Python/game-for-you/src/core/media/;
-        access_log off;
+    location /static {
+        alias /home/dmitry/Python/game-for-you/src/app_static/;
     }
 }

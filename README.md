@@ -33,6 +33,12 @@ Running site:
   * *sudo cp deployment/proxy_params /etc/nginx/proxy_params*
   * Restart nginx.
 
+ * apache2
+  * install apache2-(prefork|threaded)-dev
+  * install or build python with option --enable-shared if you haven't done it yet
+  * install or build mod_wsgi for selected python version
+   * run /sbin/ldconfig if libpython...so... is not found
+
 After site started:
  * Enable social authentication:
   * Create record with social application data for each provider at /admin/socialaccount/socialapp/
