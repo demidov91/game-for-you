@@ -22,5 +22,5 @@ src/core/media/facebook
 !/logs/README.txt
 src/core/public/*
 test_db.sql
-parts
+/parts/
 node_modules
