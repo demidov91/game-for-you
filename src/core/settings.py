@@ -110,6 +110,8 @@ USE_L10N = False
 
 USE_TZ = False
 
+TIME_ZONE = 'Europe/Minsk'
+
 DATETIME_FORMAT = 'j F o H:i'
 
 DATETIME_INPUT_FORMATS = (

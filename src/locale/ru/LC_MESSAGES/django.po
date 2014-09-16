@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-31 11:42+0000\n"
+"POT-Creation-Date: 2014-09-17 00:47+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,22 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
+#: chat/models.py:21
+msgid "for tag"
+msgstr "относится к тегу"
+
+#: chat/templates/parts/tag_message_list.html:40
+msgid "Post"
+msgstr "Отослать"
+
+#: chat/templates/parts/tag_message_list.html:45
+msgid "Sign in"
+msgstr "Войдите"
+
+#: chat/templates/parts/tag_message_list.html:45
+msgid "to post a message"
+msgstr "чтобы добавить сообщение"
+
 #: core/models.py:37
 msgid "Depends on"
 msgstr "Зависит от"
@@ -26,11 +42,11 @@ msgstr "Зависит от"
 msgid "Root element"
 msgstr "Корневой элемент"
 
-#: core/settings.py:236
+#: core/settings.py:239
 msgid "Russian"
 msgstr "Русский"
 
-#: core/settings.py:237
+#: core/settings.py:240
 msgid "Belarusian"
 msgstr "Беларуская"
 
@@ -84,14 +100,6 @@ msgstr "Добавить событие"
 #: custom_registration/templates/account/login.html:13
 msgid "Forgot Password?"
 msgstr "Забыли пароль?"
-
-#: messages/models.py:21
-msgid "for tag"
-msgstr "относится к тегу"
-
-#: messages/templates/parts/tag_message_list.html:6
-msgid "Post"
-msgstr "Отослать"
 
 #: relations/forms.py:14
 msgid "Enter team name"
