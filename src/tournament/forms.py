@@ -98,10 +98,11 @@ class TournamentForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         widgets = {
             'first_datetime': BootstrapDateTimeField(attrs={'class': 'form-control'}),
             'last_datetime': BootstrapDateTimeField(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
             'tags': forms.CheckboxSelectMultiple(),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
-        fields = ('name', 'first_datetime', 'last_datetime', 'tags', 'tags_request', 'new_tag_names')
+        fields = ('name', 'first_datetime', 'last_datetime', 'description', 'tags', 'tags_request', 'new_tag_names')
 
     owner = None
 
@@ -151,13 +152,14 @@ class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
             'duration': forms.TextInput(attrs={'class': 'form-control'}),
             'team_limit': forms.TextInput(attrs={'class': 'form-control'}),
             'team_accept_strategy': forms.Select(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
             'tags': forms.CheckboxSelectMultiple(),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'place': widgets.Select(attrs={'class': 'form-control'}),
         }
 
         fields = ('start_datetime', 'name', 'place', 'short_place_name', 'address', 'tournament',
-                  'team_limit', 'team_accept_strategy', 'duration', 'tags', 'tags_request', 'new_tag_names')
+                  'team_limit', 'team_accept_strategy', 'duration', 'description', 'tags', 'tags_request', 'new_tag_names')
 
     checkbox_fields = ('tags',)
     owner = None

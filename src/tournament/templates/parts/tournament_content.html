@@ -13,6 +13,7 @@
             <td>{{ tournament.last_datetime }}</td>
         </tr>
     </table>
+    <div class="event-description">{{ tournament.description }}</div>
     <div>
         {% if tournament.tags.all.count > 0 %}
         <div>

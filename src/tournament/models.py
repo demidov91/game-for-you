@@ -71,6 +71,7 @@ class Tournament(CreateTimeMixin, models.Model):
     name = models.CharField(max_length=100, verbose_name=_('name'))
     first_datetime = models.DateTimeField(verbose_name=_('first date'))
     last_datetime = models.DateTimeField(verbose_name=_('last date'))
+    description = models.TextField(default=None, verbose_name=_('free description'), null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='tournaments', verbose_name=_('tags'), null=True, blank=True)
     tags_request = models.ManyToManyField(Tag, related_name='tournament_requests', null=True, blank=True)
 
@@ -124,6 +125,7 @@ class Competition(CreateTimeMixin, models.Model):
     duration = models.IntegerField(null=True, blank=True, verbose_name=_('competition duration (in minutes)'))
     team_limit = models.IntegerField(null=True, blank=True, verbose_name=_('max team count'))
     team_accept_strategy = models.PositiveSmallIntegerField(choices=STRATEGY_CHOICES, verbose_name=_('team accept strategy'))
+    description = models.TextField(default=None, verbose_name=_('free description'), null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='competitions', verbose_name=_('tags'), null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name=_('competition name'), null=True, blank=True)
     tags_request = models.ManyToManyField(Tag, related_name='competition_requests', null=True, blank=True)
