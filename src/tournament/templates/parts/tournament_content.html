@@ -13,26 +13,9 @@
             <td>{{ tournament.last_datetime }}</td>
         </tr>
     </table>
-    <div class="event-description">{{ tournament.description }}</div>
-    <div>
-        {% if tournament.tags.all.count > 0 %}
-        <div>
-        <span>{% trans 'Approved tags:' %}</span>
-        {% with tournament.tags.all as tags %}
-        {% include 'parts/event_description_tags.html' %}
-        {% endwith %}
-        </div>
-        {% endif %}
-
-        {% if tournament.tags_request.all.count > 0 %}
-        <div>
-        <span>{% trans 'Tags waiting for confirmation:' %}</span>
-        {% with tournament.tags_request.all as tags %}
-        {% include 'parts/event_description_tags.html' %}
-        {% endwith %}
-        </div>
-        {% endif %}
-    </div>
+    {% with tournament as event %}
+    {% include 'parts/event_description.html' %}
+    {% endwith %}
 </div>
 
 {% if tournament.competitions.all.count > 0 %}

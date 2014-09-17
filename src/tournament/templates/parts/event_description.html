@@ -1,0 +1,21 @@
+{% load i18n %}
+<div class="event-description">{{ event.description }}</div>
+<div class="tag-list">
+    {% if event.tags.all.count > 0 %}
+    <div>
+    <span>{% trans 'Approved tags:' %}</span>
+    {% with event.tags.all as tags %}
+    {% include 'parts/event_description_tags.html' %}
+    {% endwith %}
+    </div>
+    {% endif %}
+
+    {% if event.tags_request.all.count > 0 %}
+    <div>
+    <span>{% trans 'Tags waiting for confirmation:' %}</span>
+    {% with tournament.tags_request.all as tags %}
+    {% include 'parts/event_description_tags.html' %}
+    {% endwith %}
+    </div>
+    {% endif %}
+</div>

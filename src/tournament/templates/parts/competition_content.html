@@ -1,47 +1,30 @@
 {% load i18n %}
 <div id="competition-info">
-<table>
-    <tr>
-        <td colspan="2"><h2>{{ competition.get_name }}</h2></td>
-    </tr>
-    {% if competition.tournament %}
-    <tr>
-        <td>{% trans 'Tournament' %}</td>
-        <td><a href="{% url 'view_tournament' tournament_id=competition.tournament.id %}">{{ competition.tournament.name }}</a></td>
-    </tr>
-    {% endif %}
-    <tr>
-        <td>{% trans 'Start at' %}</td>
-        <td>{{ competition.start_datetime }}</td>
-    </tr>
-    <tr>
-        <td>{% trans 'Place' %}</td>
-        <td>
-            {% if competition.place.name %}{{ competition.place.name }}<br />{% endif %}
-            {{ competition.place.address }}
-        </td>
-    </tr>
-</table>
-<div class="event-description">{{ competition.description }}</div>
-<div>
-    {% if competition.tags.all.count > 0 %}
-    <div>
-    <span>{% trans 'Approved tags:' %}</span>
-    {% with competition.tags.all as tags %}
-    {% include 'parts/event_description_tags.html' %}
+    <table>
+        <tr>
+            <td colspan="2"><h2>{{ competition.get_name }}</h2></td>
+        </tr>
+        {% if competition.tournament %}
+        <tr>
+            <td>{% trans 'Tournament' %}</td>
+            <td><a href="{% url 'view_tournament' tournament_id=competition.tournament.id %}">{{ competition.tournament.name }}</a></td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td>{% trans 'Start at' %}</td>
+            <td>{{ competition.start_datetime }}</td>
+        </tr>
+        <tr>
+            <td>{% trans 'Place' %}</td>
+            <td>
+                {% if competition.place.name %}{{ competition.place.name }}<br />{% endif %}
+                {{ competition.place.address }}
+            </td>
+        </tr>
+    </table>
+    {% with competition as event %}
+    {% include 'parts/event_description.html' %}
     {% endwith %}
-    </div>
-    {% endif %}
-
-    {% if competition.tags_request.all.count > 0 %}
-    <div>
-    <span>{% trans 'Tags waiting for confirmation:' %}</span>
-    {% with competition.tags_request.all as tags %}
-    {% include 'parts/event_description_tags.html' %}
-    {% endwith %}
-    </div>
-    {% endif %}
-</div>
 </div>
 <div id="competition-participants-placeholder">
     <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" alt="loading..." />
