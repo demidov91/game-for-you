@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="event-description">{{ event.description }}</div>
+<div class="event-description">{{ event.description|default:'' }}</div>
 <div class="tag-list">
     {% if event.tags.all.count > 0 %}
     <div>
@@ -13,7 +13,7 @@
     {% if event.tags_request.all.count > 0 %}
     <div>
     <span>{% trans 'Tags waiting for confirmation:' %}</span>
-    {% with tournament.tags_request.all as tags %}
+    {% with event.tags_request.all as tags %}
     {% include 'parts/event_description_tags.html' %}
     {% endwith %}
     </div>
