@@ -38,6 +38,8 @@ Running site:
   * install or build python with option --enable-shared if you haven't done it yet
   * install or build mod_wsgi for selected python version
    * run /sbin/ldconfig if libpython...so... is not found
+  * Here is complete instruction of how to fix UnicodeError on file upload. http://itekblog.com/ascii-codec-cant-encode-characters-in-position/
+    It was enough to add export LANG='be_BY.UTF-8', LC_ALL *the same* in /etc/apache2/envvars
 
 After site started:
  * Enable social authentication:
