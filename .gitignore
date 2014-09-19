@@ -24,3 +24,5 @@ src/core/public/*
 test_db.sql
 /parts/
 node_modules
+/src/core/media/upload/user_picks/*
+!/src/core/media/upload/user_picks/owl.jpg

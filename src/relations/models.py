@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
@@ -19,8 +21,8 @@ class UserProfile(models.Model):
     status = models.TextField(blank=True)
     #Team to display on authenticated_index page.
     primary_team = models.ForeignKey('relations.Team', null=True, blank=True, on_delete=models.SET_NULL)
-
     patronymic = models.CharField(max_length=100, default='', blank=True, verbose_name=_('patronymic'))
+    image = models.ImageField(upload_to='user_picks', default=os.path.join(settings.MEDIA_URL, 'user_picks', owl.jpg'), max_length=255)
 
     def get_full_name(self):
         """

@@ -151,6 +151,8 @@ ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'index'
 
 STATIC_URL = '/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'app_static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'core', 'media', 'upload')
+MEDIA_URL = '/media/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'core', 'media'),
 )

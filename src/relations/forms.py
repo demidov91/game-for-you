@@ -28,7 +28,7 @@ class ProfileSettings(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ('last_name', 'first_name', 'patronymic')
+        fields = ('last_name', 'first_name', 'patronymic', 'image')
         widgets = {
             'patronymic': forms.widgets.TextInput(attrs={'class': 'form-control'}),
         }

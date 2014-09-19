@@ -9,7 +9,8 @@
 
 {% block content %}
     <h3>{% trans 'Edit your name' %}</h3>
-    <form class="form-horizontal" method="post" action="{% url 'edit_private_info' %}">{% csrf_token %}
+    <form class="form-horizontal" method="post" action="{% url 'edit_private_info' %}"
+          enctype="multipart/form-data">{% csrf_token %}
     {% with profile_form as form %}
     {% include 'parts/bootstrap_form.html' %}
     {% endwith %}

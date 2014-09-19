@@ -177,7 +177,7 @@ def make_team_root_owner(request, share_tree_id, team):
 @login_required
 def view_settings(request, update_places=False, update_user=False):
     if request.method == 'POST' and update_user:
-        profile_settings = ProfileSettings(instance=request.user.userprofile, data=request.POST)
+        profile_settings = ProfileSettings(instance=request.user.userprofile, data=request.POST, files=request.FILES)
         if profile_settings.is_valid():
             profile_settings.save()
             return redirect('settings')
