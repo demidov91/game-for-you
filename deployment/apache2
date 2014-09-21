@@ -1,0 +1,21 @@
+#####################################################################
+# This is example apache2 (v2.4) virtual host configuration file.   #
+# 1) Replace /path/to/repo/game-for-you with real path              #
+#   to the local repository on the server.                          #
+# 2) Set unix user in WSGISaemonProcess directive to run your site. #
+#####################################################################
+
+Listen 8080
+
+WSGIPythonPath /path/to/repo/game-for-you
+<VirtualHost *:8080>
+    WSGIDaemonProcess anyname user=dmitry group=dmitry
+    WSGIProcessGroup anyname
+    WSGIScriptAlias / /path/to/repo/game-for-you/bin/manage.wsgi
+    ServerName localhost
+<Directory /path/to/repo/game-for-you/bin>
+    <Files manage.wsgi>
+        Require all granted
+    </Files>
+</Directory>
+</VirtualHost>

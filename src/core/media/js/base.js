@@ -49,14 +49,21 @@ function initialize_default_calendar(extraOptions){
 }
 
 
-function load_html_content(jObject, callback){
+function load_html_content(jObject, ajaxParams){
+    jObject.parent().addClass('loading');
     $.ajax({
         url: jObject.data('url'),
         success: function(data){
             jObject.html(data);
+            if (ajaxParams && ajaxParams.success){
+                ajaxParams.success(data);
+            }
         },
-        complete: function(){
-            if (callback) {callback();}
+        complete: function(data){
+            if (ajaxParams && ajaxParams.complete){
+                ajaxParams.complete(data);
+            }
+            jObject.parent().removeClass('loading');            
         }
     });
 }
@@ -97,4 +104,13 @@ function loadListWithFormAction(jPlaceholder, jList, jFormsContainer, ajaxParams
 
 function updateListWithFormAction(jPlaceholder, jList, ajaxParams){
     loadListWithFormAction(jPlaceholder, jList, jList, ajaxParams);    
+}
+
+//Do nothing if history api is not defined.
+if (history){
+    history = {
+        pushState: function(){
+            console.log('History API is not defined. Update your browser.');
+        }
+    }
 }
