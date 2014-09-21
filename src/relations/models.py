@@ -8,7 +8,12 @@ from django.db.models.signals import post_save
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible, force_text
 
+from allauth.socialaccount.signals import pre_social_login
+
 from core.models import ShareTree
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 @python_2_unicode_compatible
@@ -59,6 +64,11 @@ class UserProfile(models.Model):
 
     def get_image(self):
         return self.external_image or self.image.url
+
+
+@receiver(pre_social_login)
+def handler(sender, sociallogin, **kwargs):
+    UserProfile.objects.filter(user=sociallogin.account.user).update(external_image=sociallogin.account.get_avatar_url())
 
 
 @receiver(post_save, sender=User)
