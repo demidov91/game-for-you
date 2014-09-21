@@ -19,8 +19,8 @@ $(function(){
         });
         return false;
     });
-    load_html_content($('#login-placeholder'), function(){
+    load_html_content($('#login-placeholder'), { complete: function(){
         $('#login-placeholder input[name="next"]').val(window.location.pathname + window.location.search);        
-    });
+    }});
     load_html_content($('#register-placeholder'));
 });
