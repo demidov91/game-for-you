@@ -14,8 +14,8 @@ function getAjaxPageUrl(page){
 $(function(){
     initialize_default_calendar();
     if ($('#tag-chat-placeholder').length == 0){return;}
-    load_html_content($('#tag-chat-wrapper'));
-    updateListWithFormAction($('#tag-chat-placeholder'), $('#tag-chat-wrapper'), { success: updatePageNumber});
+    load_html_content($('#tag-chat-wrapper'), {success: updatePageNumber});
+    updateListWithFormAction($('#tag-chat-placeholder'), $('#tag-chat-wrapper'), {success: updatePageNumber});
     $('#tag-chat-placeholder').on('click', '#tag-chat-page-links a', function(event){
         event.preventDefault();
         load_html_content($('#tag-chat-wrapper').data('url', getAjaxPageUrl($(this).data('page'))), {
