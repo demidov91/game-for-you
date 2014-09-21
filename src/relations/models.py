@@ -16,13 +16,21 @@ class UserProfile(models.Model):
     """
     Contacts describe only this instance, so you can create contacts which describe unregistered users.
     """
+    DEFAULT_USER_PICK = os.path.join(settings.MEDIA_URL, 'upload', 'user_picks', 'owl.jpg')
+
     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True)
     #Some greeting text to be displayed next to profile.
     status = models.TextField(blank=True)
     #Team to display on authenticated_index page.
     primary_team = models.ForeignKey('relations.Team', null=True, blank=True, on_delete=models.SET_NULL)
     patronymic = models.CharField(max_length=100, default='', blank=True, verbose_name=_('patronymic'))
-    image = models.ImageField(upload_to='user_picks', default=os.path.join(settings.MEDIA_URL, 'user_picks', owl.jpg'), max_length=255)
+    image = models.ImageField(upload_to='upload/user_picks',
+                              default=DEFAULT_USER_PICK,
+                              max_length=255, blank=True, null=False)
+    external_image = models.URLField(verbose_name=_('external userpick'),
+                                     help_text=_('Save server space - use external images.'
+                                                 ' Leave this field blank to use uploaded userpick.'),
+                                     null=True, blank=True,)
 
     def get_full_name(self):
         """
@@ -50,7 +58,7 @@ class UserProfile(models.Model):
         return self.teams.filter(is_draft=False)
 
     def get_image(self):
-        return settings.STATIC_URL + 'img/owl.jpg'
+        return self.external_image or self.image.url
 
 
 @receiver(post_save, sender=User)

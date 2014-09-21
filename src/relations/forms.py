@@ -1,9 +1,10 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from django.forms.models import inlineformset_factory
-from django.contrib.auth import get_user_model
 
 from relations.models import Team, UserProfile
+
+import logging
+logger = logging.getLogger(__name__)
 
 class TeamForm(forms.ModelForm):
     class Meta:
@@ -28,7 +29,7 @@ class ProfileSettings(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ('last_name', 'first_name', 'patronymic', 'image')
+        fields = ('last_name', 'first_name', 'patronymic', 'image', 'external_image')
         widgets = {
             'patronymic': forms.widgets.TextInput(attrs={'class': 'form-control'}),
         }
@@ -41,6 +42,8 @@ class ProfileSettings(forms.ModelForm):
     def save(self, commit=True, *args, **kwargs):
         self.instance.user.first_name = self.cleaned_data.get('first_name')
         self.instance.user.last_name = self.cleaned_data.get('last_name')
+        if not self.cleaned_data.get('image'):
+            self.instance.image = UserProfile.DEFAULT_USER_PICK
         if commit:
             self.instance.user.save()
         super(ProfileSettings, self).save(commit=commit, *args, **kwargs)

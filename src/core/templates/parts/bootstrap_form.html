@@ -23,6 +23,7 @@
             {% endif %}
             {{ field }}
         {% if field.html_name in form.checkbox_fields %}</div>{% endif %}
+        {% if field.help_text %}<span class="help-block">{{ field.help_text }}</span>{% endif %}
         </div>
     </div>
 {% endfor %}
