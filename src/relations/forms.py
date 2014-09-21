@@ -20,8 +20,8 @@ class TeamForm(forms.ModelForm):
 class ProfileSettings(forms.ModelForm):
     username = forms.fields.CharField(
         widget=forms.widgets.TextInput(attrs={'class': 'form-control'}),
-        required=False,
-        label=_('last name'))
+        required=True,
+        label=_('nickname'))
     first_name = forms.fields.CharField(
         widget=forms.widgets.TextInput(attrs={'class': 'form-control'}),
         required=False,

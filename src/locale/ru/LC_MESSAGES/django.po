@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-17 22:47+0300\n"
+"POT-Creation-Date: 2014-09-21 23:23+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,15 +22,15 @@ msgstr ""
 msgid "for tag"
 msgstr "относится к тегу"
 
-#: chat/templates/parts/tag_message_list.html:40
+#: chat/templates/parts/tag_message_list.html:38
 msgid "Post"
 msgstr "Отослать"
 
-#: chat/templates/parts/tag_message_list.html:45
+#: chat/templates/parts/tag_message_list.html:43
 msgid "Sign in"
 msgstr "Войдите"
 
-#: chat/templates/parts/tag_message_list.html:45
+#: chat/templates/parts/tag_message_list.html:43
 msgid "to post a message"
 msgstr "чтобы добавить сообщение"
 
@@ -42,11 +42,11 @@ msgstr "Зависит от"
 msgid "Root element"
 msgstr "Корневой элемент"
 
-#: core/settings.py:239
+#: core/settings.py:241
 msgid "Russian"
 msgstr "Русский"
 
-#: core/settings.py:240
+#: core/settings.py:242
 msgid "Belarusian"
 msgstr "Беларуская"
 
@@ -88,8 +88,8 @@ msgstr "Войти"
 msgid "Sign Up"
 msgstr "Регистрация"
 
-#: core/templates/parts/bootstrap_form.html:32
-#: relations/templates/edit_team.html:13 relations/templates/settings.html:47
+#: core/templates/parts/bootstrap_form.html:33
+#: relations/templates/edit_team.html:13 relations/templates/settings.html:48
 msgid "Save"
 msgstr "Сохранить"
 
@@ -101,35 +101,55 @@ msgstr "Добавить событие"
 msgid "Forgot Password?"
 msgstr "Забыли пароль?"
 
-#: relations/forms.py:14
+#: relations/forms.py:15
 msgid "Enter team name"
 msgstr "Введите название команды"
 
-#: relations/forms.py:23
+#: relations/forms.py:24
+msgid "nickname"
+msgstr "Имя пользователя"
+
+#: relations/forms.py:28
 msgid "first name"
 msgstr "имя"
 
-#: relations/forms.py:27
+#: relations/forms.py:32
 msgid "last name"
 msgstr "фамилия"
 
-#: relations/models.py:23
+#: relations/models.py:31
 msgid "patronymic"
 msgstr "отчество"
 
-#: relations/models.py:84
+#: relations/models.py:34
+msgid "userpick"
+msgstr "Аватарка"
+
+#: relations/models.py:35
+msgid "external userpick"
+msgstr "Внешняя ссыла на аватарку"
+
+#: relations/models.py:36
+msgid ""
+"Save server space - use external images. Leave this field blank to use "
+"uploaded userpick."
+msgstr ""
+"Экономьте место на сервере - используйте внешние ссылки на аватарки :) "
+"Оставьте это поле пустым, чтобы была использовано загруженное изображение."
+
+#: relations/models.py:104
 msgid "NoName (c)"
 msgstr "Безымянные (с)"
 
-#: relations/models.py:135
+#: relations/models.py:155
 msgid "Is public record"
 msgstr "Открытая запись"
 
-#: relations/models.py:136
+#: relations/models.py:156
 msgid "Record for team"
 msgstr "Запись для команды"
 
-#: relations/models.py:137
+#: relations/models.py:157
 msgid "Is private record"
 msgstr "Закрытая запись"
 
@@ -163,7 +183,7 @@ msgstr "Удалить команду"
 msgid "Edit your name"
 msgstr "Введите Ваше имя"
 
-#: relations/templates/settings.html:25
+#: relations/templates/settings.html:26
 msgid "Edit addresses"
 msgstr "Изменение ранее сохранённых адресов"
 
@@ -174,7 +194,7 @@ msgstr "Изменение ранее сохранённых адресов"
 msgid "Edit"
 msgstr "Править"
 
-#: relations/templates/parts/contacts_list.html:9
+#: relations/templates/parts/contacts_list.html:10
 #: relations/templates/parts/team_members.html:12
 msgid "Remove"
 msgstr "Убрать"
@@ -425,16 +445,6 @@ msgstr "начало в"
 msgid "Place"
 msgstr "Место"
 
-#: tournament/templates/parts/competition_content.html:28
-#: tournament/templates/parts/tournament_content.html:19
-msgid "Approved tags:"
-msgstr "Подтверждённые теги:"
-
-#: tournament/templates/parts/competition_content.html:37
-#: tournament/templates/parts/tournament_content.html:28
-msgid "Tags waiting for confirmation:"
-msgstr "Ожидает подтверждения тегов:"
-
 #: tournament/templates/parts/competition_dynamic.html:5
 msgid "Approved participants"
 msgstr "Принятые заявки"
@@ -497,6 +507,14 @@ msgstr "Назначить публикатором"
 msgid "Remove publisher"
 msgstr "Удалить публикатора"
 
+#: tournament/templates/parts/event_description.html:6
+msgid "Approved tags:"
+msgstr "Подтверждённые теги:"
+
+#: tournament/templates/parts/event_description.html:15
+msgid "Tags waiting for confirmation:"
+msgstr "Ожидает подтверждения тегов:"
+
 #: tournament/templates/parts/events_for_day.html:5
 msgid "Competitions:"
 msgstr "Игры:"
@@ -535,7 +553,7 @@ msgstr "Добавить тег:"
 msgid "Tag name"
 msgstr "Название тега"
 
-#: tournament/templates/parts/tournament_content.html:56
+#: tournament/templates/parts/tournament_content.html:40
 msgid "Add competition place"
 msgstr "Добавить место проведения"
 

@@ -31,7 +31,7 @@ class UserProfile(models.Model):
     patronymic = models.CharField(max_length=100, default='', blank=True, verbose_name=_('patronymic'))
     image = models.ImageField(upload_to='upload/user_picks',
                               default=DEFAULT_USER_PICK,
-                              max_length=255, blank=True, null=False)
+                              max_length=255, verbose_name=_('userpick'), blank=True, null=False)
     external_image = models.URLField(verbose_name=_('external userpick'),
                                      help_text=_('Save server space - use external images.'
                                                  ' Leave this field blank to use uploaded userpick.'),
