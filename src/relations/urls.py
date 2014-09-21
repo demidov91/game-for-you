@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'settings/update/places/$', view_settings, {'update_places': True}, name='update_places'),
     url(r'settings/update/user/$', view_settings, {'update_user': True}, name='edit_private_info'),
 
+    url(r'(?P<profile_id>\d+)/$', view_user, name='view_user'),
 
     url(r'$', view_contacts, name='view_contacts'),
 )

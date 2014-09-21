@@ -18,6 +18,10 @@ class TeamForm(forms.ModelForm):
         }
 
 class ProfileSettings(forms.ModelForm):
+    username = forms.fields.CharField(
+        widget=forms.widgets.TextInput(attrs={'class': 'form-control'}),
+        required=False,
+        label=_('last name'))
     first_name = forms.fields.CharField(
         widget=forms.widgets.TextInput(attrs={'class': 'form-control'}),
         required=False,
@@ -29,7 +33,7 @@ class ProfileSettings(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ('last_name', 'first_name', 'patronymic', 'image', 'external_image')
+        fields = ('username', 'last_name', 'first_name', 'patronymic', 'image', 'external_image')
         widgets = {
             'patronymic': forms.widgets.TextInput(attrs={'class': 'form-control'}),
         }
@@ -38,8 +42,10 @@ class ProfileSettings(forms.ModelForm):
         super(ProfileSettings, self).__init__(instance=instance, *args, **kwargs)
         self.fields['first_name'].initial = instance.user.first_name
         self.fields['last_name'].initial = instance.user.last_name
+        self.fields['username'].initial = instance.user.username
 
     def save(self, commit=True, *args, **kwargs):
+        self.instance.user.username = self.cleaned_data.get('username')
         self.instance.user.first_name = self.cleaned_data.get('first_name')
         self.instance.user.last_name = self.cleaned_data.get('last_name')
         if not self.cleaned_data.get('image'):

@@ -5,7 +5,7 @@
 <div class="message">
     <div class="avatar-wrapper">
         <img class="avatar" src="{{ message.author.userprofile.get_image }}" />
-        <div class="center">{{ message.author.userprofile.get_short_name }}</div>
+        <div class="center">{{ message.author.username }}</div>
     </div>
     <div class="create-date-time">{{ message.create_time|date:'SHORT_DATE_FORMAT'}}</div>
     <span class="body">{{ message.text }}</span>
