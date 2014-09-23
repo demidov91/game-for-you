@@ -1,7 +1,7 @@
 {% load i18n %}
 
 {% for contact in contacts %}
-<div class="toLeft contact">
+<div class="toLeft contact avatar-wrapper">
     <form method="post" action="{% url 'remove_contact' contact_id=contact.id %}">{% csrf_token %}
         <a href="{% url 'view_user' profile_id=contact.about.id %}">
             <img src="{{ contact.about.get_image }}" /><br />

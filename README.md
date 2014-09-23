@@ -22,6 +22,7 @@ Installation:
  * chmod a+x test.sh
  * bin/buildout
  * Create link to the less compiler
+  * chmod u+x ~/.npm/less/x.x.x/package/bin/lessc          (maybe, a+x)
   * ln -s ~/.npm/less/x.x.x/package/bin/lessc ./lessc
  * Collect application static files.
   * bin/manage collectstatic

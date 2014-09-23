@@ -79,6 +79,7 @@ html{
 .avatar-wrapper{
     width: 100%;
     img.avatar {width: 100%;}
+    a, a:hover { color: black; text-decoration: none;}
 }
 .center{ text-align: center;}
 .help-block {font-size: 0.75em;}
@@ -281,10 +282,6 @@ li.team-nav.with-button{
         width: 10%;
         img {width: 100%; }
         .username {font-size: 0.6em; overflow: hidden;}
-        a, a:hover {
-            text-decoration: none;
-            color: black;
-        }
     }
     #contacts-list {margin: 0.2em 2%;}
     .contact {margin: 0 1%;}
@@ -316,10 +313,7 @@ li.team-nav.with-button{
         width: 50%; height: 25em; overflow: auto;
         &>.list-placeholder .item{ width: 20%; margin: 0.1em 2%; text-align: center;}
     }
-    #managers>.list-placeholder .item {
-        width: 25%;      
-        a, a:hover { color: black; text-decoration: none;}  
-    }
+    #managers>.list-placeholder .item { width: 25%;}
     .contact .name {font-size: 0.8em;}
 
     #managers {

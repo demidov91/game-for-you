@@ -4,8 +4,10 @@
 {% for message in page.object_list %}
 <div class="message">
     <div class="avatar-wrapper">
-        <img class="avatar" src="{{ message.author.userprofile.get_image }}" />
-        <div class="center">{{ message.author.username }}</div>
+        <a href="{% url 'view_user' profile_id=message.author.userprofile.id %}">
+            <img class="avatar" src="{{ message.author.userprofile.get_image }}" />
+            <span>{{ message.author.username }}</span>
+        </a>
     </div>
     <div class="create-date-time">{{ message.create_time|date:'SHORT_DATE_FORMAT'}}</div>
     <span class="body">{{ message.text }}</span>
