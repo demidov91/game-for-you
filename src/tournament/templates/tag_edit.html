@@ -3,26 +3,43 @@
 {% load i18n %}
 
 {% block content %}
+{% if form %}
  <form class="form-inline" role="form" action="{% url 'edit_tag' tag_id=tag.id %}" method="post">{% csrf_token %}
     {% include 'parts/bootstrap_form.html' %}
 </form>
+{% else %}
+<h1>{{ tag.name }}</h1>
+{% endif %}
 <div id="tag-accessors-management">
-    <div id="managers" class="toLeft">
+    <div id="managers" class="toLeft {% if is_owner %}owner{% else %}sharer{% endif %}">
+        {% if is_owner %}
         <h4>{% trans 'Tag managers:' %}</h4>
         <h6>{% trans 'Owners and publishers' %}</h6>
+        {% else %}
+        <h4>{% trans 'Tag publishers:' %}</h4>
+        {% endif %}
         <div class="list-placeholder">
             <img src="{{ STATIC_URL }}img/ajax-loader.gif" class="loader" />
-            <div class="list" data-url="{% url 'tag_managers_list' tag_id=tag.id %}"></div>
+            <div class="list" data-url="
+            {% if is_owner %}
+            {% url 'tag_managers_list' tag_id=tag.id %}
+            {% else %}
+            {% url 'tag_publishers_list' tag_id=tag.id %}
+            {% endif %}
+            ">
+            </div>
         </div>
     </div>
-    <div id="contacts" class="toLeft">
+    <div id="contacts" class="toLeft contacts">
         <h4>{% trans 'All your contacts:' %}</h4>
         <h6>{% trans 'Click to make them publishers' %}</h6>
         <div class="list-placeholder">
             {% for contact in contacts %}
             <div class="contact toLeft avatar-wrapper item">
-                <img class="avatar" src="{{ contact.about.get_image }}" />
-                <div class="center"><span class="name">{{ contact.about.get_short_name}}</span></div>
+                <a href="{% url 'view_user' profile_id=contact.about.id %}">
+                    <img class="avatar" src="{{ contact.about.get_image }}" />
+                    <span class="name username">{{ contact.about.user.username}}</span>
+                </a>
                 {% if contact.about.user %}
                 <form action="{% url 'make_tag_sharer' tag_id=tag.id user_id=contact.about.user.id %}" method="post">{% csrf_token %}
                     <input type="submit" value="{% trans 'Add' %}" class="btn btn-warning btn-sm" />
@@ -39,7 +56,7 @@
 
 {% block right_side_content %}
     {% if is_last_owner %}
-    <form class="center" method="post" action="{% url 'delete_tag' tag_id=tag.id %}">{% csrf_token %}
+    <form class="center" method="post" id="remove-tag-form" action="{% url 'delete_tag' tag_id=tag.id %}">{% csrf_token %}
         <input type="submit" value="{% trans 'Remove tag' %}" class="btn btn-danger" />
     </form>
     {% endif %}
@@ -49,7 +66,10 @@
     {{ block.super }}
     <script>
         confirmRemovingYourselfAsOwnerWords = "{% trans 'Are you sure, you want do remove yourself as owner of this tag?' %}";
-        redirectToAfterRemovingYourselfAsOwner = "{% url 'index' %}";
+        confirmRemovingYourselfAsOwnerWords = "{% trans 'Are you sure, you want do remove yourself as sharer of this tag?' %}";
+        confirmRemovingTag = "{% trans 'Are you ure, you want to remove this tag?' %}";
+        redirectToAfterRemovingYourselfAsOwner = "{% url 'edit_tag' tag_id=tag.id %}";
+        redirectToAfterRemovingYourselfAsSharer = "{% url 'index' %}";
     </script>
     <script src="{{ STATIC_URL }}js/tag_edit.js" type="text/javascript"></script>
 {% endblock %}

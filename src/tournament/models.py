@@ -9,6 +9,8 @@ from django.utils.encoding import python_2_unicode_compatible, force_text
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
+from logicaldelete.models import Model as LogicalDeleteModel
+
 from relations.models import Team, Contact
 from core.models import ShareTree, get_models_super_string
 
@@ -17,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 @python_2_unicode_compatible
-class Tag(models.Model):
+class Tag(LogicalDeleteModel):
     """
     Event topic.
     """
@@ -39,6 +41,9 @@ class Tag(models.Model):
     def owners(self):
         return self.managers.filter(permissions=TagManagementTree.OWNER)
 
+    def __unicode__(self):
+        return str(self)
+
 
 @python_2_unicode_compatible
 class TagManagementTree(ShareTree):
@@ -49,7 +54,7 @@ class TagManagementTree(ShareTree):
     #Last owner can delete a tag.
     OWNER = 1
 
-    managed = models.ForeignKey(Tag, related_name='managers')
+    managed = models.ForeignKey(Tag, related_name='managers', on_delete=models.CASCADE)
     permissions = models.PositiveSmallIntegerField(default=PUBLISHER, null=False, blank=False)
 
     def __str__(self):

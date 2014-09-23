@@ -44,18 +44,35 @@ $(function(){
     $('#managers .list-placeholder').on('submit', 'form.remove', function(event){
         event.preventDefault();
         var jThis = $(this);
-        
-
+        var redirect = false;
+        if (jThis.parents('.me-sharer').length == 1){
+            if (confirm(confirmRemovingYourselfAsOwnerWords)){
+                redirect = true;
+            } else {
+                return false;
+            }
+        }
         $('#managers .list-placeholder').addClass('loading');
         jThis.ajaxSubmit({
             success: function(){
                 jThis.parents('.item').hide();
+                if (redirect){
+                    window.location.href = redirectToAfterRemovingYourselfAsSharer;
+                }
             },
             complete: function(){
                 $('#managers .list-placeholder').removeClass('loading');
             }
         });
         return false;
+    });
+    $('#remove-tag-form').submit(function(event){
+        if (confirm(confirmRemovingTag)){
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
     });
 
 

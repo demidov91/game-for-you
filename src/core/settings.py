@@ -51,6 +51,8 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.vk',
     'allauth.socialaccount.providers.facebook',
     'compressor',
+    'logicaldelete',
+
 )
 
 MIDDLEWARE_CLASSES = (

@@ -200,6 +200,7 @@ class BaseManagementTreeUtil(ShareTreeUtil):
     def is_manager(self, managed, user):
         return managed.owners.filter(shared_to=user).exists()
 
+
 class TagOwnersTreeUtil(BaseManagementTreeUtil):
     model_class = TagManagementTree
     def as_tree_member(self, leaf):
@@ -210,13 +211,25 @@ class TagOwnersTreeUtil(BaseManagementTreeUtil):
         if leaf.permissions == TagManagementTree.OWNER:
             return leaf
         return None
+    def is_last(self, leaf):
+        return TagManagementTree.objects.filter(managed=leaf.managed, permissions=TagManagementTree.OWNER).count() == 1
 
 class TagPublishersTreeUtil(BaseManagementTreeUtil):
     def is_manager(self, managed, user):
+        logger.info("I'm publisher!")
         return managed.sharers.filter(shared_to=user).exists()
+    def is_last(self, leaf):
+        """
+        leaf: *tournament.models.TagManagementTree* instance.
+        returns: there is only one manager for this *Tag*.
+        """
+        return TagManagementTree.objects.filter(managed=leaf.managed).count() == 1
+
+
 
 _base_owners_util = BaseManagementTreeUtil()
 tag_owners_util = TagOwnersTreeUtil()
+tag_sharers_util = _base_owners_util
 
 def is_owner(managed, user):
     return user.is_authenticated() and _base_owners_util.is_manager(managed, user)

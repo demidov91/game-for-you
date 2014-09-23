@@ -85,9 +85,8 @@ class tag_master_sharer_or_owner_only(BaseTagMasterManagerOnly):
     __name__ = 'tag_master_sharer_or_owner_only'
 
     def has_permission(self, user, instance):
-        if is_owner(instance.managed, user):
-            return True
-        return super(tag_master_sharer_or_owner_only, self).has_permission(user, instance)
+        return is_owner(instance.managed, user) or\
+            super(tag_master_sharer_or_owner_only, self).has_permission(user, instance)
 
 
 

@@ -18,4 +18,7 @@ class TagMessage(models.Model):
     tag = models.ForeignKey(Tag, null=False, blank=False)
     
     def __str__(self):
-        return u'{0} {1} {2}'.format(self.author.userprofile.get_short_name(), _('for tag'), self.tag.name)
+        return u'{0} {1} {2}'.format(
+            self.author.userprofile.get_short_name(),
+            _('for tag'),
+            self.tag.name if self.tag else _('removed'))

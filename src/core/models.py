@@ -18,7 +18,7 @@ def get_models_super_string(instance):
 
 @python_2_unicode_compatible
 class ShareTree(models.Model):
-    parent = models.ForeignKey('core.ShareTree', null=True, blank=True)
+    parent = models.ForeignKey('core.ShareTree', null=True, blank=True, on_delete=models.CASCADE)
     shared_to = models.ForeignKey('auth.User', related_name='shared_to')
 
     def remove_from_tree(self):

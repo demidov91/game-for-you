@@ -1,7 +1,9 @@
 {% load i18n %}
 
-<img class="avatar" src="{{ manager.shared_to.userprofile.get_image }}" />
-<div class="center"><span>{{ manager.shared_to.userprofile.get_short_name}}</span></div>
+<a href="{% url 'view_user' profile_id=manager.shared_to.userprofile.id %}">
+    <img class="avatar" src="{{ manager.shared_to.userprofile.get_image }}" />
+    <div class="center"><span>{{ manager.shared_to.userprofile.user.username}}</span></div>
+</a>
 <form action="{% url 'make_tag_owner' manager_id=manager.id %}" method="post" class="sharer-action make-owner">{% csrf_token %}
     <input type="submit" value="{% trans 'Make owner' %}" class="btn btn-success btn-sm" />
 </form>

@@ -18,6 +18,7 @@ install_requires = [
     'django-allauth',
     'south==0.8.4',
     'django-compressor',
+    'django-logicaldelete',
 ]
 
 

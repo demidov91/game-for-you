@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-21 23:21+0300\n"
+"POT-Creation-Date: 2014-09-23 18:47+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -190,7 +190,7 @@ msgstr "Праўка раней захаваных адрасаў"
 #: relations/templates/view_team.html:22
 #: tournament/templates/authenticated_tournament.html:15
 #: tournament/templates/competition.html:14
-#: tournament/templates/tag_authenticated.html:34
+#: tournament/templates/tag_authenticated.html:35
 msgid "Edit"
 msgstr "Рэдагаваць"
 
@@ -363,11 +363,11 @@ msgstr "адмоўлена"
 msgid "registered"
 msgstr "зарэгістравана"
 
-#: tournament/views.py:168
+#: tournament/views.py:171
 msgid "Wrong request data."
 msgstr "Хібны запыт."
 
-#: tournament/views.py:293
+#: tournament/views.py:298
 msgid "Only the last owner can remove tags."
 msgstr "Толькі апошні ўладальнік можа выдаліць тэг."
 
@@ -405,33 +405,45 @@ msgid "Click on green button to accept it"
 msgstr ""
 "Клікніце па зялёная кнопцы, каб падзея была апублікавана пад гэтым тэгам"
 
-#: tournament/templates/tag_edit.html:11
+#: tournament/templates/tag_edit.html:16
 msgid "Tag managers:"
 msgstr "Кіраўнікі тэга:"
 
-#: tournament/templates/tag_edit.html:12
+#: tournament/templates/tag_edit.html:17
 msgid "Owners and publishers"
 msgstr "Уладальнікі і публікатары"
 
 #: tournament/templates/tag_edit.html:19
+msgid "Tag publishers:"
+msgstr "Публікатары тэга:"
+
+#: tournament/templates/tag_edit.html:34
 msgid "All your contacts:"
 msgstr "Усе Вашы кантакты"
 
-#: tournament/templates/tag_edit.html:20
+#: tournament/templates/tag_edit.html:35
 msgid "Click to make them publishers"
 msgstr "Клік, каб дадаць чалавека да публікатараў"
 
-#: tournament/templates/tag_edit.html:28
+#: tournament/templates/tag_edit.html:45
 msgid "Add"
 msgstr "Дадаць"
 
-#: tournament/templates/tag_edit.html:43
+#: tournament/templates/tag_edit.html:60
 msgid "Remove tag"
 msgstr "Выдаліць тэг"
 
-#: tournament/templates/tag_edit.html:51
+#: tournament/templates/tag_edit.html:68
 msgid "Are you sure, you want do remove yourself as owner of this tag?"
 msgstr "Вы ўпэніны, што жадаеце адмовіцца ад правоў уладальніка тэга?"
+
+#: tournament/templates/tag_edit.html:69
+msgid "Are you sure, you want do remove yourself as sharer of this tag?"
+msgstr "Вы ўпэніны, што жадаеце адмовіцца ад правоў публікатара тэга?"
+
+#: tournament/templates/tag_edit.html:70
+msgid "Are you ure, you want to remove this tag?"
+msgstr "Вы ўпэніны, што жадаеце выдаліць гэты тэг?"
 
 #: tournament/templates/tournament_edit.html:8
 #: tournament/templates/parts/competition_content.html:9
@@ -496,15 +508,15 @@ msgstr "Каманды, якім было адмоўлена"
 msgid "No claimants yet."
 msgstr "Пакуль няма заявак"
 
-#: tournament/templates/parts/dependent_tag_manager_icon.html:6
+#: tournament/templates/parts/dependent_tag_manager_icon.html:8
 msgid "Make owner"
 msgstr "Зрабіць уладальнікам"
 
-#: tournament/templates/parts/dependent_tag_manager_icon.html:9
+#: tournament/templates/parts/dependent_tag_manager_icon.html:11
 msgid "Make publisher"
 msgstr "Зрабіць публікатарам"
 
-#: tournament/templates/parts/dependent_tag_manager_icon.html:12
+#: tournament/templates/parts/dependent_tag_manager_icon.html:14
 msgid "Remove publisher"
 msgstr "Выдаліць публікатара"
 

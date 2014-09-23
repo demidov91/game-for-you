@@ -25,6 +25,7 @@ class ShareTreeUtil:
     def as_tree_member(self, leaf):
         """
         Method that indicates if the *leaf* can be in this sharing tree.
+        *leaf* - **core.models.ShareTree** instance.
         """
         return leaf
 
@@ -39,6 +40,9 @@ class ShareTreeUtil:
         return None
 
     def is_last(self, leaf):
+        """
+        *leaf* - **core.models.ShareTree** instance.
+        """
         return not (leaf.parent or ShareTree.objects.filter(parent=leaf).exists())
 
     def is_in_share_tree(self, root, user):
