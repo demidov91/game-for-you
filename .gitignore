@@ -26,3 +26,4 @@ test_db.sql
 node_modules
 /src/core/media/upload/user_picks/*
 !/src/core/media/upload/user_picks/owl.jpg
+lessc

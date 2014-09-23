@@ -8,7 +8,11 @@ Requires:
   * zc.buildout (?)
   * libpq-dev
   * python3-dev (python-dev)
- * build-essential (make, g++) 
+ * build-essential (make, g++)
+ * pillow debian dependences
+  * sudo apt-get install libtiff4-dev libjpeg8-dev zlib1g-dev \
+      libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk 
+ * less compiler (node.js + less)
 
 Installation:
  * git clone **repo-url**
@@ -17,6 +21,8 @@ Installation:
  * python bootstrap.py
  * chmod a+x test.sh
  * bin/buildout
+ * Create link to the less compiler
+  * ln -s ~/.npm/less/x.x.x/package/bin/lessc ./lessc
  * Collect application static files.
   * bin/manage collectstatic
   * ln -s ../../app_static/facebook/ src/core/media/

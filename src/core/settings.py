@@ -230,7 +230,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 COMPRESS_PRECOMPILERS = (
-    ('text/less', os.path.abspath(os.path.join(BASE_DIR, '..',  'node_modules/less/bin/lessc {infile} {outfile}'))),
+    ('text/less', os.path.abspath(os.path.join(BASE_DIR, '..',  'lessc {infile} {outfile}'))),
 )
 
 
