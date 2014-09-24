@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-23 18:50+0300\n"
+"POT-Creation-Date: 2014-09-24 12:05+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,19 +18,23 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: chat/models.py:21
+#: chat/models.py:23
 msgid "for tag"
 msgstr "относится к тегу"
 
-#: chat/templates/parts/tag_message_list.html:38
+#: chat/models.py:24
+msgid "removed"
+msgstr "удалён"
+
+#: chat/templates/parts/tag_message_list.html:40
 msgid "Post"
 msgstr "Отослать"
 
-#: chat/templates/parts/tag_message_list.html:43
+#: chat/templates/parts/tag_message_list.html:45
 msgid "Sign in"
 msgstr "Войдите"
 
-#: chat/templates/parts/tag_message_list.html:43
+#: chat/templates/parts/tag_message_list.html:45
 msgid "to post a message"
 msgstr "чтобы добавить сообщение"
 
@@ -42,11 +46,11 @@ msgstr "Зависит от"
 msgid "Root element"
 msgstr "Корневой элемент"
 
-#: core/settings.py:241
+#: core/settings.py:243
 msgid "Russian"
 msgstr "Русский"
 
-#: core/settings.py:242
+#: core/settings.py:244
 msgid "Belarusian"
 msgstr "Беларуская"
 
@@ -251,115 +255,119 @@ msgstr "Нельзя удалить адрес, на который зареге
 msgid "Can't perform the action."
 msgstr "Невозможно совершить действие."
 
-#: tournament/models.py:27 tournament/models.py:71
+#: tournament/models.py:29 tournament/models.py:76
 msgid "name"
 msgstr "название"
 
-#: tournament/models.py:56
+#: tournament/models.py:31
+msgid "has chat"
+msgstr "С чатом"
+
+#: tournament/models.py:61
 msgid "Refers to the tag"
 msgstr "Относится к тегу"
 
-#: tournament/models.py:72
+#: tournament/models.py:77
 msgid "first date"
 msgstr "с"
 
-#: tournament/models.py:73
+#: tournament/models.py:78
 msgid "last date"
 msgstr "по"
 
-#: tournament/models.py:74 tournament/models.py:128
+#: tournament/models.py:79 tournament/models.py:133
 msgid "free description"
 msgstr "Описание"
 
-#: tournament/models.py:75 tournament/models.py:129
+#: tournament/models.py:80 tournament/models.py:134
 msgid "tags"
 msgstr "теги"
 
-#: tournament/models.py:79
+#: tournament/models.py:84
 msgid "No-name tournament"
 msgstr "Безымянный синхрон"
 
-#: tournament/models.py:90
+#: tournament/models.py:95
 msgid "place name"
 msgstr "название места игры"
 
-#: tournament/models.py:91
+#: tournament/models.py:96
 msgid "address"
 msgstr "адрес"
 
-#: tournament/models.py:92
+#: tournament/models.py:97
 msgid "owner"
 msgstr "владелец"
 
-#: tournament/models.py:112
+#: tournament/models.py:117
 msgid "open"
 msgstr "открытый"
 
-#: tournament/models.py:113
+#: tournament/models.py:118
 msgid "private"
 msgstr "закрытый"
 
-#: tournament/models.py:117
+#: tournament/models.py:122
 msgid "tournament"
 msgstr "синхрон"
 
-#: tournament/models.py:122
+#: tournament/models.py:127
 msgid "place to play"
 msgstr "место игры"
 
-#: tournament/models.py:123
+#: tournament/models.py:128
 msgid "start date"
 msgstr "начало"
 
-#: tournament/models.py:125
+#: tournament/models.py:130
 msgid "competition duration (in minutes)"
 msgstr "продолжительность соревнования (минуты)"
 
-#: tournament/models.py:126
+#: tournament/models.py:131
 msgid "max team count"
 msgstr "максимальное количество команд"
 
-#: tournament/models.py:127
+#: tournament/models.py:132
 msgid "team accept strategy"
 msgstr "Приём заявок"
 
-#: tournament/models.py:130
+#: tournament/models.py:135
 msgid "competition name"
 msgstr "название игры"
 
-#: tournament/models.py:134
+#: tournament/models.py:139
 msgid "No-name competition"
 msgstr "Безымянная игра"
 
-#: tournament/models.py:137
+#: tournament/models.py:142
 msgid "in"
 msgstr "в"
 
-#: tournament/models.py:148
+#: tournament/models.py:153
 msgid "Refers to the tournament"
 msgstr "Относится к синхрону"
 
-#: tournament/models.py:156
+#: tournament/models.py:161
 msgid "Refers to the competition"
 msgstr "Относится к игре"
 
-#: tournament/models.py:170
+#: tournament/models.py:175
 msgid "invitation"
 msgstr "приглашение"
 
-#: tournament/models.py:171
+#: tournament/models.py:176
 msgid "claim"
 msgstr "заявка"
 
-#: tournament/models.py:172
+#: tournament/models.py:177
 msgid "approved"
 msgstr "подтверждена"
 
-#: tournament/models.py:173
+#: tournament/models.py:178
 msgid "declined"
 msgstr "отклонена"
 
-#: tournament/models.py:174
+#: tournament/models.py:179
 msgid "registered"
 msgstr "зарегистрирована"
 
@@ -404,43 +412,43 @@ msgstr "Ожидают подтверждения публикации под т
 msgid "Click on green button to accept it"
 msgstr "Чтобы добавить к событию текущий тег, кликните по зелёной кнопке"
 
-#: tournament/templates/tag_edit.html:16
+#: tournament/templates/tag_edit.html:18
 msgid "Tag managers:"
 msgstr "Управление тегом:"
 
-#: tournament/templates/tag_edit.html:17
+#: tournament/templates/tag_edit.html:19
 msgid "Owners and publishers"
 msgstr "Владельцы и публикаторы"
 
-#: tournament/templates/tag_edit.html:19
+#: tournament/templates/tag_edit.html:21
 msgid "Tag publishers:"
 msgstr "Публикаторы тега:"
 
-#: tournament/templates/tag_edit.html:34
+#: tournament/templates/tag_edit.html:36
 msgid "All your contacts:"
 msgstr "Все Ваши контакты:"
 
-#: tournament/templates/tag_edit.html:35
+#: tournament/templates/tag_edit.html:37
 msgid "Click to make them publishers"
 msgstr "Клик, чтобы назначить публикатором"
 
-#: tournament/templates/tag_edit.html:45
+#: tournament/templates/tag_edit.html:47
 msgid "Add"
 msgstr "Добавить"
 
-#: tournament/templates/tag_edit.html:60
+#: tournament/templates/tag_edit.html:62
 msgid "Remove tag"
 msgstr "Удалить тег"
 
-#: tournament/templates/tag_edit.html:68
+#: tournament/templates/tag_edit.html:70
 msgid "Are you sure, you want do remove yourself as owner of this tag?"
 msgstr "Вы уверены, что хотите лишить себя возможности управлять этим тегом?"
 
-#: tournament/templates/tag_edit.html:69
+#: tournament/templates/tag_edit.html:71
 msgid "Are you sure, you want do remove yourself as sharer of this tag?"
 msgstr "Вы уверены, что хотите удалить себя из списка публикаторов?"
 
-#: tournament/templates/tag_edit.html:70
+#: tournament/templates/tag_edit.html:72
 msgid "Are you ure, you want to remove this tag?"
 msgstr "Вы уверены, что хотите удалить этот тег?"
 

@@ -4,8 +4,10 @@
 
 {% block content %}
 {% if form %}
- <form class="form-inline" role="form" action="{% url 'edit_tag' tag_id=tag.id %}" method="post">{% csrf_token %}
-    {% include 'parts/bootstrap_form.html' %}
+ <form id="edit-tag-form" class="form-inline" role="form" action="{% url 'edit_tag' tag_id=tag.id %}" method="post">{% csrf_token %}
+     {% with label_size=6 inputs_size=6 %}
+     {% include 'parts/bootstrap_form.html' %}
+     {% endwith %}
 </form>
 {% else %}
 <h1>{{ tag.name }}</h1>

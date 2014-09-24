@@ -28,7 +28,7 @@ class Tag(LogicalDeleteModel):
     #Displayed name.
     name = models.CharField(max_length=100, verbose_name=_('name'), unique=True)
     #Tag chat enabled.
-    has_chat = models.BooleanField(default=False)
+    has_chat = models.BooleanField(default=False, verbose_name=_('has chat'))
 
     def __str__(self):
         return self.name
