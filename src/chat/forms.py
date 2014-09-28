@@ -1,10 +1,10 @@
 from django import forms
 
-from chat.models import TagMessage
+from chat.models import Message
 
-class TagMessageForm(forms.models.ModelForm):
+class MessageForm(forms.models.ModelForm):
     class Meta:
-        model = TagMessage
+        model = Message
         fields = ('text', )
         widgets = {
             'text': forms.widgets.Textarea(attrs={
@@ -13,12 +13,12 @@ class TagMessageForm(forms.models.ModelForm):
             })
         }
 
-    def __init__(self, data=None, owner=None, tag=None, *args, **kwargs):
-        super(TagMessageForm, self).__init__(data=data, *args, **kwargs)
+    def __init__(self, data=None, owner=None, chat=None, *args, **kwargs):
+        super(MessageForm, self).__init__(data=data, *args, **kwargs)
         self.owner = owner
-        self.tag = tag
+        self.chat = chat
 
     def save(self, *args, **kwargs):
-        self.instance.tag = self.tag
+        self.instance.chat = self.chat
         self.instance.author = self.owner
-        super(TagMessageForm, self).save(*args, **kwargs)
+        super(MessageForm, self).save(*args, **kwargs)

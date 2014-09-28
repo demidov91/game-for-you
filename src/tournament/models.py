@@ -13,6 +13,7 @@ from logicaldelete.models import Model as LogicalDeleteModel
 
 from relations.models import Team, Contact
 from core.models import ShareTree, get_models_super_string
+from chat.models import Chat
 
 import logging
 logger = logging.getLogger(__name__)
@@ -29,6 +30,7 @@ class Tag(LogicalDeleteModel):
     name = models.CharField(max_length=100, verbose_name=_('name'), unique=True)
     #Tag chat enabled.
     has_chat = models.BooleanField(default=False, verbose_name=_('has chat'))
+    chat = models.ForeignKey(Chat, null=True, blank=True)
 
     def __str__(self):
         return self.name

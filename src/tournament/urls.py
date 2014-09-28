@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^ajax/tag/(?P<tag_id>\d+)/sharer/add/(?P<user_id>\d+)/', add_tag_sharer, name='make_tag_sharer'),
     url(r'^ajax/tag/(?P<manager_id>\d+)/owner/remove/', downgrade_to_tag_sharer, name='remove_tag_owner'),
     url(r'^ajax/tag/(?P<manager_id>\d+)/sharer/remove/', remove_tag_sharer, name='remove_tag_sharer'),
-
+    url(r'^ajax/tag/(?P<tag_id>\d+)/chat/$', tag_chat, name='tag_chat'),
 
     url(r'^event/add/$', add_event, name='add_event'),
     url(r'^tournament/add/$', add_tournament, name='add_tournament'),

@@ -20,6 +20,8 @@ from tournament.decorators import tournament_owner_only, competition_owner_only,
     can_upgrade_manager
 from relations.models import Team
 from core.utils import to_timestamp, share_tree_util
+from chat.forms import MessageForm
+from chat.utils import get_chat_page
 
 import logging
 logger = logging.getLogger(__name__)
@@ -375,6 +377,32 @@ def accept_tag_request(request, tag, event_id, event_model_class):
     event.tags.add(tag)
     event.tags_request.remove(tag)
     return redirect('tag_page', tag_id=tag.id)
+
+def tag_chat(request, tag_id):
+    """
+    ajax view.
+    request: POST for new message. GET accepts *page* parameter.
+    returns: chat part of the tag page.
+    """
+    tag = get_object_or_404(Tag.objects, id=tag_id)
+    chat = tag.chat
+    if not chat:
+        raise Http404()
+    if request.method == 'POST':
+        if not request.user.is_authenticated():
+            return HttpResponseForbidden()
+        form = MessageForm(request.POST, request.user, chat)
+        if form.is_valid():
+            form.save()
+            return redirect('tag_chat', tag_id=tag.id)
+    else:
+        form = MessageForm()
+    return render(request, 'parts/tag_message_list.html', {
+        'form': form,
+        'tag': tag,
+        'page': get_chat_page(chat, request.GET.get('page')),
+        'is_authenticated': request.user.is_authenticated,
+    })
 
 
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from chat.models import TagMessage
+from chat.models import Message
 
-admin.site.register(TagMessage)
+admin.site.register(Message)

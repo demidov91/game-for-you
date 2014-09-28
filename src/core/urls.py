@@ -19,7 +19,6 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('allauth.urls')),
     url(r'^auth/', include('django.contrib.auth.urls')),
     url(r'contacts/', include(relations_urls)),
-    url(r'chat/', include(messages_urls)),
     url(r'', include(tournament_urls)),
 )
 
