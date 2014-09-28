@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
@@ -13,6 +14,8 @@ from relations.utils import create_team, can_delete_team, get_members_for_editor
 from core.utils import is_in_share_tree, has_higher_priority, find_leave_by_owner, find_from_leaf_to_root, get_root
 from core.models import ShareTree
 from tournament.forms import UserPlacesFormset
+from chat.forms import MessageForm
+from chat.utils import get_chat_page
 
 
 @login_required
@@ -201,3 +204,20 @@ def view_user(request, profile_id):
                   'user_authenticated.html' if request.user.is_authenticated else 'user_unauthenticated.html',
                   {'profile': get_object_or_404(UserProfile.objects, id=profile_id)}
     )
+
+@team_member_only(set_key='team')
+def team_chat(request, team):
+    if request.method == 'POST':
+        form = MessageForm(request.POST, request.user, team.chat)
+        if form.is_valid():
+            form.save()
+            return redirect('team_chat', team_id=team.id)
+    else:
+        form = MessageForm()
+    page = get_chat_page(team.chat, request.REQUEST.get('page'))
+    team.chat.url = reverse('team_chat', kwargs={'team_id': team.id})
+    return render(request, 'parts/chat_message_list.html', {
+        'chat': team.chat,
+        'form': form,
+        'page': page,
+    })

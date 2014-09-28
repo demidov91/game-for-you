@@ -1,5 +1,5 @@
 <a
-    href="{% url 'tag_page' tag_id=tag.id %}?page={{ page_number }}"
+    href="{{ chat.url }}?page={{ page_number }}"
     class="btn btn-default btn-sm {% if page_number == page.number %}active{% endif %}"
     data-page="{{ page_number }}"
 >

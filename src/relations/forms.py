@@ -2,9 +2,11 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from relations.models import Team, UserProfile
+from chat.models import Chat
 
 import logging
 logger = logging.getLogger(__name__)
+
 
 class TeamForm(forms.ModelForm):
     class Meta:
@@ -16,6 +18,13 @@ class TeamForm(forms.ModelForm):
                 'class': 'form-control',
             }),
         }
+
+        def save(self, commit=True, *args, **kwargs):
+            if commit:
+                chat = Chat.objects.create()
+                self.instance.chat = chat
+            super(TeamForm, self).save(commit=False)
+
 
 class ProfileSettings(forms.ModelForm):
     username = forms.fields.CharField(

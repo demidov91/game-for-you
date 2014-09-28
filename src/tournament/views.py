@@ -9,6 +9,7 @@ from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import get_user_model
+from django.core.urlresolvers import reverse
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
     get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_owner, can_publish_tag,\
@@ -397,14 +398,10 @@ def tag_chat(request, tag_id):
             return redirect('tag_chat', tag_id=tag.id)
     else:
         form = MessageForm()
-    return render(request, 'parts/tag_message_list.html', {
+    chat.url = reverse('tag_chat', kwargs={'tag_id': tag_id})
+    return render(request, 'parts/chat_message_list.html', {
         'form': form,
-        'tag': tag,
+        'chat': chat,
         'page': get_chat_page(chat, request.GET.get('page')),
         'is_authenticated': request.user.is_authenticated,
     })
-
-
-
-
-

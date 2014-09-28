@@ -1,4 +1,5 @@
 import re
+from chat.models import Chat
 
 from django import forms
 from django.forms import widgets
@@ -245,3 +246,10 @@ class TagForm(forms.ModelForm):
         widgets = {
             'name': forms.widgets.TextInput(attrs={'class': 'form-control'})
         }
+
+    def save(self, commit=True, *args, **kwargs):
+        if commit and self.instance.has_chat and not self.instance.chat:
+            chat = Chat()
+            chat.save()
+            self.instance.chat = chat
+        super(TagForm, self).save(commit=commit, *args, **kwargs)

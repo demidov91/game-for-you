@@ -11,6 +11,7 @@ from django.utils.encoding import python_2_unicode_compatible, force_text
 from allauth.socialaccount.signals import pre_social_login
 
 from core.models import ShareTree
+from chat.models import Chat
 
 import logging
 logger = logging.getLogger(__name__)
@@ -107,6 +108,7 @@ class Team(models.Model):
     members = models.ManyToManyField(UserProfile, related_name='teams')
     owner = models.ForeignKey(ShareTree)
     is_draft = models.BooleanField(default=True)
+    chat = models.ForeignKey(Chat, null=False, blank=False)
 
     def __str__(self):
         return self.get_name_or_default()

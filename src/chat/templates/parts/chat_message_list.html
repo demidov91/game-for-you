@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div class="tag-messages" data-page="{{ page.number }}">
+<div class="messages" data-page="{{ page.number }}">
 {% for message in page.object_list %}
 <div class="message">
     <div class="avatar-wrapper">
@@ -16,7 +16,7 @@
 {% endfor %}
 </div>
 
-<div id="tag-chat-page-links" class="center">
+<div class="center chat-page-links">
 {% if page.paginator.num_pages < 11 %}
     {% for page_number in page.paginator.page_range reversed %}
     {% include 'parts/page_link.html' %}
@@ -26,7 +26,7 @@
         {% if forloop.counter < 5 or forloop.revcounter < 5 %}
             {% include 'parts/page_link.html' %}
         {% elif forloop.counter == 5 %}
-            <form action="{% url 'tag_chat' tag_id=tag.id%}" id="open-page-wrapper">
+            <form action="{{ chat.url }}" id="open-page-wrapper">
                 <input name="page" type="text" value="{% if page.number > 4 and page.number < page.paginator.num_pages|add:-3 %}{{ page.number }}{% endif %}" />
             </form>
         {% endif %}
@@ -34,8 +34,8 @@
 {% endif %}
 </div>
 
-{% if is_authenticated %}
-<form id="send-tag-message-wrapper" action="{% url 'tag_chat' tag_id=tag.id%}" method="post" class="form-horizontal" role="form">{% csrf_token %}
+{% if user.is_authenticated %}
+<form id="send-tag-message-wrapper" action="{{ chat.url }}" method="post" class="form-horizontal" role="form">{% csrf_token %}
     <div>
         {{ form.text }}<input type="submit" class="btn btn-success btn-lg" value="{% trans 'Post'%}" />
     </div>
