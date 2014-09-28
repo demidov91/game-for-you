@@ -13,7 +13,7 @@ from django.core.urlresolvers import reverse
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
     get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_owner, can_publish_tag,\
-    sort_by_key, tag_owners_util
+    sort_by_key, tag_owners_util, KEY_TO_CHAT_OWNER
 from tournament.forms import TournamentForm, AddCompetitionForm, TagForm
 from tournament.models import Competition, Participation, Tournament, Tag, TagManagementTree
 from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation,\
@@ -379,29 +379,33 @@ def accept_tag_request(request, tag, event_id, event_model_class):
     event.tags_request.remove(tag)
     return redirect('tag_page', tag_id=tag.id)
 
-def tag_chat(request, tag_id):
+def authenticated_chat(request, model_key, owner_id):
     """
-    ajax view.
-    request: POST for new message. GET accepts *page* parameter.
-    returns: chat part of the tag page.
+    View for chat which is "read only" for unauthenticated and "writeable" for authenticated users.
+    Requires **page** as **GET** parameter for page number. Last page will be used for default.
+
+    owner_id: id of the owner model.
+    model_key: one of the **KEY_KEY_TO_CHAT_OWNER** keys.
     """
-    tag = get_object_or_404(Tag.objects, id=tag_id)
-    chat = tag.chat
-    if not chat:
+    ModelClass = KEY_TO_CHAT_OWNER[model_key]
+    owner = get_object_or_404(ModelClass.objects, id=owner_id)
+    if not owner.chat:
         raise Http404()
     if request.method == 'POST':
         if not request.user.is_authenticated():
             return HttpResponseForbidden()
-        form = MessageForm(request.POST, request.user, chat)
+        form = MessageForm(request.POST, request.user, owner.chat)
         if form.is_valid():
             form.save()
-            return redirect('tag_chat', tag_id=tag.id)
+            return redirect('authenticated_chat', model_key=model_key, owner_id=owner.id)
     else:
         form = MessageForm()
-    chat.url = reverse('tag_chat', kwargs={'tag_id': tag_id})
+    owner.chat.url = reverse('authenticated_chat', kwargs={
+        'owner_id': owner_id,
+        'model_key': model_key,
+    })
     return render(request, 'parts/chat_message_list.html', {
         'form': form,
-        'chat': chat,
-        'page': get_chat_page(chat, request.GET.get('page')),
-        'is_authenticated': request.user.is_authenticated,
+        'chat': owner.chat,
+        'page': get_chat_page(owner.chat, request.GET.get('page')),
     })

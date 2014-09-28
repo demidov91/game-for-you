@@ -7,6 +7,6 @@
 {% if tag.has_chat %}
 <div class="chat-placeholder">
     <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" />
-    <div class="chat-wrapper" data-url="{% url 'tag_chat' tag_id=tag.id %}{% if page_number %}?page={{ page_number }}{% endif %}"></div>
+    <div class="chat-wrapper" data-url="{% url 'authenticated_chat' owner_id=tag.id model_key='tag' %}{% if page_number %}?page={{ page_number }}{% endif %}"></div>
 </div>
 {% endif %}

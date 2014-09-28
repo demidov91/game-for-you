@@ -1,6 +1,7 @@
 from relations.models import Team
 from core.models import ShareTree
 from core.utils import Adapter, is_in_share_tree, has_higher_priority, find_leave_by_owner
+from chat.models import Chat
 
 
 def create_team(owner):
@@ -9,7 +10,7 @@ def create_team(owner):
     owner: owner User.
     """
     root_owner = ShareTree.objects.create(parent=None, shared_to=owner)
-    new_team = Team.objects.create(owner=root_owner, is_draft=True)
+    new_team = Team.objects.create(owner=root_owner, is_draft=True, chat=Chat.objects.create())
     new_team.members.add(owner.userprofile)
     new_team.save()
     if not owner.userprofile.primary_team:

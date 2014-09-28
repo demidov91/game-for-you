@@ -8,4 +8,8 @@
 {% block script %}
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/competition.js" type="text/javascript"></script>
+    <script>
+        ajaxPageUrlBase = "{% url 'authenticated_chat' model_key='competition' owner_id=competition.id %}";
+    </script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/message_list.js"></script>
 {% endblock %}

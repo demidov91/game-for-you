@@ -19,12 +19,6 @@ class TeamForm(forms.ModelForm):
             }),
         }
 
-        def save(self, commit=True, *args, **kwargs):
-            if commit:
-                chat = Chat.objects.create()
-                self.instance.chat = chat
-            super(TeamForm, self).save(commit=False)
-
 
 class ProfileSettings(forms.ModelForm):
     username = forms.fields.CharField(

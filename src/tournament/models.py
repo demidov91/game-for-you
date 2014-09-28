@@ -81,6 +81,7 @@ class Tournament(CreateTimeMixin, models.Model):
     description = models.TextField(default=None, verbose_name=_('free description'), null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='tournaments', verbose_name=_('tags'), null=True, blank=True)
     tags_request = models.ManyToManyField(Tag, related_name='tournament_requests', null=True, blank=True)
+    chat = models.ForeignKey(Chat, null=False, blank=False)
 
     def __str__(self):
         return self.name or _('No-name tournament')
@@ -136,6 +137,7 @@ class Competition(CreateTimeMixin, models.Model):
     tags = models.ManyToManyField(Tag, related_name='competitions', verbose_name=_('tags'), null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name=_('competition name'), null=True, blank=True)
     tags_request = models.ManyToManyField(Tag, related_name='competition_requests', null=True, blank=True)
+    chat = models.ForeignKey(Chat, null=False, blank=False)
 
     def get_name(self):
         return force_text(self.name or self.tournament and self.tournament.name or _('No-name competition'))

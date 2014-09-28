@@ -12,6 +12,14 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+# *dict* to convert chat provider url key into model class.
+KEY_TO_CHAT_OWNER = {
+    'tag': Tag,
+    'tournament': Tournament,
+    'competition': Competition,
+}
+
+
 class TagsProvider:
     def __init__(self, request):
         pass

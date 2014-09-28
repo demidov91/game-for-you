@@ -17,3 +17,11 @@
     {% endif %}
     {{ block.super }}
 {% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script>
+        ajaxPageUrlBase = "{% url 'authenticated_chat' model_key='tournament' owner_id=tournament.id %}";
+    </script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/message_list.js"></script>
+{% endblock %}

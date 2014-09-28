@@ -17,7 +17,7 @@
     {{ block.super }}
     <script>
         getEventsUrl = "{% url 'get_calendar_events' %}?tag_only={{ tag.id }}";
-        ajaxPageUrlBase = "{% url 'tag_chat' tag_id=tag.id %}";
+        ajaxPageUrlBase = "{% url 'authenticated_chat' model_key='tag' owner_id=tag.id %}";
     </script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/fullcalendar.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/tag_page.js"></script>
