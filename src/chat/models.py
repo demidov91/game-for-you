@@ -16,7 +16,7 @@ class Message(models.Model):
         ordering = ('create_time', )
     text = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True, default=datetime.now())
-    author = models.ForeignKey(get_user_model(), null=False, blank=False)
+    author = models.ForeignKey('auth.User', null=False, blank=False)
     chat = models.ForeignKey(Chat, null=False, blank=False)
 
     def __str__(self):

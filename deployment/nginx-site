@@ -10,3 +10,15 @@ server{
         alias /home/dmitry/Python/game-for-you/src/app_static/;
     }
 }
+
+#"On service" configuration.
+#
+#server{
+#    listen 80;
+#    root /home/dmitry/Python/game-for-you/src/app_static/html;
+#    server_name letsplay.com;
+#    location / {
+#         try_files $uri /service.html;
+#    }
+#}
+
