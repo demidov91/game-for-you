@@ -125,6 +125,8 @@ class TournamentForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         """
         owner: auth.User instance. User, who created this tournament.
         """
+        if commit:
+            self.instance.chat = Chat.objects.create()
         managed = super(TournamentForm, self).save(commit=commit, *args, **kwargs)
         if commit:
             TournamentOwnersTree.objects.get_or_create(managed=managed, shared_to=self.owner)
@@ -201,6 +203,8 @@ class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         """
         owner: auth.User instance. User, who created this tournament.
         """
+        if commit:
+            self.instance.chat = Chat.objects.create()
         managed = super(AddCompetitionForm, self).save(*args, commit=commit, **kwargs)
         if commit:
             CompetitionOwnersTree.objects.get_or_create(managed=managed, shared_to=self.owner)
