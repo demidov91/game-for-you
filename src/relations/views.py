@@ -201,7 +201,7 @@ def view_settings(request, update_places=False, update_user=False):
 
 def view_user(request, profile_id):
     return render(request,
-                  'user_authenticated.html' if request.user.is_authenticated else 'user_unauthenticated.html',
+                  'user_authenticated.html' if request.user.is_authenticated() else 'user_unauthenticated.html',
                   {'profile': get_object_or_404(UserProfile.objects, id=profile_id)}
     )
 

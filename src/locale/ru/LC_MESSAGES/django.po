@@ -28,7 +28,7 @@ msgstr "удалён"
 
 #: chat/templates/parts/tag_message_list.html:40
 msgid "Post"
-msgstr "Отослать"
+msgstr "Отправить"
 
 #: chat/templates/parts/tag_message_list.html:45
 msgid "Sign in"
