@@ -23,7 +23,7 @@ function onPageChage(){
     updatePageNumber();
     var currentPage = parseInt($('.messages').data('page'));
     if (currentPage < prevPage){
-        $("html").animate({scrollTop: $('.messages').position().top - 100 }, 500);
+        $("html").animate({scrollTop: $('.messages').position().top - 200 }, 500);
     }
     prevPage = currentPage;
 }

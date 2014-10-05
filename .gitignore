@@ -17,6 +17,8 @@ src/app_static
 src/app_static/*
 src/core/media/admin
 src/core/media/facebook
+src/core/media/ckeditor
+src/core/media/user_uploads
 *.mo
 /logs/*
 !/logs/README.txt

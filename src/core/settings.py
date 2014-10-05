@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.facebook',
     'compressor',
     'logicaldelete',
+    'ckeditor',
 
 )
 
@@ -158,6 +159,45 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'core', 'media'),
 )
+CKEDITOR_UPLOAD_PATH = 'user_uploads/'
+CKEDITOR_RESTRICT_BY_USER = True
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Full',
+        'height': 291,
+        'width': 835,
+    },
+    'event': {
+        'toolbar': 'Event',
+        'height': 300,
+        'width': '100%',
+        'toolbar_Event': [
+            ['Format', 'Font', 'FontSize', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker'],
+            ['NumberedList', 'BulletedList'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', ],
+            ['Link', 'Unlink'],
+            ['Image', 'Table', 'HorizontalRule', ],
+            ['TextColor', 'BGColor', 'Smiley'],
+        ],
+        'removeDialogTabs': 'link:upload;link:advanced;image:Upload;image:Link;image:advanced',
+        'resize_enabled': False,
+        'customConfig': os.path.join(MEDIA_URL, 'js', 'ckeditor_config.js'),
+    },
+    'chat': {
+        'toolbar': 'Chat',
+        'height': 125,
+        'width': '30em',
+        'toolbar_Chat': [
+            ['Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker'],
+            ['Link', 'Unlink'],
+            ['Image', 'TextColor', 'BGColor', 'Smiley'],
+        ],
+        'removeDialogTabs': 'link:upload;link:advanced;image:Upload;image:Link;image:advanced',
+        'resize_enabled': False,
+        'customConfig': os.path.join(MEDIA_URL, 'js', 'ckeditor_config.js'),
+    },
+}
+
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",

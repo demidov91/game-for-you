@@ -19,6 +19,7 @@ install_requires = [
     'south==0.8.4',
     'django-compressor',
     'django-logicaldelete',
+    'django-ckeditor',
 ]
 
 

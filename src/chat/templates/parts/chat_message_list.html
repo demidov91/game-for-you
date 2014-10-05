@@ -24,11 +24,12 @@
         </a>
     </div>
     <div class="create-date-time">{{ message.create_time|date:'SHORT_DATE_FORMAT'}}</div>
-    <span class="body">{{ message.text }}</span>
+    <span class="body">{{ message.text|safe }}</span>
     <div class="clear"></div>
 </div>
 {% endfor %}
 </div>
 
 {% include 'parts/page_links.html' %}
+{{ form.media }}
 

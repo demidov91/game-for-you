@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from ckeditor.fields import RichTextField
+
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth import get_user_model
@@ -14,7 +16,7 @@ class Chat(models.Model):
 class Message(models.Model):
     class Meta:
         ordering = ('create_time', )
-    text = models.TextField()
+    text = RichTextField(config_name='chat')
     create_time = models.DateTimeField(auto_now_add=True, default=datetime.now())
     author = models.ForeignKey('auth.User', null=False, blank=False)
     chat = models.ForeignKey(Chat, null=False, blank=False)

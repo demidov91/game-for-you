@@ -8,6 +8,8 @@ from django.db import transaction
 from django.utils.six import with_metaclass
 from django.db.models import SubfieldBase
 
+from ckeditor.widgets import CKEditorWidget
+
 from tournament.models import Tournament, Competition, PlayField, Tag, TagManagementTree, CompetitionOwnersTree,\
     TournamentOwnersTree
 from core.forms import BootstrapDateTimeField
@@ -155,7 +157,7 @@ class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
             'duration': forms.TextInput(attrs={'class': 'form-control'}),
             'team_limit': forms.TextInput(attrs={'class': 'form-control'}),
             'team_accept_strategy': forms.Select(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'description': CKEditorWidget(attrs={'class': 'form-control'}, config_name='event'),
             'tags': forms.CheckboxSelectMultiple(),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'place': widgets.Select(attrs={'class': 'form-control'}),

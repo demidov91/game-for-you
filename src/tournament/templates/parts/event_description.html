@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="event-description">{{ event.description|default:'' }}</div>
+<div class="event-description">{{ event.description|default:''|safe }}</div>
 <div class="tag-list">
     {% if event.tags.all.count > 0 %}
     <div>
