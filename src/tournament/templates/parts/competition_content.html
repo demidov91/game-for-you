@@ -30,9 +30,5 @@
     <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" alt="loading..." />
     <div id="competition-participants" data-url="{% url 'view_competition_part' competition_id=competition.id %}"></div>
 </div>
-<div class="chat-placeholder">
-    <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" />
-    <div class="chat-wrapper"
-            data-url="{% url 'authenticated_chat' owner_id=competition.id model_key='competition' %}{% if page_number %}?page={{ page_number }}{% endif %}">
-    </div>
-</div>
+{% url 'authenticated_chat' owner_id=competition.id model_key='competition' as chat_url %}
+{% include 'parts/chat_list_wrapper.html' %}

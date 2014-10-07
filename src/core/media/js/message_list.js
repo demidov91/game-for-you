@@ -28,10 +28,17 @@ function onPageChage(){
     prevPage = currentPage;
 }
 
+function onSubmit(){
+    updatePageNumber();
+    CKEDITOR.instances['id_text'].updateElement();
+    CKEDITOR.instances['id_text'].setData('');
+    $('#id_text').val('');
+}
+
 $(function(){
     if ($('.chat-placeholder').length == 0){return;}
     load_html_content($('.chat-wrapper'), {success: updatePageNumber});
-    updateListWithFormAction($('.chat-placeholder'), $('.chat-wrapper'), {success: updatePageNumber});
+    loadListWithFormAction($('.chat-placeholder'), $('.chat-wrapper'), $('.chat-placeholder'), {success: onSubmit});
     $('.chat-placeholder').on('click', '.chat-page-links a', function(event){
         event.preventDefault();
         load_html_content($('.chat-wrapper').data('url', getAjaxPageUrl($(this).data('page'))), {

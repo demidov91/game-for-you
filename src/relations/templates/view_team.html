@@ -8,12 +8,8 @@
     <div id="team-caption"><h1>{{ team.name }}</h1></div>
     {% include 'parts/calendar.html' %}
     {% if team.chat %}
-    <div class="chat-placeholder">
-        <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" />
-        <div class="chat-wrapper"
-             data-url="{% url 'team_chat' team_id=team.id %}{% if page_number %}?page={{ page_number }}{% endif %}">
-        </div>
-    </div>
+    {% url 'team_chat' team_id=team.id as chat_url %}
+    {% include 'parts/chat_list_wraper.html' %}
     {% endif %}
 {% endblock %}
 

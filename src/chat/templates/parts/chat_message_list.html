@@ -1,17 +1,3 @@
-{% load i18n %}
-
-{% if user.is_authenticated %}
-<form id="send-tag-message-wrapper" action="{{ chat.url }}" method="post" class="form-horizontal" role="form">{% csrf_token %}
-    <div>
-        {{ form.text }}<input type="submit" class="btn btn-success btn-lg" value="{% trans 'Post'%}" />
-    </div>
-</form>
-{% else %}
-<div id="sign-in-to-chat">
-    <span><a href="#left-side">{% trans 'Sign in' %}</a>, {% trans 'to post a message' %}</span>
-</div>
-{% endif %}
-
 {% include 'parts/page_links.html' %}
 
 <div class="messages" data-page="{{ page.number }}">

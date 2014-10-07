@@ -147,7 +147,10 @@ def view_competition(request, competition_id):
         'competition': competition,
     }
     if request.user.is_authenticated():
-        context['is_competition_owner'] = is_owner(competition, request.user)
+        context.update({
+            'is_competition_owner': is_owner(competition, request.user),
+            'chat_form': MessageForm(),
+        })
     return render(request, template_name, context)
 
 def view_tournament(request, tournament_id):
@@ -158,6 +161,7 @@ def view_tournament(request, tournament_id):
         'tournament': tournament,
         'is_owner': is_owner(tournament, request.user),
         'default_competition_start': default_competition_start,
+        'chat_form': MessageForm(),
     })
 
 
@@ -253,6 +257,7 @@ def tag_page(request, tag_id):
         'is_owner': is_owner(tag, request.user),
         'is_publisher': can_publish_tag(tag, request.user),
         'page_number': request.GET.get('page'),
+        'chat_form': MessageForm(),
     }
     if context['is_publisher']:
         tournament_requests = Tournament.objects.filter(tags_request__in=(tag, ))

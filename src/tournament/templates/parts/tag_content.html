@@ -5,8 +5,6 @@
     {% include 'parts/calendar.html' %}
 </div>
 {% if tag.has_chat %}
-<div class="chat-placeholder">
-    <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" />
-    <div class="chat-wrapper" data-url="{% url 'authenticated_chat' owner_id=tag.id model_key='tag' %}{% if page_number %}?page={{ page_number }}{% endif %}"></div>
-</div>
+    {% url 'authenticated_chat' owner_id=tag.id model_key='tag' as chat_url %}
+    {% include 'parts/chat_list_wrapper.html' %}
 {% endif %}

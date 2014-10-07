@@ -40,10 +40,5 @@
     <a href="{% url 'add_event' %}?tournament={{ tournament.id }}&default_date={{ default_competition_start }}" class="btn btn-success">{% trans 'Add competition place' %}</a>
 </div>
 
-<div class="chat-placeholder">
-    <img class="loader" src="{{ STATIC_URL }}img/ajax-loader.gif" />
-    <div class="chat-wrapper"
-            data-url="{% url 'authenticated_chat' owner_id=tournament.id model_key='tournament' %}{% if page_number %}?page={{ page_number }}{% endif %}">
-    </div>
-</div>
-
+{% url 'authenticated_chat' owner_id=tournament.id model_key='tournament' as chat_url %}
+{% include 'parts/chat_list_wrapper.html' %}
