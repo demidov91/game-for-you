@@ -8,8 +8,8 @@
     <div id="team-caption"><h1>{{ team.name }}</h1></div>
     {% include 'parts/calendar.html' %}
     {% if team.chat %}
-    {% url 'team_chat' team_id=team.id as chat_url %}
-    {% include 'parts/chat_list_wraper.html' %}
+        {% url 'team_chat' team_id=team.id as chat_url %}
+        {% include 'parts/chat_list_wrapper.html' %}
     {% endif %}
 {% endblock %}
 

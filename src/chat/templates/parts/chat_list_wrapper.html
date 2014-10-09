@@ -8,6 +8,7 @@
             {{ chat_form.text }}<input type="submit" class="btn btn-success btn-lg" value="{% trans 'Post'%}" />
         </div>
     </form>
+    {{ chat_form.media }}
     {% else %}
     <div id="sign-in-to-chat">
         <span><a href="#left-side">{% trans 'Sign in' %}</a>, {% trans 'to post a message' %}</span>

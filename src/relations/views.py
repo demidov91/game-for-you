@@ -42,7 +42,6 @@ class EditTeamView(View):
             'members': get_members_for_editor(team, request.user),
             'contacts': request.user.known_people.all(),
             'is_root_owner': team.owner.shared_to == request.user,
-            'chat_form': MessageForm(),
         })
 
     def post(self, request, team):
@@ -65,7 +64,8 @@ class EditTeamView(View):
 def view_team(request, team):
     return render(request, 'view_team.html', {
         'team': team,
-        'is_owner': is_in_share_tree(request.user, team.owner)
+        'is_owner': is_in_share_tree(request.user, team.owner),
+        'chat_form': MessageForm(),
     })
 
 
