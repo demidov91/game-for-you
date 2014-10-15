@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-24 12:03+0300\n"
+"POT-Creation-Date: 2014-10-15 09:26+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,23 +18,19 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: chat/models.py:23
-msgid "for tag"
-msgstr "тэга"
+#: chat/models.py:26
+msgid "for chat"
+msgstr "чата"
 
-#: chat/models.py:24
-msgid "removed"
-msgstr "выдалены"
-
-#: chat/templates/parts/tag_message_list.html:40
+#: chat/templates/parts/chat_list_wrapper.html:8
 msgid "Post"
 msgstr "Адаслаць"
 
-#: chat/templates/parts/tag_message_list.html:45
+#: chat/templates/parts/chat_list_wrapper.html:14
 msgid "Sign in"
 msgstr "Увайдзіце на сайт"
 
-#: chat/templates/parts/tag_message_list.html:45
+#: chat/templates/parts/chat_list_wrapper.html:14
 msgid "to post a message"
 msgstr "каб пакінуць паведамленне"
 
@@ -46,51 +42,55 @@ msgstr "Залежыць ад"
 msgid "Root element"
 msgstr "Карэнны элемент"
 
-#: core/settings.py:243
+#: core/settings.py:283
 msgid "Russian"
 msgstr "Руская"
 
-#: core/settings.py:244
+#: core/settings.py:284
 msgid "Belarusian"
 msgstr "Беларуская"
-
-#: core/templates/authenticated_base.html:9
-msgid "Calendar"
-msgstr "Каляндар"
-
-#: core/templates/authenticated_base.html:16
-msgid "People"
-msgstr "Людзі"
-
-#: core/templates/authenticated_base.html:17
-msgid "Settings"
-msgstr "Налады"
-
-#: core/templates/authenticated_base.html:26
-msgid "Log out"
-msgstr "Выйсці"
 
 #: core/templates/base.html:6
 msgid "What? Where? When? organizer"
 msgstr "Каляндар Што? Дзе? Калі?"
 
-#: core/templates/base.html:54
-msgid "Mail to developers."
-msgstr "Заўвагі і пажаданні"
+#: core/templates/base.html:27
+msgid "Calendar"
+msgstr "Каляндар"
 
-#: core/templates/unauthenticated_base.html:30
+#: core/templates/base.html:34
+msgid "People"
+msgstr "Людзі"
+
+#: core/templates/base.html:35
+msgid "Settings"
+msgstr "Налады"
+
+#: core/templates/base.html:57
 msgid "Log in or register."
 msgstr "Увайдзіце ці зарэгіструйесь."
 
-#: core/templates/unauthenticated_base.html:38
+#: core/templates/base.html:65
 #: custom_registration/templates/account/login.html:3
 msgid "Sign In"
 msgstr "Увайсці"
 
-#: core/templates/unauthenticated_base.html:39
+#: core/templates/base.html:66
 #: custom_registration/templates/account/signup.html:3
 msgid "Sign Up"
 msgstr "Рэгістрацыя"
+
+#: core/templates/base.html:105
+msgid "Log out"
+msgstr "Выйсці"
+
+#: core/templates/base.html:115
+msgid "Mail to developers."
+msgstr "Заўвагі і пажаданні"
+
+#: core/templates/base.html:118
+msgid "About us"
+msgstr "Пра сайт"
 
 #: core/templates/parts/bootstrap_form.html:33
 #: relations/templates/edit_team.html:13 relations/templates/settings.html:48
@@ -105,35 +105,35 @@ msgstr "Дадаць падзею"
 msgid "Forgot Password?"
 msgstr "Забылі пароль?"
 
-#: relations/forms.py:15
+#: relations/forms.py:17
 msgid "Enter team name"
 msgstr "Увядзіце назву каманды"
 
-#: relations/forms.py:24
+#: relations/forms.py:27
 msgid "nickname"
 msgstr "Імя карыстальніка"
 
-#: relations/forms.py:28
+#: relations/forms.py:31
 msgid "first name"
 msgstr "імя"
 
-#: relations/forms.py:32
+#: relations/forms.py:35
 msgid "last name"
 msgstr "прозвішча"
 
-#: relations/models.py:31
+#: relations/models.py:32
 msgid "patronymic"
 msgstr "імя па бацьку"
 
-#: relations/models.py:34
+#: relations/models.py:35
 msgid "userpick"
 msgstr "Аватарка"
 
-#: relations/models.py:35
+#: relations/models.py:36
 msgid "external userpick"
 msgstr "Спасылка на аватарку"
 
-#: relations/models.py:36
+#: relations/models.py:37
 msgid ""
 "Save server space - use external images. Leave this field blank to use "
 "uploaded userpick."
@@ -141,19 +141,19 @@ msgstr ""
 "Беражыце месца на серверы - выкарыстоўвайце знешнія спасылкі :) Пакіньце "
 "поле пустым, каб выкарыстоўвалась выява з запампованага вамі файла."
 
-#: relations/models.py:104
+#: relations/models.py:105
 msgid "NoName (c)"
 msgstr "Безназоўныя (с)"
 
-#: relations/models.py:155
+#: relations/models.py:157
 msgid "Is public record"
 msgstr "Бачна ўсім"
 
-#: relations/models.py:156
+#: relations/models.py:158
 msgid "Record for team"
 msgstr "Бачна камандзе"
 
-#: relations/models.py:157
+#: relations/models.py:159
 msgid "Is private record"
 msgstr "Бачна толькі мне"
 
@@ -191,7 +191,7 @@ msgstr "Профіль карыстальніка"
 msgid "Edit addresses"
 msgstr "Праўка раней захаваных адрасаў"
 
-#: relations/templates/view_team.html:22
+#: relations/templates/view_team.html:26
 #: tournament/templates/authenticated_tournament.html:15
 #: tournament/templates/competition.html:14
 #: tournament/templates/tag_authenticated.html:35
@@ -219,163 +219,163 @@ msgstr "Зрабіць уладальнікам"
 msgid "Can edit team"
 msgstr "Можа рэдагаваць"
 
-#: tournament/forms.py:36 tournament/forms.py:67
+#: tournament/forms.py:39 tournament/forms.py:70
 msgid "Tags"
 msgstr "Тэгі"
 
-#: tournament/forms.py:36
+#: tournament/forms.py:39
 msgid " does not exist."
 msgstr "не існуюць."
 
-#: tournament/forms.py:54
+#: tournament/forms.py:57
 msgid "Enter any data about the place."
 msgstr "Увядзіце інфармацыю аб гэтым месцы."
 
-#: tournament/forms.py:70
+#: tournament/forms.py:73
 msgid " already exist."
 msgstr " існуе."
 
-#: tournament/forms.py:88 tournament/forms.py:139
+#: tournament/forms.py:91 tournament/forms.py:144
 msgid "New tag names"
 msgstr "Назвы дадатковых тэгаў"
 
-#: tournament/forms.py:92 tournament/forms.py:143
+#: tournament/forms.py:95 tournament/forms.py:148
 msgid "Send request for tagging as"
 msgstr "Паслаць запыт на публікацыю пад тэгам"
 
-#: tournament/forms.py:185 tournament/forms.py:186
+#: tournament/forms.py:190 tournament/forms.py:191
 msgid "Select place where competition is held."
 msgstr "Азначце месца правядзення спаборніцтва."
 
-#: tournament/forms.py:231
+#: tournament/forms.py:238
 msgid "You can't delete place which has competitions related."
 msgstr "Нельга выдаліць месца, на якое зарэгістравана гульня."
 
-#: tournament/forms.py:234
+#: tournament/forms.py:241
 msgid "Can't perform the action."
 msgstr "Немагчыма скочыць дзеянне."
 
-#: tournament/models.py:29 tournament/models.py:76
+#: tournament/models.py:30 tournament/models.py:78
 msgid "name"
 msgstr "назва"
 
-#: tournament/models.py:31
+#: tournament/models.py:32
 msgid "has chat"
 msgstr "З чатам"
 
-#: tournament/models.py:61
+#: tournament/models.py:63
 msgid "Refers to the tag"
 msgstr "Адносіцца к тэгу"
 
-#: tournament/models.py:77
+#: tournament/models.py:79
 msgid "first date"
 msgstr "з"
 
-#: tournament/models.py:78
+#: tournament/models.py:80
 msgid "last date"
 msgstr "па"
 
-#: tournament/models.py:79 tournament/models.py:133
+#: tournament/models.py:81 tournament/models.py:136
 msgid "free description"
 msgstr "Вольнае аписанне"
 
-#: tournament/models.py:80 tournament/models.py:134
+#: tournament/models.py:82 tournament/models.py:137
 msgid "tags"
 msgstr "тэгі"
 
-#: tournament/models.py:84
+#: tournament/models.py:87
 msgid "No-name tournament"
 msgstr "Безназоўны сінхрон"
 
-#: tournament/models.py:95
+#: tournament/models.py:98
 msgid "place name"
 msgstr "назва месца"
 
-#: tournament/models.py:96
+#: tournament/models.py:99
 msgid "address"
 msgstr "адрас"
 
-#: tournament/models.py:97
+#: tournament/models.py:100
 msgid "owner"
 msgstr "уладальнік"
 
-#: tournament/models.py:117
+#: tournament/models.py:120
 msgid "open"
 msgstr "адкрыты"
 
-#: tournament/models.py:118
+#: tournament/models.py:121
 msgid "private"
 msgstr "закрыты"
 
-#: tournament/models.py:122
+#: tournament/models.py:125
 msgid "tournament"
 msgstr "Сінхрон"
 
-#: tournament/models.py:127
+#: tournament/models.py:130
 msgid "place to play"
 msgstr "Месца гульні:"
 
-#: tournament/models.py:128
+#: tournament/models.py:131
 msgid "start date"
 msgstr "пачатак"
 
-#: tournament/models.py:130
+#: tournament/models.py:133
 msgid "competition duration (in minutes)"
 msgstr "працягласць гульні (у хвілінах)"
 
-#: tournament/models.py:131
+#: tournament/models.py:134
 msgid "max team count"
 msgstr "абмежаванне на колькасць каманд"
 
-#: tournament/models.py:132
+#: tournament/models.py:135
 msgid "team accept strategy"
 msgstr "прыём заявак"
 
-#: tournament/models.py:135
+#: tournament/models.py:138
 msgid "competition name"
 msgstr "назва гульні"
 
-#: tournament/models.py:139
+#: tournament/models.py:143
 msgid "No-name competition"
 msgstr "Безымянная гульня"
 
-#: tournament/models.py:142
+#: tournament/models.py:146
 msgid "in"
 msgstr "у"
 
-#: tournament/models.py:153
+#: tournament/models.py:157
 msgid "Refers to the tournament"
 msgstr "Адносіцца да сінхрона"
 
-#: tournament/models.py:161
+#: tournament/models.py:165
 msgid "Refers to the competition"
 msgstr "Адносіцца да гульні"
 
-#: tournament/models.py:175
+#: tournament/models.py:179
 msgid "invitation"
 msgstr "запрашэнне"
 
-#: tournament/models.py:176
+#: tournament/models.py:180
 msgid "claim"
 msgstr "заяўка"
 
-#: tournament/models.py:177
+#: tournament/models.py:181
 msgid "approved"
 msgstr "прынята"
 
-#: tournament/models.py:178
+#: tournament/models.py:182
 msgid "declined"
 msgstr "адмоўлена"
 
-#: tournament/models.py:179
+#: tournament/models.py:183
 msgid "registered"
 msgstr "зарэгістравана"
 
-#: tournament/views.py:171
+#: tournament/views.py:178
 msgid "Wrong request data."
 msgstr "Хібны запыт."
 
-#: tournament/views.py:298
+#: tournament/views.py:306
 msgid "Only the last owner can remove tags."
 msgstr "Толькі апошні ўладальнік можа выдаліць тэг."
 
@@ -577,6 +577,9 @@ msgstr "Назва тэга"
 #: tournament/templates/parts/tournament_content.html:40
 msgid "Add competition place"
 msgstr "Дадаць месца правядзення гульні"
+
+#~ msgid "removed"
+#~ msgstr "выдалены"
 
 #~ msgid "Here should be tag chat."
 #~ msgstr "Тут будзе чат."

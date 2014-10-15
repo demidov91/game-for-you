@@ -3,10 +3,10 @@ from django.contrib import admin
 from django.conf import settings
 import django
 from django.conf.urls.static import static
+from django.contrib.flatpages.views import flatpage
 
 from tournament import urls as tournament_urls
 from relations import urls as relations_urls
-from chat import urls as messages_urls
 from allauth.account.views import logout
 
 
@@ -20,6 +20,8 @@ urlpatterns = patterns('',
     url(r'^auth/', include('django.contrib.auth.urls')),
     url(r'contacts/', include(relations_urls)),
     url(r'^ckeditor/', include('ckeditor.urls')),
+    url(r'^ru/about/', flatpage, {'url': '/ru/about/'}, name='about_ru'),
+    url(r'^by/about/', flatpage, {'url': '/by/about/'}, name='about_by'),
     url(r'', include(tournament_urls)),
 )
 

@@ -53,7 +53,7 @@ INSTALLED_APPS = (
     'compressor',
     'logicaldelete',
     'ckeditor',
-
+    'django.contrib.flatpages',
 )
 
 MIDDLEWARE_CLASSES = (
