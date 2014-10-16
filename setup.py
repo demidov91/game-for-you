@@ -20,6 +20,7 @@ install_requires = [
     'django-compressor',
     'django-logicaldelete',
     'django-ckeditor',
+    'django-mobile',
 ]
 
 

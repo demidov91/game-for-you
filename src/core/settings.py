@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'logicaldelete',
     'ckeditor',
     'django.contrib.flatpages',
+    'django_mobile',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -64,6 +65,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_mobile.middleware.MobileDetectionMiddleware',
+    'django_mobile.middleware.SetFlavourMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -78,6 +81,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "allauth.account.context_processors.account",
     "allauth.socialaccount.context_processors.socialaccount",
     "core.middleware.locale.add_common_template_variables",
+    "django_mobile.context_processors.flavour",
 )
 
 AUTHENTICATION_BACKENDS = (

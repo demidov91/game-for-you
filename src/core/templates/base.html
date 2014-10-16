@@ -37,9 +37,14 @@
         {% else %}
         <div id="all-auth-links">
             <div class="{% block hide_back %}{% endblock %}"><a href="{% url 'index' %}"><img src="{{ STATIC_URL}}img/back.png" alt="back"  /></a></div>
-            <div><img src="{{ STATIC_URL}}img/email_144.png" alt="auth_with_email" data-toggle="modal" data-target="#email-authentication" /></div>
+            <div>
+                {% if flavour == 'mobile' %}
+                <a href="{{ login_url }}"><img src="{{ STATIC_URL}}img/email_144.png" alt="auth_with_email" /></a>
+                {% else %}
+                <img src="{{ STATIC_URL}}img/email_144.png" alt="auth_with_email" data-toggle="modal" data-target="#email-authentication" />
+                {% endif %}
+            </div>
             <div><a href="{% provider_login_url 'facebook' method='oauth2' %}"><img src="{{ STATIC_URL}}img/facebook_144.png" alt="auth_with_fb" /></a></div>
-            <!-- <a href="{% provider_login_url 'google' %}"><div><img src="{{ STATIC_URL}}img/gmail_144.jpg" alt="auth_with_gmail" /></div></a>  -->
             <div><a href="{% provider_login_url 'vk' %}"><img src="{{ STATIC_URL}}img/vk_144.jpg" alt="auth_with_vk" /></a></div>
             <div><a href="{% provider_login_url 'twitter' %}"><img src="{{ STATIC_URL}}img/twitter_144.png" alt="auth_with_twitter" /></a></div>
         </div>
@@ -48,28 +53,7 @@
         </div>
         <div class="toLeft" id="content">
         {% block content %}
-        {% if not user.is_authenticated %}
-        <div class="modal {% if show_login %}force-show{% endif %}" id="email-authentication">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">{% trans 'Log in or register.' %}</h4>
-                  </div>
-                  <div class="modal-body">
-                    <div id="login-placeholder" data-url="{% url 'account_login' %}?next={% url 'index' %}" class="toLeft"></div>
-                    <div id="register-placeholder" data-url="{% url 'account_signup' %}" class="toLeft"></div>
-                    <div class="clear"></div>
-                  </div>
-                  <div class="modal-footer">
-                      <div id="login-submit-wrapper" class="toLeft"><input type="submit" class="btn btn-primary" value="{% trans 'Sign In' %}" form="login-form" /></div>
-                      <div id="register-submit-wrapper" class="toLeft"><input type="submit" class="btn btn-success" value="{% trans 'Sign Up' %}" form="registration-form" /></div>
-                      <div class="clear"></div>
-                  </div>
-                </div>
-          </div>
-        </div>
-        {% endif %}
+        {% if not user.is_authenticated and flavour != 'mobile' %}{% include 'parts/login.html' %}{% endif %}
         {% endblock %}
         </div>
         <div class="toLeft" id="right-side">

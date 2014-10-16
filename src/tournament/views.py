@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
     get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_owner, can_publish_tag,\
@@ -29,10 +30,13 @@ logger = logging.getLogger(__name__)
 
 
 def _unauthenticated_view(request):
+    if 'force-login' in request.GET and request.flavour == 'mobile':
+        return render(request, 'login.html')
     tags = get_tags_provider(request).get_tags()
     return render(request, 'unauthenticated_index.html', {
         'tags': tags,
         'show_login': 'force-login' in request.GET,
+        'login_url': settings.LOGIN_URL,
         })
 
 def _authenticated_index(request):

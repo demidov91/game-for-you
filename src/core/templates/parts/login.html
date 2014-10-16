@@ -1,0 +1,21 @@
+{% load i18n %}
+<div class="{% if flavour != 'mobile' %}modal{% endif %} {% if show_login %}force-show{% endif %}" id="email-authentication">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">{% trans 'Log in or register.' %}</h4>
+          </div>
+          <div class="modal-body">
+            <div id="login-placeholder" data-url="{% url 'account_login' %}?next={% url 'index' %}" class="toLeft"></div>
+            <div id="register-placeholder" data-url="{% url 'account_signup' %}" class="toLeft"></div>
+            <div class="clear"></div>
+          </div>
+          <div class="modal-footer">
+              <div id="login-submit-wrapper" class="toLeft"><input type="submit" class="btn btn-primary" value="{% trans 'Sign In' %}" form="login-form" /></div>
+              <div id="register-submit-wrapper" class="toLeft"><input type="submit" class="btn btn-success" value="{% trans 'Sign Up' %}" form="registration-form" /></div>
+              <div class="clear"></div>
+          </div>
+        </div>
+  </div>
+</div>
