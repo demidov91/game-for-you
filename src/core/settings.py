@@ -80,7 +80,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "allauth.account.context_processors.account",
     "allauth.socialaccount.context_processors.socialaccount",
-    "core.middleware.locale.add_common_template_variables",
+    "core.middleware.core.add_common_template_variables",
     "django_mobile.context_processors.flavour",
 )
 
