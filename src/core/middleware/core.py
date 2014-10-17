@@ -7,5 +7,6 @@ def add_common_template_variables(request):
     return {
         'ACTIVE_LANGUAGE': request.LANGUAGE_CODE,
         'OTHER_LANGUAGES': tuple(filter(lambda x: x != request.LANGUAGE_CODE, _active_languages)),
+        'login_url': settings.LOGIN_URL,
     }
 

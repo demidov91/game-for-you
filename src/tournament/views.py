@@ -36,7 +36,6 @@ def _unauthenticated_view(request):
     return render(request, 'unauthenticated_index.html', {
         'tags': tags,
         'show_login': 'force-login' in request.GET,
-        'login_url': settings.LOGIN_URL,
         })
 
 def _authenticated_index(request):
