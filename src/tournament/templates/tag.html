@@ -42,10 +42,11 @@
     {% endif %}
 
     {% if is_publisher %}
-    <div class="center">
+    <div class="center" id="manage-tag-link-wrapper">
         <a href="{% url 'edit_tag' tag_id=tag.id %}"  class="btn btn-default">{% trans 'Edit' %}</a>
     </div>
-    {% elif is_subscribed %}
+    {% endif %}
+    {% if is_subscribed %}
     <form action="{% url 'unsubscribe_tag' %}" class="subscribe-unsubscribe-tag" method="post">{% csrf_token %}
         <button type="submit" class="btn btn-danger" name="id" value="{{ tag.id }}">
             {% trans 'Unsubscribe from tag' %}
