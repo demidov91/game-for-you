@@ -39,5 +39,6 @@ urlpatterns = patterns('',
     url(r'^tag/(?P<tag_id>\d+)/accept/tournament/(?P<event_id>\d+)/$', accept_tag_request,
         {'event_model_class': Tournament}, name='accept_tournament_tag'),
     url(r'^tag/(?P<tag_id>\d+)/$', tag_page, name='tag_page'),
+    url(r'^tag/create/$', create_tag, name='tag_create'),
 )
 

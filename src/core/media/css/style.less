@@ -119,17 +119,10 @@ html{
 **/
 #calendars{
     padding:0 1%;
-    &>div.fc {
-        float: left;
-        width: 49%;
-        margin-right: 2%;
-        &.calendar-after{ margin-right: 0;}
-        
-    }
     .fc-header-title{text-align: center;}
     .fc table{font-size: 0.8em;}
     .fc-event-inner {max-height: 6em;}
-    .calendar-after .fc-header-right, .calendar-current .fc-header-left{
+    .fc-header-right, .fc-header-left{
         vertical-align: center;
         text-align: center;
         font-size: 92px;
@@ -165,10 +158,12 @@ html{
         }
     }
     .remove { 
-        width: 15%; min-width: 1em; text-align: center; visibility: hidden;
+        width: 15%; min-width: 1em; text-align: center; 
         button{ background: none; border: none;} 
+        html.flavour-full & {visibility: hidden;}
     }
-    &:hover .remove{ visibility: visible;}
+    html &:hover .remove{ visibility: visible;}
+    
 }
 #login-placeholder, #register-placeholder {width: 45%;}
 #login-placeholder {margin-left: 2%; margin-right: 8%;}
@@ -201,6 +196,9 @@ li.team-nav.with-button{
 #craete-event-placeholder{display: none;}
 #add-event-wrapper{text-align: center;}
 #add-tag-block{ margin-top: 3em;}
+#not-popular-tags-header{cursor: pointer;}
+#not-popular-tags{ display: none; }
+#create-own-tag-wrapper{margin-top: 0.5em;}
 /*
 ----------------------------------------team views-------------------------------
 **/
@@ -381,6 +379,10 @@ li.team-nav.with-button{
     border-bottom-style: solid;
     label{font-size: 0.9em;}
     input{width: 100%;}
+    #save-tag-settings{ width: auto;}
+}
+#remove-tag-form, #tag-accessors-management, .subscribe-unsubscribe-tag{
+    .btn {white-space: normal;}
 }
 /**
 ---------------------------------user-page---------------------------

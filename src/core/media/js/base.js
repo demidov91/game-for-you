@@ -27,19 +27,12 @@ function initialize_default_calendar(extraOptions){
             titleFormat: 'MMMM yyyy',
             header: {left: '', center: 'title', right: ''}
         });
-        var afterOptions = $.extend({}, calendarOptions);
-        $.extend(afterOptions, {
-            titleFormat: 'MMMM yyyy',
-            header: {left: '', center: 'title', right: ''}
-        });
-
+        
         $('.calendar-current').fullCalendar(currentOptions);
         $('.calendar-current .fc-header-left').text('‹').addClass('pointer').click(function(){
             $('#calendars>.fc').fullCalendar('prev');
         });
-        $('.calendar-after').fullCalendar(afterOptions);
-        $('.calendar-after').fullCalendar('next');
-        $('.calendar-after .fc-header-right').text('›').addClass('pointer').click(function(){
+        $('.calendar-current .fc-header-right').text('›').addClass('pointer').click(function(){
             $('#calendars>.fc').fullCalendar('next');
         });
         $('.one-day-view .close').click(function(){

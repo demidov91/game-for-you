@@ -8,4 +8,8 @@ $(function(){
             $('#add-tag-name').parents('form').submit();
         }
     });
+    $('#not-popular-tags-header').click(function(){
+        $('#not-popular-tags').slideToggle();
+        $(this).toggleClass('dropup');
+    });
 });

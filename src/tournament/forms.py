@@ -16,6 +16,9 @@ from core.forms import BootstrapDateTimeField
 from tournament.utils import create_tags
 from core.utils import string_types
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 TAGS_SEPARATOR = re.compile(',\s*')
 
@@ -248,9 +251,9 @@ UserPlacesFormset = forms.models.modelformset_factory(PlayField,
 class TagForm(forms.ModelForm):
     class Meta:
         model = Tag
-        fields = ('name', 'has_chat')
+        fields = ('name', 'show_calendar', 'has_chat', 'is_private')
         widgets = {
-            'name': forms.widgets.TextInput(attrs={'class': 'form-control'})
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control'}),
         }
 
     def save(self, commit=True, *args, **kwargs):
@@ -258,4 +261,4 @@ class TagForm(forms.ModelForm):
             chat = Chat()
             chat.save()
             self.instance.chat = chat
-        super(TagForm, self).save(commit=commit, *args, **kwargs)
+        return super(TagForm, self).save(commit=commit, *args, **kwargs)

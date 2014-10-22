@@ -1,14 +1,25 @@
-{% extends 'authenticated_base.html' %}
+{% extends 'base.html' %}
 
-{% load i18n %}
+{% load i18n compress %}
 
 {% block nav_calendar_active %}active{% endblock %}
 
 {% block content %}
-    {% include 'parts/tag_content.html' %}
+    <h1 class="center">{{ tag.name }}</h1>
+    {% if tag.show_calendar %}
+    <div id="tag-calendar">
+        {% include 'parts/calendar.html' %}
+    </div>
+    {% endif %}
+    {% if tag.has_chat %}
+        {% url 'authenticated_chat' owner_id=tag.id model_key='tag' as chat_url %}
+        {% include 'parts/chat_list_wrapper.html' %}
+    {% endif %}
+    {{ block.super }}
 {% endblock %}
 
 {% block right_side_content %}
+{% if user.is_authenticated %}
     {% if is_publisher and tag_requests %}
     <h4 class="center">{% trans 'Events which are waiting for the tag confirmation' %}</h4>
     <h6>{% trans 'Click on green button to accept it' %}</h6>
@@ -34,7 +45,20 @@
     <div class="center">
         <a href="{% url 'edit_tag' tag_id=tag.id %}"  class="btn btn-default">{% trans 'Edit' %}</a>
     </div>
+    {% elif is_subscribed %}
+    <form action="{% url 'unsubscribe_tag' %}" class="subscribe-unsubscribe-tag" method="post">{% csrf_token %}
+        <button type="submit" class="btn btn-danger" name="id" value="{{ tag.id }}">
+            {% trans 'Unsubscribe from tag' %}
+        </button>
+    </form>
+    {% else %}
+    <form action="{% url 'subscribe_tag' %}" class="subscribe-unsubscribe-tag" method="post">{% csrf_token %}
+        <button type="submit" class="btn btn-success" name="id" value="{{ tag.id }}">
+            {% trans 'Subscribe for the tag!' %}
+        </button>
+    </form>
     {% endif %}
+{% endif %}
 {% endblock %}
 
 {% block style %}
@@ -51,6 +75,8 @@
         ajaxPageUrlBase = "{% url 'authenticated_chat' model_key='tag' owner_id=tag.id %}";
     </script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/fullcalendar.js"></script>
+    {% compress js %}
     <script type="text/javascript" src="{{ STATIC_URL }}js/tag_page.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/message_list.js"></script>
+    {% endcompress %}
 {% endblock %}

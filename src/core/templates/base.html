@@ -1,6 +1,6 @@
 {% load i18n core_tags compress socialaccount relations %}
 <!DOCTYPE html>
-<html class="lang-{{ ACTIVE_LANGUAGE|into_css }}" data-lang="{{ ACTIVE_LANGUAGE|into_css }}">
+<html class="lang-{{ ACTIVE_LANGUAGE|into_css }} flavour-{{ flavour }}" data-lang="{{ ACTIVE_LANGUAGE|into_css }}">
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-type">
     <title>{% block title %}{% trans "What? Where? When? organizer" %}{% endblock %}</title>
@@ -96,6 +96,7 @@
         </div>
         <div class="clear"></div>
         <div id="footer">
+            <a href="http://mikki.xpunited.by" target="_blank">{% trans 'Minsk championship' %}</a>
             <a href="mailto:demidov91@mail.ru">{% trans "Mail to developers." %}</a>
             {% with ACTIVE_LANGUAGE|into_css as language %}
             <a href="{% ifequal language 'ru' %}{% url 'about_ru' %}{% else %}{% url 'about_by' %}{% endifequal %}">
@@ -105,7 +106,9 @@
         </div>
     </div>
 {% block script %}
+    {% compress js %}
     <script type="text/javascript" src="{{ STATIC_URL }}js/base.js"></script>
+    {% endcompress %}
     {% if user.is_authenticated %}
     <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/lib/moment.js" type="text/javascript"></script>

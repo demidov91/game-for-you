@@ -1,3 +1,5 @@
 $(function(){
-    initialize_default_calendar();    
+    if ($('#tag-calendar').length > 0){
+        initialize_default_calendar();    
+    }
 });

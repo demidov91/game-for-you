@@ -4,15 +4,21 @@
 
 {% block content %}
 {% if form %}
- <form id="edit-tag-form" class="form-inline" role="form" action="{% url 'edit_tag' tag_id=tag.id %}" method="post">{% csrf_token %}
-     {% with label_size=6 inputs_size=6 %}
+ <form id="edit-tag-form" class="form-horizontal" role="form" action="." method="post">{% csrf_token %}
+     {% with label_size=2 inputs_size=10 no_button=True %}
      {% include 'parts/bootstrap_form.html' %}
      {% endwith %}
+     <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" id="save-tag-settings" class="btn btn-success" value="{% trans 'Save' %}" />
+        </div>
+     </div>
 </form>
 {% else %}
 <h1>{{ tag.name }}</h1>
 {% endif %}
 <div id="tag-accessors-management">
+    {% if not create %}
     <div id="managers" class="toLeft {% if is_owner %}owner{% else %}sharer{% endif %}">
         {% if is_owner %}
         <h4>{% trans 'Tag managers:' %}</h4>
@@ -53,6 +59,7 @@
         </div>
     </div>
     <div class="clear"></div>
+    {% endif %}
 </div>
 {% endblock %}
 
@@ -70,8 +77,10 @@
         confirmRemovingYourselfAsOwnerWords = "{% trans 'Are you sure, you want do remove yourself as owner of this tag?' %}";
         confirmRemovingYourselfAsOwnerWords = "{% trans 'Are you sure, you want do remove yourself as sharer of this tag?' %}";
         confirmRemovingTag = "{% trans 'Are you ure, you want to remove this tag?' %}";
+        {% if not create %}
         redirectToAfterRemovingYourselfAsOwner = "{% url 'edit_tag' tag_id=tag.id %}";
         redirectToAfterRemovingYourselfAsSharer = "{% url 'index' %}";
+        {% endif %}
     </script>
     <script src="{{ STATIC_URL }}js/tag_edit.js" type="text/javascript"></script>
 {% endblock %}

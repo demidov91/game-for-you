@@ -1,14 +1,45 @@
-{% extends 'authenticated_base.html' %}
+{% extends 'base.html' %}
 
-{% load i18n %}
+{% load i18n compress %}
 
 {% block content %}
+    {{ block.super }}
     {% include 'parts/calendar.html' %}
-
 {% endblock %}
 
 {% block right_side_content %}
-    {% include 'parts/tags_to_display.html' %}
+<h3 id="calendar-tags-caption">{% trans 'Tags to display:' %}</h3>
+<div id="calendar-tags">
+    {% for tag in tags %}
+    <div class="tag">
+        <div class="name toLeft"><a href="{% url 'tag_page' tag_id=tag.id %}">{{ tag.name }}</a></div>
+        <form class="remove toLeft" method="post" action="{% url 'unsubscribe_tag' %}">{% csrf_token %}
+            <button type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+            <input type="hidden" name="id" value="{{ tag.id }}" />
+        </form>
+        <div class="clear"></div>
+    </div>
+    {% endfor %}
+</div>
+<div id="add-tag-block">
+    <h4>{% trans 'Other tags:' %}</h4>
+    {% for tag in popular_tags %}
+    <a href="{% url 'tag_page' tag_id=tag.id %}" class="btn btn-default btn-sm">{{ tag.name }}</a>
+    {% endfor %}
+    {% if other_tags %}
+    <h6 id="not-popular-tags-header">{% trans 'And other' %} {{ other_tags|length }}<span class="caret"></span></h6>
+    <div id="not-popular-tags">
+        {% for tag in other_tags %}
+        <a href="{% url 'tag_page' tag_id=tag.id %}" class="btn btn-default btn-sm">{{ tag.name }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% if user.is_authenticated %}
+<div id="create-own-tag-wrapper">
+    <a href="{% url 'tag_create' %}" class="btn btn-primary">{% trans 'Create own tag' %}</a>
+</div>
+{% endif %}
 {% endblock %}
 
 
@@ -25,8 +56,10 @@
             widgets: autocomplete, menu
             effects: effects core, blind effect, highlight effect
     {% endcomment %}
+    {% compress js %}
     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery-ui-1.10.4.custom.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/index_base.js"></script>
+    {% endcompress %}
 {% endblock %}
 
 {% block style %}
@@ -37,4 +70,5 @@
 {% endblock %}
 
 {% block nav_calendar_active %}active{% endblock %}
+{% block hide_back %}hide{% endblock %}
 

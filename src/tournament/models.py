@@ -31,6 +31,9 @@ class Tag(LogicalDeleteModel):
     #Tag chat enabled.
     has_chat = models.BooleanField(default=False, verbose_name=_('has chat'))
     chat = models.ForeignKey(Chat, null=True, blank=True)
+    is_private = models.BooleanField(default=False, null=False, blank=False,
+                                     help_text=_("Don't show in in the common tag list."), verbose_name=_('is private'))
+    show_calendar = models.BooleanField(default=True, null=False, verbose_name=_('show calendar'))
 
     def __str__(self):
         return self.name

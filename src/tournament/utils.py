@@ -1,7 +1,7 @@
 from datetime import timedelta
 import sys
 
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
@@ -21,6 +21,8 @@ KEY_TO_CHAT_OWNER = {
 
 
 class TagsProvider:
+    FIRST_POPULAR_TAGS = 10
+
     def __init__(self, request):
         pass
 
@@ -39,16 +41,25 @@ class TagsProvider:
         """
         raise NotImplementedError()
 
-    def add_tag_by_name(self, name):
+    def add_tag_by_id(self, id):
         """
         Subscribe.
-        name: *Tag.name* value.
+        id: *Tag.id* value.
         raises: *Tag.DoesNotExist*.
         """
         raise NotImplementedError()
 
     def show_draft(self):
         return True
+
+    def get_other_tags(self):
+        """
+        returns: pair of 2 lists. 1st list is for popular tags, 2nd list is for all other tags.
+        """
+        all_other_tags = Tag.objects.filter(is_private=False).exclude(id__in=self.get_tags().\
+            values_list('id', flat=True)).annotate(subscribers_count=Count('subscribers')).order_by('subscribers_count')
+        return all_other_tags[:self.FIRST_POPULAR_TAGS], all_other_tags[self.FIRST_POPULAR_TAGS:]
+
 
 
 class AuthenticatedTagsProvider(TagsProvider):
@@ -63,6 +74,10 @@ class AuthenticatedTagsProvider(TagsProvider):
 
     def add_tag_by_name(self, name):
         self.user.subscribed_to.add(self._get_tag_by_name(name))
+
+    def add_tag_by_id(self, id):
+        self.user.subscribed_to.add(Tag.objects.get(id=id))
+
 
 
 class NoneAuthenticatedTagsProvider(TagsProvider):
@@ -94,6 +109,11 @@ class NoneAuthenticatedTagsProvider(TagsProvider):
     def add_tag_by_name(self, name):
         ids = list(self._get_tags_id())
         ids.append(self._get_tag_by_name(name).id)
+        self.session[self.SESSION_KEY] = ids
+
+    def add_tag_by_id(self, id):
+        ids = list(self._get_tags_id())
+        ids.append(id)
         self.session[self.SESSION_KEY] = ids
 
 class LimitedTagsProvider(TagsProvider):

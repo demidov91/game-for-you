@@ -29,24 +29,21 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def _unauthenticated_view(request):
-    if 'force-login' in request.GET and request.flavour == 'mobile':
-        return render(request, 'login.html')
-    tags = get_tags_provider(request).get_tags()
-    return render(request, 'unauthenticated_index.html', {
-        'tags': tags,
-        'show_login': 'force-login' in request.GET,
-        })
-
-def _authenticated_index(request):
-    return render(request, 'index.html', {'tags': request.user.subscribed_to.all()})
-
-
 def index(request):
     """
     'Calendar' page. Processes both authenticated and none-authenticated requests.
     """
-    return _authenticated_index(request) if request.user.is_authenticated() else _unauthenticated_view(request)
+    if 'force-login' in request.GET and request.flavour == 'mobile':
+        return render(request, 'login.html')
+    tags_provider = get_tags_provider(request)
+    tags = tags_provider.get_tags()
+    popular_tags, other_tags = tags_provider.get_other_tags()
+    return render(request, 'index.html', {
+        'tags': tags,
+        'popular_tags': popular_tags,
+        'other_tags': other_tags,
+        'show_login': 'force-login' in request.GET,
+        })
 
 
 @require_GET
@@ -245,22 +242,23 @@ def delete_competition(request, competition):
 @require_POST
 def change_tag_subscription_state(request, subscribe):
     tags_provider = get_tags_provider(request)
+    tag_id = int(request.POST.get('id'))
     if subscribe:
-        tags_provider.add_tag_by_name(request.POST.get('name'))
-    else:
-        tags_provider.remove_tag_by_id(int(request.POST.get('id')))
+        tags_provider.add_tag_by_id(tag_id)
+        return redirect('tag_page', tag_id=tag_id)
+    tags_provider.remove_tag_by_id(tag_id)
     return redirect('index')
 
 @require_GET
 def tag_page(request, tag_id):
     tag = get_object_or_404(Tag.objects, id=tag_id)
-    template_name = 'tag_authenticated.html' if request.user.is_authenticated() else 'tag_unauthenticated.html'
     context = {
         'tag': tag,
         'is_owner': is_owner(tag, request.user),
         'is_publisher': can_publish_tag(tag, request.user),
         'page_number': request.GET.get('page'),
         'chat_form': MessageForm(),
+        'is_subscribed': request.user.is_authenticated() and tag.subscribers.filter(id=request.user.id).exists()
     }
     if context['is_publisher']:
         tournament_requests = Tournament.objects.filter(tags_request__in=(tag, ))
@@ -271,7 +269,7 @@ def tag_page(request, tag_id):
         context.update({
             'tag_requests': events,
         })
-    return render(request, template_name, context)
+    return render(request, 'tag.html', context)
 
 @require_GET
 def get_tag_names(request):
@@ -301,6 +299,24 @@ def edit_tag(request, tag):
         'tag': tag,
         'is_owner': is_owner,
     })
+
+@login_required
+def create_tag(request):
+    if request.method == 'GET':
+        form = TagForm()
+    else:
+        form = TagForm(data=request.POST)
+        if form.is_valid():
+            tag = form.save()
+            TagManagementTree.objects.create(managed=tag, permissions=TagManagementTree.OWNER, shared_to=request.user)
+            tag.subscribers.add(request.user)
+            return redirect('tag_page', tag_id=tag.id)
+    return render(request, 'tag_edit.html', {
+        'form': form,
+        'is_owner': True,
+        'create': True,
+    })
+
 
 @require_POST
 @tag_owner_only(set_key='tag')
