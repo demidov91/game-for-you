@@ -27,6 +27,9 @@ class ChatFeed(Feed):
     def item_guid(self, item):
         return str(item.id)
 
+    def item_pubdate(self, item):
+        return item.create_time
+
 def get_message_page(message):
     """
     message: *chat.Message* entity.
