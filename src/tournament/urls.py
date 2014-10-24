@@ -1,6 +1,7 @@
 from django.conf.urls import patterns,  url
 
 from tournament.views import *
+from tournament.utils import OpenChatFeed
 
 
 urlpatterns = patterns('',
@@ -40,5 +41,8 @@ urlpatterns = patterns('',
         {'event_model_class': Tournament}, name='accept_tournament_tag'),
     url(r'^tag/(?P<tag_id>\d+)/$', tag_page, name='tag_page'),
     url(r'^tag/create/$', create_tag, name='tag_create'),
+
+    url(r'^rss/chat/(?P<model_key>tournament|competition|tag)/(?P<id>\d+)/', OpenChatFeed(), name='open_rss'),
+    url(r'^chat/open/(?P<model_key>tournament|competition|tag)/message/(?P<id>\d+)/', redirect_to_message_in_authenticated_chat, name='open_chat_message'),
 )
 

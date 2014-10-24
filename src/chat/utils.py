@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.contrib.syndication.views import Feed
 
 from chat.models import Message
 
@@ -16,3 +17,19 @@ def get_chat_page(chat, page_param):
     return paginator.page(int(page_param or paginator.num_pages))
 
 
+class ChatFeed(Feed):
+    def item_title(self, item):
+        return item.author.userprofile.get_short_name()
+
+    def item_description(self, item):
+        return item.text
+
+    def item_guid(self, item):
+        return str(item.id)
+
+def get_message_page(message):
+    """
+    message: *chat.Message* entity.
+    returns: *int*, page number on which this **message** is expected to be. min value is 1.
+    """
+    return Message.objects.filter(chat=message.chat, create_time__lt=message.create_time).count() // MESSAGES_PER_PAGE + 1

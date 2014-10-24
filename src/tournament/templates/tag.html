@@ -2,6 +2,8 @@
 
 {% load i18n compress %}
 
+{% block title %}{{ tag.name }}{% endblock %}
+
 {% block nav_calendar_active %}active{% endblock %}
 
 {% block content %}
@@ -13,6 +15,7 @@
     {% endif %}
     {% if tag.has_chat %}
         {% url 'authenticated_chat' owner_id=tag.id model_key='tag' as chat_url %}
+        {% url 'tag_rss' model_key='tag' id=tag.id as rss %}
         {% include 'parts/chat_list_wrapper.html' %}
     {% endif %}
     {{ block.super }}
@@ -47,13 +50,13 @@
     </div>
     {% endif %}
     {% if is_subscribed %}
-    <form action="{% url 'unsubscribe_tag' %}" class="subscribe-unsubscribe-tag" method="post">{% csrf_token %}
+    <form action="{% url 'unsubscribe_tag' %}" class="subscribe-unsubscribe-tag center" method="post">{% csrf_token %}
         <button type="submit" class="btn btn-danger" name="id" value="{{ tag.id }}">
             {% trans 'Unsubscribe from tag' %}
         </button>
     </form>
     {% else %}
-    <form action="{% url 'subscribe_tag' %}" class="subscribe-unsubscribe-tag" method="post">{% csrf_token %}
+    <form action="{% url 'subscribe_tag' %}" class="subscribe-unsubscribe-tag center" method="post">{% csrf_token %}
         <button type="submit" class="btn btn-success" name="id" value="{{ tag.id }}">
             {% trans 'Subscribe for the tag!' %}
         </button>

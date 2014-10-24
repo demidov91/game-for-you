@@ -49,6 +49,9 @@ class Tag(LogicalDeleteModel):
     def __unicode__(self):
         return str(self)
 
+    def get_absolute_url(self):
+        return reverse('tag_page', kwargs={'tag_id': self.id})
+
 
 @python_2_unicode_compatible
 class TagManagementTree(ShareTree):

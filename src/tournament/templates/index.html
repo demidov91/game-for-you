@@ -36,7 +36,7 @@
     {% endif %}
 </div>
 {% if user.is_authenticated %}
-<div id="create-own-tag-wrapper">
+<div id="create-own-tag-wrapper" class="center">
     <a href="{% url 'tag_create' %}" class="btn btn-primary">{% trans 'Create own tag' %}</a>
 </div>
 {% endif %}

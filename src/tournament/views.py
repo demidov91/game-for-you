@@ -10,7 +10,6 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
-from django.conf import settings
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
     get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_owner, can_publish_tag,\
@@ -23,7 +22,8 @@ from tournament.decorators import tournament_owner_only, competition_owner_only,
 from relations.models import Team
 from core.utils import to_timestamp, share_tree_util
 from chat.forms import MessageForm
-from chat.utils import get_chat_page
+from chat.utils import get_chat_page, get_message_page
+from chat.models import Message
 
 import logging
 logger = logging.getLogger(__name__)
@@ -428,8 +428,26 @@ def authenticated_chat(request, model_key, owner_id):
         'owner_id': owner_id,
         'model_key': model_key,
     })
+    owner.chat.rss = reverse('open_rss', kwargs={
+        'id': owner_id,
+        'model_key': model_key,
+    })
     return render(request, 'parts/chat_message_list.html', {
         'form': form,
         'chat': owner.chat,
         'page': get_chat_page(owner.chat, request.GET.get('page')),
     })
+
+def redirect_to_message_in_authenticated_chat(request, model_key, id):
+    """
+    Redirects to the specific chat holder page.
+    """
+    message = get_object_or_404(Message, id=id)
+    logger.info('{0}?page={1}#message{2}'.format(
+        get_object_or_404(KEY_TO_CHAT_OWNER[model_key], chat=message.chat).get_absolute_url(),
+        get_message_page(message), id
+    ))
+    return redirect('{0}?page={1}#message{2}'.format(
+        get_object_or_404(KEY_TO_CHAT_OWNER[model_key], chat=message.chat).get_absolute_url(),
+        get_message_page(message), id
+    ))

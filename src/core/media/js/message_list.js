@@ -8,7 +8,7 @@ prevPage = 62000;
 function updatePageNumber(){
     var page = $('.messages').data('page'); 
     if (firstVisit){
-        history.replaceState({page: page}, '', '?page=' + page);
+        history.replaceState({page: page}, '', '?page=' + page + location.hash);
         firstVisit = false;
     } else {
         history.pushState({page: page}, '', '?page=' + page);
@@ -35,9 +35,16 @@ function onSubmit(){
     $('#id_text').val('');
 }
 
+function onInitialPageLoad(){
+    updatePageNumber();
+    if (location.hash.length > 0){
+        $(location.hash)[0].scrollIntoView();
+    }
+}
+
 $(function(){
     if ($('.chat-placeholder').length == 0){return;}
-    load_html_content($('.chat-wrapper'), {success: updatePageNumber});
+    load_html_content($('.chat-wrapper'), {success: onInitialPageLoad});
     loadListWithFormAction($('.chat-placeholder'), $('.chat-wrapper'), $('.chat-placeholder'), {success: onSubmit});
     $('.chat-placeholder').on('click', '.chat-page-links a', function(event){
         event.preventDefault();

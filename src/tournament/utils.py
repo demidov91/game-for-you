@@ -4,9 +4,12 @@ import sys
 from django.db.models import Q, Count
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 from tournament.models import Tag, Tournament, Competition, Participation, TagManagementTree
 from core.utils import to_timestamp, ShareTreeUtil
+from chat.utils import ChatFeed
+from chat.models import Message
 
 import logging
 logger = logging.getLogger(__name__)
@@ -18,6 +21,12 @@ KEY_TO_CHAT_OWNER = {
     'tournament': Tournament,
     'competition': Competition,
 }
+
+# reverse for **KEY_TO_CHAT_OWNER**
+CHAT_OWNER_TO_URL_KEY = { }
+
+for key, value in KEY_TO_CHAT_OWNER.items():
+    CHAT_OWNER_TO_URL_KEY[value] = key
 
 
 class TagsProvider:
@@ -278,6 +287,25 @@ def create_tags(names, owner):
         TagManagementTree.objects.create(managed=tag, shared_to=owner, permissions=TagManagementTree.OWNER)
         new_tag_ids.append(tag.id)
     return new_tag_ids
+
+class OpenChatFeed(ChatFeed):
+    def get_object(self, request, model_key, id):
+        return get_object_or_404(KEY_TO_CHAT_OWNER[model_key], id=id)
+
+    def item_link(self, item):
+        return reverse('open_chat_message', kwargs={'id': item.id, 'model_key': item.model_key})
+
+    def items(self, obj):
+        model_key = CHAT_OWNER_TO_URL_KEY[obj.__class__]
+        for item in Message.objects.filter(chat=obj.chat).order_by('-create_time')[:30]:
+            item.model_key = model_key
+            yield item
+
+    def link(self, obj):
+        return reverse('open_rss', kwargs={'model_key': CHAT_OWNER_TO_URL_KEY[obj.__class__], 'id': obj.id})
+
+    def title(self, obj):
+        return obj.name
 
 def sort_by_key(iterable, key, reverse=False):
     if sys.version_info >= (3, 0):

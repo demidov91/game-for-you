@@ -1,4 +1,4 @@
-<div class="center chat-page-links">
+<div class="center chat-page-links toLeft">
 {% if page.paginator.num_pages < 11 %}
     {% for page_number in page.paginator.page_range reversed %}
     {% include 'parts/page_link.html' %}
@@ -15,3 +15,11 @@
     {% endfor %}
 {% endif %}
 </div>
+{% if chat.rss and page.object_list %}
+<div class="toLeft rss-wrapper">
+    <a href="{{ chat.rss }}" target="_blank">
+        <img class="rss-link" src="{{ STATIC_URL }}img/rss.png" alt="rss" />
+    </a>
+</div>
+{% endif %}
+<div class="clear"></div>
