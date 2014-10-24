@@ -1,4 +1,6 @@
+{% with True as is_higher_row %}
 {% include 'parts/page_links.html' %}
+{% endwith %}
 
 <div class="messages" data-page="{{ page.number }}">
 {% for message in page.object_list reversed %}
@@ -17,5 +19,3 @@
 </div>
 
 {% include 'parts/page_links.html' %}
-
-
