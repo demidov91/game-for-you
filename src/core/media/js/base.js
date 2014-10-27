@@ -11,6 +11,8 @@ function initialize_default_calendar(extraOptions){
             firstDay: 1,            
             dayNamesShort: dayNamesShort,
             windowResize: onCalendarResize,
+                loading: function(isLoading, view){view.element.parents('#calendars>div').toggleClass('loading', isLoading); 
+            },
             dayClick: function(date){
                 var day = date.getDate();
                 var month = parseInt(date.getMonth()) + 1;
