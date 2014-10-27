@@ -1,9 +1,16 @@
+function onCalendarResize(){
+    var height = $('.calendar-current').height();
+    $('.change-month').css('line-height', height + 'px');  
+    $('.change-month').css('font-size', height / 3 + 'px');  
+}
+
 function initialize_default_calendar(extraOptions){
         var calendarOptions = {
             events: getEventsUrl,            
             monthNames: monthNames,
             firstDay: 1,            
             dayNamesShort: dayNamesShort,
+            windowResize: onCalendarResize,
             dayClick: function(date){
                 var day = date.getDate();
                 var month = parseInt(date.getMonth()) + 1;
@@ -29,10 +36,11 @@ function initialize_default_calendar(extraOptions){
         });
         
         $('.calendar-current').fullCalendar(currentOptions);
-        $('.calendar-current .fc-header-left').text('‹').addClass('pointer').click(function(){
+        onCalendarResize();
+        $('#calendars>.prev').click(function(){
             $('#calendars>.fc').fullCalendar('prev');
         });
-        $('.calendar-current .fc-header-right').text('›').addClass('pointer').click(function(){
+        $('#calendars>.next').click(function(){
             $('#calendars>.fc').fullCalendar('next');
         });
         $('.one-day-view .close').click(function(){
