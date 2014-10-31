@@ -4,18 +4,23 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.views.generic import View
 from django.utils.decorators import method_decorator
-from django.views.decorators.http import require_POST
-from django.http import HttpResponseForbidden, HttpResponse
+from django.views.decorators.http import require_POST, require_GET
+from django.http import HttpResponseForbidden
+from django.conf import settings
 
 from relations.models import Team, UserProfile, UserContact
 from relations.forms import TeamForm, ProfileSettings
-from relations.decorators import team_owner_only, team_member_only, team_root_owner_only
-from relations.utils import create_team, can_delete_team, get_members_for_editor
+from relations.decorators import team_owner_only, team_member_only, team_root_owner_only, auth_by_get
+from relations.utils import create_team, can_delete_team, get_members_for_editor, TeamChatFeed
 from core.utils import is_in_share_tree, has_higher_priority, find_leave_by_owner, find_from_leaf_to_root, get_root
 from core.models import ShareTree
 from tournament.forms import UserPlacesFormset
 from chat.forms import MessageForm
-from chat.utils import get_chat_page
+from chat.utils import get_chat_page, get_message_page
+from chat.models import Message
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -66,6 +71,7 @@ def view_team(request, team):
         'team': team,
         'is_owner': is_in_share_tree(request.user, team.owner),
         'chat_form': MessageForm(),
+        'page_number': request.GET.get('page'),
     })
 
 
@@ -217,8 +223,26 @@ def team_chat(request, team):
         form = MessageForm()
     page = get_chat_page(team.chat, request.REQUEST.get('page'))
     team.chat.url = reverse('team_chat', kwargs={'team_id': team.id})
+    team_rss = TeamChatFeed()
+    team.owner_key = request.user.userprofile.external_read_auth
+    team.chat.rss = team_rss.link(team)
     return render(request, 'parts/chat_message_list.html', {
         'chat': team.chat,
         'form': form,
         'page': page,
     })
+
+@require_GET
+@auth_by_get
+def redirect_to_message_in_team_chat(request, id):
+    """
+    Redirects to the specific chat holder page.
+    """
+    message = get_object_or_404(Message, id=id)
+    url = '{0}?page={1}&{2}={3}#message{4}'.format(
+        get_object_or_404(Team, chat=message.chat).get_absolute_url(),
+        get_message_page(message),
+        settings.GET_AUTH_PARAM, request.user.userprofile.external_read_auth,
+        id
+    )
+    return redirect(url)

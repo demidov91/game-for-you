@@ -38,7 +38,10 @@ function onSubmit(){
 function onInitialPageLoad(){
     updatePageNumber();
     if (location.hash.length > 0){
-        $(location.hash)[0].scrollIntoView();
+        var jMessage = $(location.hash);
+        if (jMessage.length == 1){
+            jMessage[0].scrollIntoView();
+        }
     }
 }
 

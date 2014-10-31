@@ -33,7 +33,7 @@ def index(request):
     """
     'Calendar' page. Processes both authenticated and none-authenticated requests.
     """
-    if 'force-login' in request.GET and request.flavour == 'mobile':
+    if 'force-login' in request.GET and request.flavour == 'mobile' and not request.user.is_authenticated():
         return render(request, 'login.html')
     tags_provider = get_tags_provider(request)
     tags = tags_provider.get_tags()
@@ -443,10 +443,6 @@ def redirect_to_message_in_authenticated_chat(request, model_key, id):
     Redirects to the specific chat holder page.
     """
     message = get_object_or_404(Message, id=id)
-    logger.info('{0}?page={1}#message{2}'.format(
-        get_object_or_404(KEY_TO_CHAT_OWNER[model_key], chat=message.chat).get_absolute_url(),
-        get_message_page(message), id
-    ))
     return redirect('{0}?page={1}#message{2}'.format(
         get_object_or_404(KEY_TO_CHAT_OWNER[model_key], chat=message.chat).get_absolute_url(),
         get_message_page(message), id

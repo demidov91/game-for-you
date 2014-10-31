@@ -163,7 +163,10 @@ html{
 }
 #login-placeholder, #register-placeholder {width: 45%;}
 #login-placeholder {margin-left: 2%; margin-right: 8%;}
-#email-authentication>.modal-dialog{font-size: 0.6em;width: 55em;}
+#email-authentication>.modal-dialog{
+    font-size: 0.6em;width: 55em;
+    html.flavour-mobile & .close{display: none;}
+}
 #login-submit-wrapper{text-align: center; width: 50%;}
 #register-submit-wrapper{text-align: center; width: 50%;}
 #email-authentication tr{margin: 0.5em auto;}

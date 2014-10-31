@@ -1,8 +1,16 @@
+from django.core.urlresolvers import reverse
+from django.conf import settings
+
 from relations.models import Team
+from relations.decorators import auth_by_get, team_member_only
 from core.models import ShareTree
 from core.utils import Adapter, is_in_share_tree, has_higher_priority, find_leave_by_owner
 from chat.models import Chat
+from chat.utils import ChatFeed
+from chat.models import Message
 
+import logging
+logger = logging.getLogger(__name__)
 
 def create_team(owner):
     """
@@ -47,5 +55,37 @@ class TeamMemberForEditor(Adapter):
 
 def get_members_for_editor(team, editor):
     return tuple(TeamMemberForEditor(team, member, editor) for member in team.members.all())
+
+
+class TeamChatFeed(ChatFeed):
+    @auth_by_get
+    @team_member_only(set_key='team')
+    def _feed_as_view(request, team):
+        """
+        This method exists only to use decorators as for view.
+        """
+        team.owner_key = request.user.userprofile.external_read_auth
+        return team
+
+    def get_object(self, request, team_id):
+        return TeamChatFeed._feed_as_view(request, team_id=team_id)
+
+    def link(self, obj):
+        return '{0}?{1}={2}'.format(
+            reverse('team_rss', kwargs={'team_id': obj.id}),
+            settings.GET_AUTH_PARAM, obj.owner_key)
+
+    def item_link(self, item):
+        return '{0}?{1}={2}'.format(
+            reverse('team_chat_message', kwargs={'id': item.id}),
+            settings.GET_AUTH_PARAM, item.owner_key)
+
+    def items(self, obj):
+        for message in Message.objects.filter(chat=obj.chat).order_by('-create_time')[:30]:
+            message.owner_key = obj.owner_key
+            yield message
+
+    def title(self, obj):
+        return obj.name
 
 

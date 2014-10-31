@@ -1,4 +1,5 @@
 import os
+import uuid
 
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -7,6 +8,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible, force_text
+from django.core.urlresolvers import reverse
 
 from allauth.socialaccount.signals import pre_social_login
 
@@ -37,6 +39,8 @@ class UserProfile(models.Model):
                                      help_text=_('Save server space - use external images.'
                                                  ' Leave this field blank to use uploaded userpick.'),
                                      null=True, blank=True,)
+    external_read_auth = models.CharField(max_length=100, default=None, null=True, blank=False, unique=True,
+                                          verbose_name=_('Authenticate by get parameter parameter'))
 
     def get_full_name(self):
         """
@@ -75,7 +79,8 @@ def handler(sender, sociallogin, **kwargs):
 @receiver(post_save, sender=User)
 def _create_userprofile(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance)
+        UserProfile.objects.create(user=instance, external_read_auth=uuid.uuid1().hex)
+
 
 
 class UserProfileRecordType(models.Model):
@@ -115,6 +120,9 @@ class Team(models.Model):
 
     def get_name_or_default(self):
         return force_text(self.name or Team.DEFAULT_NAME)
+
+    def get_absolute_url(self):
+        return reverse('view_team', args=(self.id, ))
 
 
 class Contact(models.Model):

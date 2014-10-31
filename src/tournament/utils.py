@@ -253,7 +253,6 @@ class TagOwnersTreeUtil(BaseManagementTreeUtil):
 
 class TagPublishersTreeUtil(BaseManagementTreeUtil):
     def is_manager(self, managed, user):
-        logger.info("I'm publisher!")
         return managed.sharers.filter(shared_to=user).exists()
     def is_last(self, leaf):
         """

@@ -209,6 +209,7 @@ STATICFILES_FINDERS = (
 )
 
 
+GET_AUTH_PARAM = 'readpermission'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_ON_GET = False
 

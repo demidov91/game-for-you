@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-22 10:15+0300\n"
+"POT-Creation-Date: 2014-10-31 13:55+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,11 +42,11 @@ msgstr "Зависит от"
 msgid "Root element"
 msgstr "Корневой элемент"
 
-#: core/settings.py:287
+#: core/settings.py:288
 msgid "Russian"
 msgstr "Русский"
 
-#: core/settings.py:288
+#: core/settings.py:289
 msgid "Belarusian"
 msgstr "Беларуская"
 
@@ -88,7 +88,7 @@ msgstr "О сайте"
 msgid "Save"
 msgstr "Сохранить"
 
-#: core/templates/parts/calendar.html:12
+#: core/templates/parts/calendar.html:13
 msgid "Add event"
 msgstr "Добавить событие"
 
@@ -126,19 +126,19 @@ msgstr "имя"
 msgid "last name"
 msgstr "фамилия"
 
-#: relations/models.py:32
+#: relations/models.py:34
 msgid "patronymic"
 msgstr "отчество"
 
-#: relations/models.py:35
+#: relations/models.py:37
 msgid "userpick"
 msgstr "Аватарка"
 
-#: relations/models.py:36
+#: relations/models.py:38
 msgid "external userpick"
 msgstr "Внешняя ссыла на аватарку"
 
-#: relations/models.py:37
+#: relations/models.py:39
 msgid ""
 "Save server space - use external images. Leave this field blank to use "
 "uploaded userpick."
@@ -146,19 +146,23 @@ msgstr ""
 "Экономьте место на сервере - используйте внешние ссылки на аватарки :) "
 "Оставьте это поле пустым, чтобы была использовано загруженное изображение."
 
-#: relations/models.py:105
+#: relations/models.py:43
+msgid "Authenticate by get parameter parameter"
+msgstr "Параметр авторизации по GET-запросу"
+
+#: relations/models.py:110
 msgid "NoName (c)"
 msgstr "Безымянные (с)"
 
-#: relations/models.py:157
+#: relations/models.py:165
 msgid "Is public record"
 msgstr "Открытая запись"
 
-#: relations/models.py:158
+#: relations/models.py:166
 msgid "Record for team"
 msgstr "Запись для команды"
 
-#: relations/models.py:159
+#: relations/models.py:167
 msgid "Is private record"
 msgstr "Закрытая запись"
 
@@ -198,7 +202,7 @@ msgstr "Изменение ранее сохранённых адресов"
 
 #: relations/templates/view_team.html:26
 #: tournament/templates/authenticated_tournament.html:15
-#: tournament/templates/competition.html:14 tournament/templates/tag.html:44
+#: tournament/templates/competition.html:14 tournament/templates/tag.html:49
 msgid "Edit"
 msgstr "Править"
 
@@ -259,7 +263,7 @@ msgstr "Нельзя удалить адрес, на который зареге
 msgid "Can't perform the action."
 msgstr "Невозможно совершить действие."
 
-#: tournament/models.py:30 tournament/models.py:81
+#: tournament/models.py:30 tournament/models.py:84
 msgid "name"
 msgstr "название"
 
@@ -279,111 +283,111 @@ msgstr "Скрытая"
 msgid "show calendar"
 msgstr "Отображать календарь событий"
 
-#: tournament/models.py:66
+#: tournament/models.py:69
 msgid "Refers to the tag"
 msgstr "Относится к теме"
 
-#: tournament/models.py:82
+#: tournament/models.py:85
 msgid "first date"
 msgstr "с"
 
-#: tournament/models.py:83
+#: tournament/models.py:86
 msgid "last date"
 msgstr "по"
 
-#: tournament/models.py:84 tournament/models.py:139
+#: tournament/models.py:87 tournament/models.py:142
 msgid "free description"
 msgstr "Описание"
 
-#: tournament/models.py:85 tournament/models.py:140
+#: tournament/models.py:88 tournament/models.py:143
 msgid "tags"
 msgstr "темы"
 
-#: tournament/models.py:90
+#: tournament/models.py:93
 msgid "No-name tournament"
 msgstr "Безымянный синхрон"
 
-#: tournament/models.py:101
+#: tournament/models.py:104
 msgid "place name"
 msgstr "название места игры"
 
-#: tournament/models.py:102
+#: tournament/models.py:105
 msgid "address"
 msgstr "адрес"
 
-#: tournament/models.py:103
+#: tournament/models.py:106
 msgid "owner"
 msgstr "владелец"
 
-#: tournament/models.py:123
+#: tournament/models.py:126
 msgid "open"
 msgstr "открытый"
 
-#: tournament/models.py:124
+#: tournament/models.py:127
 msgid "private"
 msgstr "закрытый"
 
-#: tournament/models.py:128
+#: tournament/models.py:131
 msgid "tournament"
 msgstr "синхрон"
 
-#: tournament/models.py:133
+#: tournament/models.py:136
 msgid "place to play"
 msgstr "место игры"
 
-#: tournament/models.py:134
+#: tournament/models.py:137
 msgid "start date"
 msgstr "начало"
 
-#: tournament/models.py:136
+#: tournament/models.py:139
 msgid "competition duration (in minutes)"
 msgstr "продолжительность соревнования (минуты)"
 
-#: tournament/models.py:137
+#: tournament/models.py:140
 msgid "max team count"
 msgstr "максимальное количество команд"
 
-#: tournament/models.py:138
+#: tournament/models.py:141
 msgid "team accept strategy"
 msgstr "Приём заявок"
 
-#: tournament/models.py:141
+#: tournament/models.py:144
 msgid "competition name"
 msgstr "название игры"
 
-#: tournament/models.py:146
+#: tournament/models.py:149
 msgid "No-name competition"
 msgstr "Безымянная игра"
 
-#: tournament/models.py:149
+#: tournament/models.py:152
 msgid "in"
 msgstr "в"
 
-#: tournament/models.py:160
+#: tournament/models.py:163
 msgid "Refers to the tournament"
 msgstr "Относится к синхрону"
 
-#: tournament/models.py:168
+#: tournament/models.py:171
 msgid "Refers to the competition"
 msgstr "Относится к игре"
 
-#: tournament/models.py:182
+#: tournament/models.py:185
 msgid "invitation"
 msgstr "приглашение"
 
-#: tournament/models.py:183
+#: tournament/models.py:186
 msgid "claim"
 msgstr "заявка"
 
-#: tournament/models.py:184
+#: tournament/models.py:187
 msgid "approved"
 msgstr "подтверждена"
 
-#: tournament/models.py:185
+#: tournament/models.py:188
 msgid "declined"
 msgstr "отклонена"
 
-#: tournament/models.py:186
+#: tournament/models.py:189
 msgid "registered"
 msgstr "зарегистрирована"
 
@@ -436,19 +440,19 @@ msgstr "И ещё"
 msgid "Create own tag"
 msgstr "Создать тему"
 
-#: tournament/templates/tag.html:22
+#: tournament/templates/tag.html:27
 msgid "Events which are waiting for the tag confirmation"
 msgstr "Ожидают подтверждения публикации под темой"
 
-#: tournament/templates/tag.html:23
+#: tournament/templates/tag.html:28
 msgid "Click on green button to accept it"
 msgstr "Чтобы добавить к событию текущую тему, кликните по зелёной кнопке"
 
-#: tournament/templates/tag.html:49
+#: tournament/templates/tag.html:55
 msgid "Unsubscribe from tag"
 msgstr "Отписаться от темы"
 
-#: tournament/templates/tag.html:55
+#: tournament/templates/tag.html:61
 msgid "Subscribe for the tag!"
 msgstr "Подписаться на события темы"
 

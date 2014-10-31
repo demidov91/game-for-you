@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-24 00:18+0300\n"
+"POT-Creation-Date: 2014-10-31 13:57+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,11 +42,11 @@ msgstr "Залежыць ад"
 msgid "Root element"
 msgstr "Карэнны элемент"
 
-#: core/settings.py:287
+#: core/settings.py:288
 msgid "Russian"
 msgstr "Руская"
 
-#: core/settings.py:288
+#: core/settings.py:289
 msgid "Belarusian"
 msgstr "Беларуская"
 
@@ -88,7 +88,7 @@ msgstr "Пра сайт"
 msgid "Save"
 msgstr "Захаваць"
 
-#: core/templates/parts/calendar.html:12
+#: core/templates/parts/calendar.html:13
 msgid "Add event"
 msgstr "Дадаць падзею"
 
@@ -126,19 +126,19 @@ msgstr "імя"
 msgid "last name"
 msgstr "прозвішча"
 
-#: relations/models.py:32
+#: relations/models.py:34
 msgid "patronymic"
 msgstr "імя па бацьку"
 
-#: relations/models.py:35
+#: relations/models.py:37
 msgid "userpick"
 msgstr "Аватарка"
 
-#: relations/models.py:36
+#: relations/models.py:38
 msgid "external userpick"
 msgstr "Спасылка на аватарку"
 
-#: relations/models.py:37
+#: relations/models.py:39
 msgid ""
 "Save server space - use external images. Leave this field blank to use "
 "uploaded userpick."
@@ -146,19 +146,23 @@ msgstr ""
 "Беражыце месца на серверы - выкарыстоўвайце знешнія спасылкі :) Пакіньце "
 "поле пустым, каб выкарыстоўвалась выява з запампованага вамі файла."
 
-#: relations/models.py:105
+#: relations/models.py:43
+msgid "Authenticate by get parameter parameter"
+msgstr "GET-параметр для ключа аўтарызацыі"
+
+#: relations/models.py:110
 msgid "NoName (c)"
 msgstr "Безназоўныя (с)"
 
-#: relations/models.py:157
+#: relations/models.py:165
 msgid "Is public record"
 msgstr "Бачна ўсім"
 
-#: relations/models.py:158
+#: relations/models.py:166
 msgid "Record for team"
 msgstr "Бачна камандзе"
 
-#: relations/models.py:159
+#: relations/models.py:167
 msgid "Is private record"
 msgstr "Бачна толькі мне"
 
