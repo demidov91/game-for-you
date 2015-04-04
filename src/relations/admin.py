@@ -4,7 +4,7 @@ from relations.models import UserProfile, Team
 
 
 class TeamAdmin(admin.ModelAdmin):
-    fields = ('name', )
+    fields = ('name', 'members')
 
 
 admin.site.register(UserProfile)

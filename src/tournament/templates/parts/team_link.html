@@ -7,7 +7,7 @@
 {% elif user.userprofile.get_active_teams.count == 0 %}
 <a href="{% url 'add_team' %}">{% trans 'Add team' %}</a>
 {% else %}
-<div class="toLeft"><a href="{% url 'view_team' team_id=user.userprofile.primary_team.id %}">{{ user.userprofile.primary_team.name }}</a></div>
+<div class="toLeft"><a href="{% url 'view_team' team_id=user.userprofile.get_primary_team.id %}">{{ user.userprofile.get_primary_team.name }}</a></div>
 <div class="toLeft">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
     <span class="caret"></span>

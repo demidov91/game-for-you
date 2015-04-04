@@ -70,6 +70,15 @@ class UserProfile(models.Model):
     def get_image(self):
         return self.external_image or self.image.url
 
+    def get_primary_team(self):
+        """
+        returns: *primary_team* or just first team from the *active_teams* list.
+        """
+        if not self.primary_team:
+            self.primary_team = self.get_active_teams().first()
+            self.save()
+        return self.primary_team
+
 
 @receiver(pre_social_login)
 def handler(sender, sociallogin, **kwargs):
