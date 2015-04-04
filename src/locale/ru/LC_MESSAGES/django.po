@@ -511,7 +511,7 @@ msgstr "Место"
 
 #: tournament/templates/parts/competition_dynamic.html:5
 msgid "Approved participants"
-msgstr "Через сайт заявились:"
+msgstr "Команды:"
 
 #: tournament/templates/parts/competition_dynamic.html:11
 #: tournament/templates/parts/competition_dynamic.html:86
