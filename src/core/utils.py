@@ -1,9 +1,19 @@
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from collections import deque
-
+from django.core.signals import got_request_exception
 from core.models import ShareTree
+
+import logging
+logger = logging.getLogger(__name__)
+
+
+def log(*args, **kwargs):
+    logger.exception('Unhandled error.')
+
+got_request_exception.connect(log)
+
 
 
 class Adapter(object):
