@@ -223,13 +223,11 @@ def competitions_to_calendar_events(competitions, class_name=''):
 
 def get_default_participation_state(competition):
     """
-    Returns value for *Team.state* by *Competition.team_accept_strategy*.
+    Returns value for *Participation.state* by *Competition.team_accept_strategy*.
     **competition**: *Competition* instance.
     """
     if competition.team_accept_strategy == Competition.OPEN_STRATEGY:
         return Participation.APPROVED
-    if competition.team_accept_strategy == Competition.PRIVATE_STRATEGY:
-        return Participation.CLAIM
     return Participation.CLAIM
 
 

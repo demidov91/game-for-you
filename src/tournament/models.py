@@ -138,7 +138,11 @@ class Competition(CreateTimeMixin, models.Model):
     #duration in minutes
     duration = models.IntegerField(null=True, blank=True, verbose_name=_('competition duration (in minutes)'))
     team_limit = models.IntegerField(null=True, blank=True, verbose_name=_('max team count'))
-    team_accept_strategy = models.PositiveSmallIntegerField(choices=STRATEGY_CHOICES, verbose_name=_('team accept strategy'))
+    team_accept_strategy = models.PositiveSmallIntegerField(
+        choices=STRATEGY_CHOICES,
+        default=OPEN_STRATEGY,
+        blank=True,
+        verbose_name=_('team accept strategy'))
     description = models.TextField(default=None, verbose_name=_('free description'), null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='competitions', verbose_name=_('tags'), null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name=_('competition name'), null=True, blank=True)
