@@ -96,6 +96,8 @@
     {% endif %}
     </div>
 {% else %}
-    {% if is_competition_owner %}<span>{% trans 'No claimants yet.' %}</span>{% endif %}
+    {% if is_competition_owner and competition.team_accept_strategy == competition.PRIVATE_STRATEGY %}
+        <span>{% trans 'No claimants yet.' %}</span>
+    {% endif %}
 {% endif %}
 <div class="clear"></div>
