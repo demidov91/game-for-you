@@ -512,7 +512,7 @@ msgstr "Месца"
 
 #: tournament/templates/parts/competition_dynamic.html:5
 msgid "Approved participants"
-msgstr "Пацверджаныя ўдзельнікі"
+msgstr "Удзельнікі"
 
 #: tournament/templates/parts/competition_dynamic.html:11
 #: tournament/templates/parts/competition_dynamic.html:86
@@ -526,7 +526,7 @@ msgstr "Адмовіць"
 
 #: tournament/templates/parts/competition_dynamic.html:21
 msgid "There is no participants yet."
-msgstr "Пакуль што няма пацверджаных удзельнікаў."
+msgstr "Удзельнікаў пакуль няма."
 
 #: tournament/templates/parts/competition_dynamic.html:27
 #: tournament/templates/parts/competition_dynamic.html:34

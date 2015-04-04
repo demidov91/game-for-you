@@ -511,7 +511,7 @@ msgstr "Место"
 
 #: tournament/templates/parts/competition_dynamic.html:5
 msgid "Approved participants"
-msgstr "Принятые заявки"
+msgstr "Через сайт заявились:"
 
 #: tournament/templates/parts/competition_dynamic.html:11
 #: tournament/templates/parts/competition_dynamic.html:86
@@ -525,7 +525,7 @@ msgstr "Отклонить"
 
 #: tournament/templates/parts/competition_dynamic.html:21
 msgid "There is no participants yet."
-msgstr "Ни одной команде не подтверждено участие."
+msgstr "Пока команд нет."
 
 #: tournament/templates/parts/competition_dynamic.html:27
 #: tournament/templates/parts/competition_dynamic.html:34
