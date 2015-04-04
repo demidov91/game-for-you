@@ -59,5 +59,16 @@ $(function(){
     window.onpopstate = function(event){
         load_html_content($('.chat-wrapper').data('url', getAjaxPageUrl(event.state.page)));
     }
+    
+    $('.chat-wrapper').on('click', '.message .body', function(){
+        if (CKEDITOR.instances.id_text === undefined){
+            return;        
+        }
+        var jMessage = $(this).parents('.message');
+        var jLinkClone = jMessage.find('.avatar-wrapper>a').clone();
+        jLinkClone.html(jLinkClone.find('span').text());     
+        var linkHtml = jLinkClone.prop('outerHTML');   
+        CKEDITOR.instances.id_text.insertHtml(' ' + linkHtml + ' ');
+    });
 
 });
