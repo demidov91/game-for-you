@@ -49,7 +49,9 @@
         <a href="{% url 'edit_tag' tag_id=tag.id %}"  class="btn btn-default">{% trans 'Edit' %}</a>
     </div>
     {% endif %}
-    {% if is_subscribed %}
+{% endif %}
+
+{% if is_subscribed %}
     <form action="{% url 'unsubscribe_tag' %}" class="subscribe-unsubscribe-tag center" method="post">{% csrf_token %}
         <button type="submit" class="btn btn-danger" name="id" value="{{ tag.id }}">
             {% trans 'Unsubscribe from tag' %}
@@ -61,7 +63,6 @@
             {% trans 'Subscribe for the tag!' %}
         </button>
     </form>
-    {% endif %}
 {% endif %}
 {% endblock %}
 

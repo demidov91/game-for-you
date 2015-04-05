@@ -252,13 +252,14 @@ def change_tag_subscription_state(request, subscribe):
 @require_GET
 def tag_page(request, tag_id):
     tag = get_object_or_404(Tag.objects, id=tag_id)
+    user_tags_provider = get_tags_provider(request)
     context = {
         'tag': tag,
         'is_owner': is_owner(tag, request.user),
         'is_publisher': can_publish_tag(tag, request.user),
         'page_number': request.GET.get('page'),
         'chat_form': MessageForm(),
-        'is_subscribed': request.user.is_authenticated() and tag.subscribers.filter(id=request.user.id).exists()
+        'is_subscribed': tag in user_tags_provider.get_tags(),
     }
     if context['is_publisher']:
         tournament_requests = Tournament.objects.filter(tags_request__in=(tag, ))
