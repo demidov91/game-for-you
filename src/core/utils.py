@@ -135,6 +135,8 @@ def to_timestamp(date_time):
     date_time: *datetime.datetime* instance.
     returns: *int* - UNIX timestamp.
     """
+    if date_time is None:
+        return None
     if sys.version_info > (3, 2):
         return date_time.timestamp()
     td = date_time - datetime(1970, 1, 1, tzinfo=date_time.tzinfo)

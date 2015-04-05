@@ -203,6 +203,7 @@ def get_events_by_tags_and_day(tags, day, owner=None):
             & event_additional_query),
     }
 
+
 def tournaments_to_calendar_events(tournaments, class_name=''):
     return tuple({
         'title': t.name,
@@ -212,10 +213,12 @@ def tournaments_to_calendar_events(tournaments, class_name=''):
         'className': 'tournament ' + class_name,
     } for t in tournaments)
 
+
 def competitions_to_calendar_events(competitions, class_name=''):
     return tuple({
         'title': c.get_name(),
         'start': to_timestamp(c.start_datetime),
+        'end': to_timestamp(c.end_datetime),
         'url': reverse('view_competition', kwargs={'competition_id': c.id}),
         'className': 'competition ' + class_name,
     } for c in competitions)

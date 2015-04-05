@@ -135,8 +135,7 @@ class Competition(CreateTimeMixin, models.Model):
                                    on_delete=models.SET_NULL)
     place = models.ForeignKey(PlayField, verbose_name=_('place to play'), on_delete=models.PROTECT)
     start_datetime = models.DateTimeField(verbose_name=_('start date'))
-    #duration in minutes
-    duration = models.IntegerField(null=True, blank=True, verbose_name=_('competition duration (in minutes)'))
+    end_datetime = models.DateTimeField(null=True, blank=True, verbose_name=_('end datetime'))
     team_limit = models.IntegerField(null=True, blank=True, verbose_name=_('max team count'))
     team_accept_strategy = models.PositiveSmallIntegerField(
         choices=STRATEGY_CHOICES,

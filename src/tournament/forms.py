@@ -156,7 +156,7 @@ class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         widgets = {
             'tournament': forms.Select(attrs={'class': 'form-control'}),
             'start_datetime': BootstrapDateTimeField(attrs={'class': 'form-control'}),
-            'duration': forms.TextInput(attrs={'class': 'form-control'}),
+            'end_datetime': BootstrapDateTimeField(attrs={'class': 'form-control'}),
             'team_limit': forms.TextInput(attrs={'class': 'form-control'}),
             'team_accept_strategy': forms.Select(attrs={'class': 'form-control'}),
             'description': CKEditorWidget(attrs={'class': 'form-control'}, config_name='event'),
@@ -165,8 +165,8 @@ class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
             'place': widgets.Select(attrs={'class': 'form-control'}),
         }
 
-        fields = ('start_datetime', 'name', 'place', 'short_place_name', 'address', 'tournament',
-                  'team_limit', 'team_accept_strategy', 'duration', 'description', 'tags', 'tags_request', 'new_tag_names')
+        fields = ('name', 'start_datetime', 'end_datetime', 'place', 'short_place_name', 'address', 'tournament',
+                  'team_limit', 'team_accept_strategy', 'description', 'tags', 'tags_request', 'new_tag_names')
 
     checkbox_fields = ('tags',)
     owner = None

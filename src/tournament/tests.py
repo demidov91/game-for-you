@@ -1,3 +1,4 @@
+import datetime
 from django.test import TestCase
 
 from core.utils import Mock, UserMock
@@ -111,6 +112,18 @@ class UtilTest(TestCase):
         self.assertEqual(len(expected_keys), len(tested))
         for i in range(0, len(tested)):
             self.assertEqual(expected_keys[i], tested[i]['a'])
+
+    def test_to_timestamp(self):
+        times = (
+            datetime.datetime(1970, 1, 1),
+            None,
+            datetime.datetime(2015, 1, 1, 2, 34),
+        )
+        for time in times:
+            converted = utils.to_timestamp(time)
+            reconverted = None if converted is None else datetime.datetime.fromtimestamp(converted)
+            self.assertEqual(time, reconverted)
+
 
 class TagOwnersTreeUtilTest(TestCase):
     def test_as_tree_member(self):
