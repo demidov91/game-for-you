@@ -187,6 +187,7 @@ def get_calendar_events_by_team(team, start, end):
 
 def get_events_by_tags_and_day(tags, day, owner=None):
     next_day = day + timedelta(days=1)
+    prev_day = day - timedelta(days=1)
     event_additional_query = Q(tags__in=tags)
     if owner and owner.is_authenticated():
         problem_event_query = \
@@ -198,8 +199,8 @@ def get_events_by_tags_and_day(tags, day, owner=None):
             Q(last_datetime__gte=day)
             & event_additional_query),
         'competitions':  Competition.objects.filter(
-            Q(start_datetime__gte=day)
-            & Q(start_datetime__lt=next_day)
+            ((Q(start_datetime__lte=next_day) & Q(start_datetime__gt=day) & Q(end_datetime__isnull=True)) |
+            (Q(start_datetime__lt=next_day) & Q(end_datetime__gte=day))) 
             & event_additional_query),
     }
 

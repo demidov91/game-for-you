@@ -8,7 +8,10 @@
         <h4>
             <a href="{% url 'view_competition' competition_id=competition.id %}">{{ competition.get_name }}</a>
         </h4>
-        {% trans 'Start' %}: <span>{{ competition.start_datetime }}</span>
+        <div>{% trans 'Start' %}: <span>{{ competition.start_datetime }}</span></div>
+        {% if competition.end_datetime %}
+        <div>{% trans 'End' %}: <span>{{ competition.end_datetime }}</span></div>
+        {% endif %}        
     </div>
     {% endfor%}
 </div>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-05 22:18+0300\n"
+"POT-Creation-Date: 2015-04-06 17:27+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -591,21 +591,25 @@ msgstr "Игры:"
 msgid "Start"
 msgstr "Начало"
 
-#: tournament/templates/parts/events_for_day.html:19
+#: tournament/templates/parts/events_for_day.html:13
+msgid "End"
+msgstr "Окончание"
+
+#: tournament/templates/parts/events_for_day.html:22
 msgid "Tournaments:"
 msgstr "Синхроны:"
 
-#: tournament/templates/parts/events_for_day.html:24
+#: tournament/templates/parts/events_for_day.html:27
 #: tournament/templates/parts/tournament_content.html:8
 msgid "First day to play"
 msgstr "Разрешено играть с"
 
-#: tournament/templates/parts/events_for_day.html:28
+#: tournament/templates/parts/events_for_day.html:31
 #: tournament/templates/parts/tournament_content.html:12
 msgid "Last day to play"
 msgstr "Разрешено играть по"
 
-#: tournament/templates/parts/events_for_day.html:37
+#: tournament/templates/parts/events_for_day.html:40
 msgid "No events for this day."
 msgstr "Нет событий на сегодня."
 

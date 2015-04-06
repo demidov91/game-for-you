@@ -16,7 +16,7 @@ install_requires = [
 	'pillow',
     'psycopg2',
     'django-allauth',
-    'south==0.8.4',
+    'south==1.0',
     'django-compressor',
     'django-logicaldelete',
     'django-ckeditor',
