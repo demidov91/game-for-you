@@ -213,6 +213,8 @@ LOGOUT_ON_GET = False
 
 DEFAULT_TAGS = (1, )
 SOUTH_TESTS_MIGRATE = False
+# Id of the tag which chat should be displayed on the index page.
+BASE_TAG = None
 
 LOGGING = {
     'version': 1,

@@ -5,6 +5,11 @@
 {% block content %}
     {{ block.super }}
     {% include 'parts/calendar.html' %}
+    {% if base_tag %}
+        {% url 'authenticated_chat' owner_id=base_tag.id model_key='tag' as chat_url %}
+        {% url 'tag_rss' model_key='tag' id=base_tag.id as rss %}
+        {% include 'parts/chat_list_wrapper.html' %}
+    {% endif %}
 {% endblock %}
 
 {% block right_side_content %}
@@ -60,6 +65,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery-ui-1.10.4.custom.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/index_base.js"></script>
     {% endcompress %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/message_list.js"></script>
 {% endblock %}
 
 {% block style %}

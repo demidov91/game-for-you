@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
     get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_owner, can_publish_tag,\
@@ -43,7 +44,9 @@ def index(request):
         'popular_tags': popular_tags,
         'other_tags': other_tags,
         'show_login': 'force-login' in request.GET,
-        })
+        'base_tag': settings.BASE_TAG and Tag.objects.get(id=settings.BASE_TAG),
+        'chat_form': MessageForm(),
+    })
 
 
 @require_GET
