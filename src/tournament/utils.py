@@ -159,13 +159,13 @@ def get_calendar_events_by_tags(tags, start, end, owner=None):
     if owner and owner.is_authenticated():
         tournaments_of_interest = Tournament.objects.filter(
             Q(owners__shared_to__in=(owner,)) & Q(last_datetime__gte=start) & Q(first_datetime__lte=end) &
-            (Q(tags=None) & Q(tags_request=None) | ~Q(tags_request=None))).distinct()
+            Q(tags=None)).distinct()
         danger_tournaments = tournaments_of_interest.filter(tags=None)
         warn_tournaments = tournaments_of_interest.exclude(tags=None)
         competitions_of_interest = Competition.objects.filter(
             Q(owners__shared_to__in=(owner,)) &
-            Q(start_datetime__range=(start, end)) &
-            (Q(tags=None) & Q(tags_request=None) | ~Q(tags_request=None))).distinct()
+            Q(end_datetime__gte=start) & Q(start_datetime__lte=end) &
+            Q(tags=None)).distinct()
         danger_competitions = competitions_of_interest.filter(tags=None)
         warn_competitions = competitions_of_interest.exclude(tags=None)
         tournaments = tournaments.exclude(id__in=tournaments_of_interest.values_list('id', flat=True))
@@ -187,21 +187,20 @@ def get_calendar_events_by_team(team, start, end):
 
 def get_events_by_tags_and_day(tags, day, owner=None):
     next_day = day + timedelta(days=1)
-    prev_day = day - timedelta(days=1)
     event_additional_query = Q(tags__in=tags)
     if owner and owner.is_authenticated():
         problem_event_query = \
-            Q(owners__shared_to__in=(owner,)) & (Q(tags=None) & Q(tags_request=None) | ~Q(tags_request=None))
+            Q(owners__shared_to__in=(owner,)) & Q(tags=None)
         event_additional_query = event_additional_query | problem_event_query
     return {
         'tournaments': Tournament.objects.filter(
             Q(first_datetime__lte=day) &
             Q(last_datetime__gte=day)
-            & event_additional_query),
+            & event_additional_query).distinct(),
         'competitions':  Competition.objects.filter(
             ((Q(start_datetime__lte=next_day) & Q(start_datetime__gt=day) & Q(end_datetime__isnull=True)) |
             (Q(start_datetime__lt=next_day) & Q(end_datetime__gte=day))) 
-            & event_additional_query),
+            & event_additional_query).distinct(),
     }
 
 
