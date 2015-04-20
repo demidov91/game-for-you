@@ -6,7 +6,7 @@ from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
 from django.utils.six import with_metaclass
-from django.db.models import SubfieldBase
+from django.db.models import SubfieldBase, Q
 
 from ckeditor.widgets import CKEditorWidget
 
@@ -88,6 +88,13 @@ class AbstractNewTagNamesCleaner:
         return cleaned_data
 
 
+def get_event_possible_tags(owner, event):
+    return Tag.objects.filter(
+        Q(id__in=TagManagementTree.objects.filter(shared_to=owner).values_list('managed__id', flat=True)) |
+        Q(id__in=event.tags.values_list('id', flat=True))
+    )
+
+
 class TournamentForm(forms.ModelForm, AbstractNewTagNamesCleaner):
     new_tag_names = forms.CharField(
         label=_('New tag names'),
@@ -119,8 +126,7 @@ class TournamentForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         """
         super(TournamentForm, self).__init__(*args, **kwargs)
         self.owner = owner
-        self.fields['tags'].queryset = Tag.objects.filter(
-            id__in=TagManagementTree.objects.filter(shared_to=self.owner).values_list('managed__id', flat=True))
+        self.fields['tags'].queryset = get_event_possible_tags(owner, kwargs.get('instance'))
 
     def clean(self):
         return self.clean_and_add_tags(super(TournamentForm, self).clean())
@@ -180,8 +186,7 @@ class AddCompetitionForm(forms.ModelForm, AbstractNewTagNamesCleaner):
         for none_reuired in ('short_place_name', 'address', 'tags', 'place'):
             self.fields[none_reuired].required = False
         self.fields['place'].queryset = PlayField.objects.filter(owner=owner)
-        self.fields['tags'].queryset = Tag.objects.filter(
-            id__in=TagManagementTree.objects.filter(shared_to=self.owner).values_list('managed__id', flat=True))
+        self.fields['tags'].queryset = get_event_possible_tags(owner, kwargs.get('instance'))
 
     def clean(self):
         """
