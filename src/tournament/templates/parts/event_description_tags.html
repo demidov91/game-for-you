@@ -1,6 +1,14 @@
 {% for tag in tags  %}
-    <a class="btn btn-xs btn-default" href="{% url 'tag_page' tag_id=tag.id %}">
-        <span class="glyphicon glyphicon-tag"></span>
-        {{ tag.name }}
-    </a>
+    <span class="one-tag">
+        <a class="btn btn-xs btn-default" href="{% url 'tag_page' tag_id=tag.id %}">
+            <span class="glyphicon glyphicon-tag"></span>
+            {{ tag.name }}
+        </a>
+        {% if tag in managed_tags %}
+        <form method="POST"
+              action="{% url 'remove_tag_from_event' model_key=model_name event_id=event.id tag_id=tag.id %}">{% csrf_token %}
+            <input type="submit" value="-" class="btn btn-xs btn-danger" />
+        </form>
+    {% endif %}
+    </span>
 {% endfor %}

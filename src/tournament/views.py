@@ -14,7 +14,7 @@ from django.conf import settings
 
 from tournament.utils import get_calendar_events_by_tags, get_events_by_tags_and_day,\
     get_default_participation_state, get_calendar_events_by_team, get_tags_provider, is_owner, can_publish_tag,\
-    sort_by_key, tag_owners_util, KEY_TO_CHAT_OWNER
+    sort_by_key, tag_owners_util, KEY_TO_CHAT_OWNER, get_managed_tag_ids
 from tournament.forms import TournamentForm, AddCompetitionForm, TagForm
 from tournament.models import Competition, Participation, Tournament, Tag, TagManagementTree
 from tournament.decorators import tournament_owner_only, competition_owner_only, can_modify_participation,\
@@ -156,12 +156,10 @@ def view_competition(request, competition_id):
             'chat_form': MessageForm(),
         })
         if not is_event_owner:
+            managed_tags = Tag.objects.filter(id__in=get_managed_tag_ids(request.user))
             context.update({
-                'can_add_tags': Tag.objects.filter(
-                    id__in=TagManagementTree.objects.filter(
-                        shared_to=request.user).values_list('managed__id', flat=True)).exclude(
-                            id__in=competition.tags.values_list('id', flat=True)
-                ),
+                'can_add_tags': managed_tags.exclude(id__in=competition.tags.values_list('id', flat=True)),
+                'managed_tags': managed_tags,
             })
     return render(request, template_name, context)
 
@@ -198,9 +196,9 @@ def remove_tag_from_event(request, model_key: str, event_id: int, tag: Tag):
     event = get_object_or_404(KEY_TO_CHAT_OWNER[model_key].objects, id=event_id)
     event.tags.remove(tag)
     if model_key == 'competition':
-        return redirect('view_competition', kwargs={'competition_id': event_id})
+        return redirect('view_competition', competition_id=event_id)
     elif model_key == 'tournament':
-        return redirect('view_tournament', kwargs={'tournament_id': event_id})
+        return redirect('view_tournament', tournament_id=event_id)
     raise Http404()
 
 

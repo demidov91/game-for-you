@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-06 17:27+0300\n"
+"POT-Creation-Date: 2015-04-21 19:50+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,11 +42,11 @@ msgstr "Зависит от"
 msgid "Root element"
 msgstr "Корневой элемент"
 
-#: core/settings.py:286
+#: core/settings.py:288
 msgid "Russian"
 msgstr "Русский"
 
-#: core/settings.py:287
+#: core/settings.py:289
 msgid "Belarusian"
 msgstr "Беларуская"
 
@@ -243,23 +243,23 @@ msgstr "Введите описание места проведения."
 msgid " already exist."
 msgstr " уже существует."
 
-#: tournament/forms.py:93 tournament/forms.py:146
+#: tournament/forms.py:100 tournament/forms.py:152
 msgid "New tag names"
 msgstr "Создать темы"
 
-#: tournament/forms.py:97 tournament/forms.py:150
+#: tournament/forms.py:104 tournament/forms.py:156
 msgid "Send request for tagging as"
 msgstr "Подать запрос на публикацию под темами"
 
-#: tournament/forms.py:192 tournament/forms.py:193
+#: tournament/forms.py:197 tournament/forms.py:198
 msgid "Select place where competition is held."
 msgstr "Выберите место, где проходит соревнование"
 
-#: tournament/forms.py:240
+#: tournament/forms.py:245
 msgid "You can't delete place which has competitions related."
 msgstr "Нельзя удалить адрес, на который зарегестрирована игра."
 
-#: tournament/forms.py:243
+#: tournament/forms.py:248
 msgid "Can't perform the action."
 msgstr "Невозможно совершить действие."
 
@@ -391,11 +391,11 @@ msgstr "отклонена"
 msgid "registered"
 msgstr "зарегистрирована"
 
-#: tournament/views.py:178
+#: tournament/views.py:215
 msgid "Wrong request data."
 msgstr "Неверный запрос."
 
-#: tournament/views.py:326
+#: tournament/views.py:363
 msgid "Only the last owner can remove tags."
 msgstr "Только последний владелец может удалить тему."
 
@@ -424,19 +424,19 @@ msgstr "Игра"
 msgid "Delete"
 msgstr "Удалить"
 
-#: tournament/templates/index.html:11
+#: tournament/templates/index.html:16
 msgid "Tags to display:"
 msgstr "Активные темы:"
 
-#: tournament/templates/index.html:25
+#: tournament/templates/index.html:30
 msgid "Other tags:"
 msgstr "Другие темы"
 
-#: tournament/templates/index.html:30
+#: tournament/templates/index.html:35
 msgid "And other"
 msgstr "И ещё"
 
-#: tournament/templates/index.html:40
+#: tournament/templates/index.html:45
 msgid "Create own tag"
 msgstr "Создать тему"
 
@@ -583,6 +583,10 @@ msgstr "Подтверждённые темы:"
 msgid "Tags waiting for confirmation:"
 msgstr "Ожидает подтверждения тем:"
 
+#: tournament/templates/parts/event_description.html:24
+msgid "Add tag:"
+msgstr "Добавить тему:"
+
 #: tournament/templates/parts/events_for_day.html:5
 msgid "Competitions:"
 msgstr "Игры:"
@@ -619,9 +623,6 @@ msgstr "Добавить место проведения"
 
 #~ msgid "competition duration (in minutes)"
 #~ msgstr "продолжительность соревнования (минуты)"
-
-#~ msgid "Add tag:"
-#~ msgstr "Добавить тему:"
 
 #~ msgid "Tag name"
 #~ msgstr "Название темы"

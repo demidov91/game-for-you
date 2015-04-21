@@ -2,7 +2,7 @@
 <div class="event-description">{{ event.description|default:''|safe }}</div>
 <div class="tag-list">
     {% if event.tags.all.count > 0 %}
-    <div>
+    <div id="event-approved-tags">
     <span>{% trans 'Approved tags:' %}</span>
     {% with event.tags.all as tags %}
     {% include 'parts/event_description_tags.html' %}
@@ -11,7 +11,7 @@
     {% endif %}
 
     {% if event.tags_request.all.count > 0 %}
-    <div>
+    <div id="event-tags-waiting-for-approvement">
     <span>{% trans 'Tags waiting for confirmation:' %}</span>
     {% with event.tags_request.all as tags %}
     {% include 'parts/event_description_tags.html' %}
@@ -20,7 +20,7 @@
     {% endif %}
 
     {% if can_add_tags %}
-    <div>
+    <div id="event-tags-to-add">
         <span>{% trans 'Add tag:' %}</span>
         {% for tag in can_add_tags %}
         <form method="POST"

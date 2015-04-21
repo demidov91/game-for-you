@@ -307,7 +307,12 @@ class OpenChatFeed(ChatFeed):
     def title(self, obj):
         return obj.name
 
+
 def sort_by_key(iterable, key, reverse=False):
     if sys.version_info >= (3, 0):
         return sorted(iterable, key=key, reverse=reverse)
     return sorted(iterable, lambda x, y: cmp(key(x), key(y)), reverse=reverse)
+
+
+def get_managed_tag_ids(user):
+    return TagManagementTree.objects.filter(shared_to=user).values_list('managed__id', flat=True)

@@ -13,7 +13,7 @@ from ckeditor.widgets import CKEditorWidget
 from tournament.models import Tournament, Competition, PlayField, Tag, TagManagementTree, CompetitionOwnersTree,\
     TournamentOwnersTree
 from core.forms import BootstrapDateTimeField
-from tournament.utils import create_tags
+from tournament.utils import create_tags, get_managed_tag_ids
 from core.utils import string_types
 
 import logging
@@ -90,7 +90,7 @@ class AbstractNewTagNamesCleaner:
 
 def get_event_possible_tags(owner, event):
     return Tag.objects.filter(
-        Q(id__in=TagManagementTree.objects.filter(shared_to=owner).values_list('managed__id', flat=True)) |
+        Q(id__in=get_managed_tag_ids(owner)) |
         Q(id__in=event.tags.values_list('id', flat=True))
     )
 
