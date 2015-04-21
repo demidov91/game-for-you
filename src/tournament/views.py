@@ -127,7 +127,7 @@ def add_tournament(request):
         'tournament_form': form,
         'competition_form': AddCompetitionForm(owner=request.user),
         'show_tournament': True,
-        })
+    })
 
 
 @require_POST
@@ -140,7 +140,7 @@ def add_competition(request):
     return render(request, 'add_event.html',  {
         'tournament_form': TournamentForm(owner=request.user),
         'competition_form': form,
-        })
+    })
 
 
 def view_competition(request, competition_id):
@@ -150,22 +150,58 @@ def view_competition(request, competition_id):
         'competition': competition,
     }
     if request.user.is_authenticated():
+        is_event_owner = is_owner(competition, request.user)
         context.update({
-            'is_competition_owner': is_owner(competition, request.user),
+            'is_competition_owner': is_event_owner,
             'chat_form': MessageForm(),
         })
+        if not is_event_owner:
+            context.update({
+                'can_add_tags': Tag.objects.filter(
+                    id__in=TagManagementTree.objects.filter(
+                        shared_to=request.user).values_list('managed__id', flat=True)).exclude(
+                            id__in=competition.tags.values_list('id', flat=True)
+                ),
+            })
     return render(request, template_name, context)
+
 
 def view_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament.objects, id=tournament_id)
     template_name = 'authenticated_tournament.html' if request.user.is_authenticated() else 'unauthenticated_tournament.html'
     default_competition_start = int(max(to_timestamp(tournament.first_datetime), to_timestamp(datetime.now())))
+    is_event_owner = is_owner(tournament, request.user)
     return render(request, template_name, {
         'tournament': tournament,
-        'is_owner': is_owner(tournament, request.user),
+        'is_owner': is_event_owner,
         'default_competition_start': default_competition_start,
         'chat_form': MessageForm(),
+        'model_name': 'tournament',
     })
+
+
+@require_POST
+@tag_sharer_and_owner_only(set_key='tag')
+def add_tag_to_event(request, model_key: str, event_id: int, tag: Tag):
+    event = get_object_or_404(KEY_TO_CHAT_OWNER[model_key].objects, id=event_id)
+    event.tags.add(tag)
+    if model_key == 'competition':
+        return redirect('view_competition', competition_id=event_id)
+    elif model_key == 'tournament':
+        return redirect('view_tournament', tournament_id=event_id)
+    raise Http404()
+
+
+@require_POST
+@tag_sharer_and_owner_only(set_key='tag')
+def remove_tag_from_event(request, model_key: str, event_id: int, tag: Tag):
+    event = get_object_or_404(KEY_TO_CHAT_OWNER[model_key].objects, id=event_id)
+    event.tags.remove(tag)
+    if model_key == 'competition':
+        return redirect('view_competition', kwargs={'competition_id': event_id})
+    elif model_key == 'tournament':
+        return redirect('view_tournament', kwargs={'tournament_id': event_id})
+    raise Http404()
 
 
 @require_POST

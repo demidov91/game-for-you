@@ -28,7 +28,7 @@
             </td>
         </tr>
     </table>
-    {% with competition as event %}
+    {% with event=competition model_name='competition' %}
     {% include 'parts/event_description.html' %}
     {% endwith %}
 </div>

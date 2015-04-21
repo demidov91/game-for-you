@@ -13,7 +13,7 @@
             <td>{{ tournament.last_datetime }}</td>
         </tr>
     </table>
-    {% with tournament as event %}
+    {% with event=tournament model_name='tournament' %}
     {% include 'parts/event_description.html' %}
     {% endwith %}
 </div>

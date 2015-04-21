@@ -18,4 +18,18 @@
     {% endwith %}
     </div>
     {% endif %}
+
+    {% if can_add_tags %}
+    <div>
+        <span>{% trans 'Add tag:' %}</span>
+        {% for tag in can_add_tags %}
+        <form method="POST"
+              action="{% url 'add_tag_to_event' model_key=model_name event_id=event.id tag_id=tag.id %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-xs btn-warning btn-default" value="{{ tag.name }} | +" />
+        </form>
+        {% endfor %}
+    </div>
+    {% endif %}
+
 </div>
