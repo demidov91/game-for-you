@@ -166,16 +166,25 @@ def view_competition(request, competition_id):
 
 def view_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament.objects, id=tournament_id)
-    template_name = 'authenticated_tournament.html' if request.user.is_authenticated() else 'unauthenticated_tournament.html'
     default_competition_start = int(max(to_timestamp(tournament.first_datetime), to_timestamp(datetime.now())))
     is_event_owner = is_owner(tournament, request.user)
-    return render(request, template_name, {
+    context = {
         'tournament': tournament,
         'is_owner': is_event_owner,
         'default_competition_start': default_competition_start,
         'chat_form': MessageForm(),
-        'model_name': 'tournament',
-    })
+    }
+    if request.user.is_authenticated():
+        template_name = 'authenticated_tournament.html'
+        if not is_event_owner:
+            managed_tags = Tag.objects.filter(id__in=get_managed_tag_ids(request.user))
+            context.update({
+                'can_add_tags': managed_tags.exclude(id__in=tournament.tags.values_list('id', flat=True)),
+                'managed_tags': managed_tags,
+            })
+    else:
+        template_name = 'unauthenticated_tournament.html'
+    return render(request, template_name, context)
 
 
 @require_POST
