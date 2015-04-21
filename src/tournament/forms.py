@@ -89,10 +89,10 @@ class AbstractNewTagNamesCleaner:
 
 
 def get_event_possible_tags(owner, event):
-    return Tag.objects.filter(
-        Q(id__in=get_managed_tag_ids(owner)) |
-        Q(id__in=event.tags.values_list('id', flat=True))
-    )
+    query = Q(id__in=get_managed_tag_ids(owner))
+    if event:
+        query |= Q(id__in=event.tags.values_list('id', flat=True))
+    return Tag.objects.filter(query)
 
 
 class TournamentForm(forms.ModelForm, AbstractNewTagNamesCleaner):
