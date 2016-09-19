@@ -6,6 +6,7 @@ eggs/*
 develop-eggs
 develop-eggs/*
 *~
+*.pid
 .installed.cfg
 */__pycache__
 src/our_game.egg-info
@@ -19,6 +20,7 @@ src/core/media/admin
 src/core/media/facebook
 src/core/media/ckeditor
 src/core/media/user_uploads
+src/core/media/resize/*
 *.mo
 /logs/*
 !/logs/README.txt
@@ -29,3 +31,4 @@ node_modules
 /src/core/media/upload/user_picks/*
 !/src/core/media/upload/user_picks/owl.jpg
 lessc
+uwsgi.ini

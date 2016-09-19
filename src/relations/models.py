@@ -82,7 +82,8 @@ class UserProfile(models.Model):
 
 @receiver(pre_social_login)
 def handler(sender, sociallogin, **kwargs):
-    UserProfile.objects.filter(user=sociallogin.account.user).update(external_image=sociallogin.account.get_avatar_url())
+    if sociallogin.account.id:
+        UserProfile.objects.filter(user=sociallogin.account.user).update(external_image=sociallogin.account.get_avatar_url())
 
 
 @receiver(post_save, sender=User)
